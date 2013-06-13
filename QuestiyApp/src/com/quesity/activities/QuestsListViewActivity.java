@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.quesity.R;
+import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.SimpleDialogs;
@@ -27,9 +28,9 @@ import com.quesity.models.Quest;
 import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
-public class QuestsListViewActivity extends FragmentActivity {
+public class QuestsListViewActivity extends FragmentActivity implements ProgressableProcess {
 	private QuestAdapter array_adapter;
-	private DialogFragment _progress_dialog;
+	private LoadingProgressFragment _progress_dialog;
 	private ListFragment _quest_list_fragment;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
@@ -39,7 +40,7 @@ public class QuestsListViewActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		FragmentManager manager = getSupportFragmentManager();
-		_progress_dialog = new LoadingProgressFragment(getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
+		_progress_dialog = new LoadingProgressFragment();
 
 		_quest_list_fragment =  (ListFragment) manager.findFragmentById(R.id.quest_list_fragment);
 		ListView listView = _quest_list_fragment.getListView();
@@ -65,7 +66,7 @@ public class QuestsListViewActivity extends FragmentActivity {
 
 		@Override
 		protected void onPostExecute(Quest[] result) {
-			_progress_dialog.dismiss();
+			stopProgressBar();
 			if ( result == null ) {
 				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
 				errorDialog.show();
@@ -77,7 +78,7 @@ public class QuestsListViewActivity extends FragmentActivity {
 
 		@Override
 		protected void onPreExecute() {
-			_progress_dialog.show(getSupportFragmentManager(), "loading_progress_dialog");
+			startProgressBar(getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
 		}
 
 		@Override
@@ -124,6 +125,18 @@ public class QuestsListViewActivity extends FragmentActivity {
 			   return convertView;
 		}
 		
+	}
+
+	@Override
+	public void startProgressBar(String title, String message) {
+		_progress_dialog.setTitle(title);
+		_progress_dialog.setMessage(message);
+		_progress_dialog.show(getSupportFragmentManager(), "quests_loader");
+	}
+
+	@Override
+	public void stopProgressBar() {
+		_progress_dialog.dismiss();
 	}
 
 }

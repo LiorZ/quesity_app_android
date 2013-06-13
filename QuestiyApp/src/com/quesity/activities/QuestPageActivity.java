@@ -12,6 +12,7 @@ import android.webkit.WebView;
 
 import com.quesity.R;
 import com.quesity.controllers.NextPageControllerFactory;
+import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.LocationPageFragment;
@@ -25,7 +26,8 @@ import com.quesity.models.QuestPage;
 import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
-public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition {
+public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition,
+ProgressableProcess{
 
 	@Override
 	public void transitToNextPage() {
@@ -48,7 +50,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
-		_progress = new LoadingProgressFragment(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading));
+		_progress = new LoadingProgressFragment();
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		_webView = (WebView) fragment.getView().findViewById(R.id.webView);
 		_webView.getSettings().setJavaScriptEnabled(false);
@@ -120,7 +122,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}
 		@Override
 		protected void onPostExecute(QuestPage result) {
-			_progress.dismiss();
+			stopProgressBar();
 			if ( result == null ) {
 				Log.w("QuestPageActivity", "result page is null");
 				SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer),QuestPageActivity.this);
@@ -135,7 +137,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		protected void onPreExecute() {
 			// TODO Auto-generated method stub
 			Log.d(this.getClass().getName(),"preparing to load page ..");
-			_progress.show(getSupportFragmentManager(), "loading_page_dialog");
+			startProgressBar(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading));
 		}
 
 		@Override
@@ -144,6 +146,19 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 			return questPage;
 		}
 		
+	}
+
+
+	@Override
+	public void startProgressBar(String title, String message) {
+		_progress.setTitle(title);
+		_progress.setMessage(message);
+		_progress.show(getSupportFragmentManager(), "loading_dialog");
+	}
+
+	@Override
+	public void stopProgressBar() {
+		_progress.dismiss();
 	}
 
 }

@@ -15,9 +15,13 @@ public class LoadingProgressFragment extends DialogFragment{
 
 	private String _message;
 	private String _title;
-	public LoadingProgressFragment(String message, String title) {
-		_message = message;
-		_title = title;
+	
+	public void setMessage(String msg) {
+		_message = msg;
+	}
+	
+	public void setTitle(String t) {
+		_title = t;
 	}
 	
 	@Override

@@ -20,7 +20,7 @@ public class IntervalLocationListener implements LocationListener {
 	@Override
 	public void onLocationChanged(Location location) {
 		Log.d("LocationListener" , "New location arrived with lat: " + location.getLatitude() + " And lng: " + location.getLongitude() +
-				"And accuracy of " + location.getAccuracy());
+				" And accuracy of " + location.getAccuracy());
 		if (_bestLocation == null || location.getTime() - _bestLocation.getTime() > LOCATION_OBSOLETE_INTERVAL ){
 			_bestLocation = location;
 			return;

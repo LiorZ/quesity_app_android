@@ -9,7 +9,7 @@ public class SimpleDialogs {
 		AlertDialog ad = new AlertDialog.Builder(context).create();
 		ad.setCancelable(false); // This blocks the 'BACK' button
 		ad.setMessage(message);
-		ad.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -17,6 +17,13 @@ public class SimpleDialogs {
 			}
 		}); 
 		return ad;
-
+	}
+	
+	public static AlertDialog getOKOnlyDialog(String message, Context context, DialogInterface.OnClickListener what_to_do) {
+		AlertDialog ad = new AlertDialog.Builder(context).create();
+		ad.setCancelable(false);
+		ad.setMessage(message);
+		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), what_to_do);
+		return ad;
 	}
 }

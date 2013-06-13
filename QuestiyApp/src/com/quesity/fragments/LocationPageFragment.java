@@ -35,7 +35,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			super.onAttach(activity);
 			LocationManager systemService = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 			String locationProvider = LocationManager.GPS_PROVIDER;
-			systemService.requestLocationUpdates(locationProvider, 0, 0, _inter_listener);
+			systemService.requestLocationUpdates(locationProvider,10, 0, _inter_listener);
 		}
 
 		private IntervalLocationListener _inter_listener;

@@ -2,6 +2,9 @@ package com.quesity.activities;
 
 import java.util.HashMap;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -11,28 +14,23 @@ import android.view.Menu;
 import android.webkit.WebView;
 
 import com.quesity.R;
-import com.quesity.controllers.NextPageControllerFactory;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
+import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.LocationPageFragment;
 import com.quesity.fragments.MultipleChoiceFragment;
 import com.quesity.fragments.OnDemandFragment;
-import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
 import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
+import com.quesity.models.QuestPageLink;
 import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
 public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition,
 ProgressableProcess{
-
-	@Override
-	public void transitToNextPage() {
-		_transitionFragment.invokeFragment(getSupportFragmentManager());
-	}
 
 	private LoadingProgressFragment _progress;
 	private WebView _webView;
@@ -57,6 +55,30 @@ ProgressableProcess{
 		constructFragmentMapper();
 		new FetchQuestPageTask().execute(Constants.SERVER_URL + "/app/"+_quest_id+"/first_page");
 	}
+	@Override
+	public void transitToNextPage() {
+		QuestPageLink[] links = _currentPage.getLinks();
+		if ( links.length == 0 ){
+			finishQuest();
+			return;
+		}
+		
+		_transitionFragment.invokeFragment(getSupportFragmentManager());
+	}
+	
+	public void finishQuest(){
+		AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_quest_over), this, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+		    	Intent intent = new Intent(QuestPageActivity.this, QuestsListViewActivity.class);
+		    	startActivity(intent);
+			}
+		});
+		okOnlyDialog.show();
+	}
+	
 	
 	private void constructFragmentMapper() {
 		addMultipleChoiceFragment();

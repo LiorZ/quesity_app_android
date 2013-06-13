@@ -21,8 +21,9 @@
         android:name="com.quesity.fragments.InGameMenuFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true" 
+        />
 
       <FrameLayout
           android:id="@+id/transition_place_holder"

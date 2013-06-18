@@ -8,6 +8,7 @@ import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageLocationLink;
 import com.quesity.models.QuestPageQuestionLink;
+import com.quesity.models.QuestPageStall;
 import com.quesity.models.tests.utils.JSONReader;
 
 import android.test.InstrumentationTestCase;
@@ -85,16 +86,19 @@ public class QuestPageModelJSONTester extends InstrumentationTestCase{
 		assertEquals(link_2.getLng(),34.790096282958984);
 		assertEquals(link_2.getLinksToPage(),"51b2f31bd7b1deac1e00000a");
 	}
-	
+	public void checkGeneralPageProperties(QuestPage page, String id, String content,String name,int number,String type) throws Exception{
+		assertEquals(page.getId(), id);
+		assertEquals(page.getPageContent(),content);
+		assertEquals(page.getPageName(), name);
+		assertEquals(page.getPageNumber(),number);
+		assertEquals(page.getPageType(),type);
+	}
 	public void testQuestPageStatic() throws Exception {
 
 		QuestPage page = _quest_pages[2];
 		
-		assertEquals(page.getId(), "51b877d183cea14d34000008");
-		assertEquals(page.getPageContent(),"abc");
-		assertEquals(page.getPageName(), "Untitled");
-		assertEquals(page.getPageNumber(),7);
-		assertEquals(page.getPageType(),"static");
+		checkGeneralPageProperties(page, "51b877d183cea14d34000008", "abc", "Untitled", 7, "static");
+
 		QuestPageLink[] links = page.getLinks();
 		assertEquals(links.length,1);
 		QuestPageLink link = links[0];
@@ -106,6 +110,17 @@ public class QuestPageModelJSONTester extends InstrumentationTestCase{
 		assertEquals(link.getType(), "regular");
 		
 
+		
+	}
+	
+	public void testQuestPageStall() throws Exception {
+		QuestPageStall page = (QuestPageStall) _quest_pages[3];
+		checkGeneralPageProperties(page, "51c04a02d845f4091b000006", "<p>Stall page</p>\n<p>&nbsp;</p>", "You are being stalled", 9, "stall");
+		assertEquals(page.getStallTime(), 1);
+		QuestPageLink[] links = page.getLinks();
+		assertEquals(links.length,1);
+		assertEquals(links[0].getLinksToPage(), "51b070bf809e54e318000007");
+		
 		
 	}
 }

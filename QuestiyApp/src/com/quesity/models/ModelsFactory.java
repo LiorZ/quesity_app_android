@@ -1,10 +1,7 @@
 package com.quesity.models;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.quesity.activities.QuestsListViewActivity;
 
 public class ModelsFactory {
 
@@ -13,7 +10,7 @@ public class ModelsFactory {
 	protected ModelsFactory() {
 		_gson = new GsonBuilder()
 		   .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-		   .registerTypeAdapter(QuestPageLink.class,new QuestPageSerialization())
+		   .registerTypeAdapter(QuestPage.class, new QuestPageSerialization())
 		   .create();
 	}
 	

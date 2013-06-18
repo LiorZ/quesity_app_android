@@ -87,6 +87,28 @@
       "type": "regular"
     }
   ]
+},
+
+{
+  "__v": 0,
+  "_id": "51c04a02d845f4091b000006",
+  "page_content": "<p>Stall page</p>\n<p>&nbsp;</p>",
+  "page_name": "You are being stalled",
+  "page_number": 9,
+  "page_type": "stall",
+  "quest_id": "51b070b6809e54e318000003",
+  "stall_time": 1,
+  "x": 716.5009999999997,
+  "y": 403.5009999999999,
+  "hints": [],
+  "links": [
+    {
+      "_id": "51c04a0ed845f4091b000007",
+      "links_to_page": "51b070bf809e54e318000007",
+      "type": "regular"
+    }
+  ]
 }
+
 
 ]

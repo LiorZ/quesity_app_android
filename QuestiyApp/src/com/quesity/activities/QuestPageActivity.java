@@ -17,6 +17,7 @@ import com.quesity.R;
 import com.quesity.controllers.HintMenuActivator;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
+import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
 import com.quesity.fragments.HintsFragment;
 import com.quesity.fragments.LoadingProgressFragment;
@@ -45,6 +46,7 @@ ProgressableProcess, HintMenuActivator{
 	private ContentPageFragment _content_page_fragment;
 	private LocationPageFragment _location_page_fragment;
 	private HintsFragment _hints_fragment;
+	private StallFragment _stall_fragment;
 	private HashMap<String,Fragment> _fragmentMapper;
 	private QuestPage _currentPage;
 	
@@ -134,19 +136,23 @@ ProgressableProcess, HintMenuActivator{
 		addOpenQuestionFragment();
 		addContentPageFragment();
 		addLocationPageFragment();
+		addStallFragment();
 		
 		_fragmentMapper = new HashMap<String, Fragment>();
 		_fragmentMapper.put(Constants.OPEN_QUESTION_PAGE_TYPE,_open_question_fragment);
 		_fragmentMapper.put(Constants.QUESTION_PAGE_TYPE, _multiple_choice_fragment);
 		_fragmentMapper.put(Constants.STATIC_PAGE_TYPE,_content_page_fragment);
 		_fragmentMapper.put(Constants.LOCATION_PAGE_TYPE,_location_page_fragment);
-		
+		_fragmentMapper.put(Constants.STALL_PAGE_TYPE, _stall_fragment);
 	}
 
 	private void addMultipleChoiceFragment() {
 		_multiple_choice_fragment = new MultipleChoiceFragment();
 	}
 	
+	private void addStallFragment() {
+		_stall_fragment = new StallFragment();
+	}
 	
 	private void addContentPageFragment() {
 		_content_page_fragment = new ContentPageFragment();

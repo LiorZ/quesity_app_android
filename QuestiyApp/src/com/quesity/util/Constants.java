@@ -6,4 +6,5 @@ public final class Constants {
 	public static final String OPEN_QUESTION_PAGE_TYPE = "open_question";
 	public static final String STATIC_PAGE_TYPE = "static";
 	public static final String LOCATION_PAGE_TYPE = "location";
+	public static final String STALL_PAGE_TYPE="stall";
 }

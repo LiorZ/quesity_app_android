@@ -26,4 +26,5 @@
 	<string name="lbl_game_menu_tactics">Tactics</string>
 	<string name="lbl_no_hints">There are no available hints for this page</string>
 	<string name="title_hints_dialog">Available hints for this page</string>
+	<string name="lbl_time_delay">You are being delayed for %1$02d:%2$02d minutes</string>
 </resources>

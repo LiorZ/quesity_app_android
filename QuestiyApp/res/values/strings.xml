@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">QuestiyApp</string>
+    <string name="app_name">Quesity</string>
     <string name="dummy_title">Quesity</string>
     <string name="btn_show_quests">Show Quests</string>
     <string name="lbl_loading_quests">Loading Quests</string>
@@ -22,4 +22,8 @@
     <string name="lbl_location_fix_message">Getting a fix on your location</string>
     <string name="lbl_cant_find_location">An error occured while finding your location. Please try again.</string>
 	<string name="lbl_quest_over">The Quest is over!</string>
+	<string name="lbl_game_menu_title">Game Menu</string>
+	<string name="lbl_game_menu_tactics">Tactics</string>
+	<string name="lbl_no_hints">There are no available hints for this page</string>
+	<string name="title_hints_dialog">Available hints for this page</string>
 </resources>

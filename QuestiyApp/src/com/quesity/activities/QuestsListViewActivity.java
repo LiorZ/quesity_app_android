@@ -39,6 +39,7 @@ public class QuestsListViewActivity extends FragmentActivity implements Progress
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
+		setTitle(R.string.app_name);
 		FragmentManager manager = getSupportFragmentManager();
 		_progress_dialog = new LoadingProgressFragment();
 

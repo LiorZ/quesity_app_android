@@ -14,9 +14,11 @@ import android.view.Menu;
 import android.webkit.WebView;
 
 import com.quesity.R;
+import com.quesity.controllers.HintMenuActivator;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
+import com.quesity.fragments.HintsFragment;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.LocationPageFragment;
 import com.quesity.fragments.MultipleChoiceFragment;
@@ -30,8 +32,10 @@ import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
 public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition,
-ProgressableProcess{
+ProgressableProcess, HintMenuActivator{
 
+	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
+	
 	private LoadingProgressFragment _progress;
 	private WebView _webView;
 	private String _quest_id;
@@ -40,21 +44,66 @@ ProgressableProcess{
 	private OpenQuestionFragment _open_question_fragment;
 	private ContentPageFragment _content_page_fragment;
 	private LocationPageFragment _location_page_fragment;
+	private HintsFragment _hints_fragment;
 	private HashMap<String,Fragment> _fragmentMapper;
-	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	private QuestPage _currentPage;
+	
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		Log.d("QuestPageActivity","Activity Paused");
+	}
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		
+		String page_json = ModelsFactory.getInstance().QuestPageToJSON(_currentPage);
+		Log.d("QuestPageActivity", "Saving instance state with json");
+		outState.putString(QUEST_PAGE_KEY,page_json);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
 		_progress = new LoadingProgressFragment();
+		_hints_fragment = new HintsFragment();
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		_webView = (WebView) fragment.getView().findViewById(R.id.webView);
 		_webView.getSettings().setJavaScriptEnabled(false);
+		
 		constructFragmentMapper();
-		new FetchQuestPageTask().execute(Constants.SERVER_URL + "/app/"+_quest_id+"/first_page");
+		
+		restoreSavedPage(savedInstanceState);
 	}
+	
+	/**
+	 * Implements {@link HintMenuActivator}
+	 */
+	@Override
+	public void showHints() {
+		_hints_fragment.show(getSupportFragmentManager(), "hints_dialog");
+	}
+	
+	private void restoreSavedPage(Bundle savedInstanceState) {
+		String page = null;
+		if ( savedInstanceState != null ){
+			page = savedInstanceState.getString(QUEST_PAGE_KEY);
+		}
+		Log.d("QuestPageActivity", "Restoring instance state");
+		if ( page != null ) {
+			_currentPage = ModelsFactory.getInstance().getQuestPageFromJson(page);
+			refreshQuestPage(_currentPage);
+		}else {
+			Log.d("QuesityPageActivity","Got a null page from the saved instance");
+			Log.d("QuestPageActivity","Current page is null, downloading the first page");
+			String url = Constants.SERVER_URL + "/app/"+_quest_id+"/first_page";
+			new FetchQuestPageTask().execute(url);
+		}
+	}
+	
 	@Override
 	public void transitToNextPage() {
 		QuestPageLink[] links = _currentPage.getLinks();
@@ -133,15 +182,17 @@ ProgressableProcess{
 		getMenuInflater().inflate(R.menu.quest_page, menu);
 		return true;
 	}
-
+	
+	public void refreshQuestPage(QuestPage page) {
+		setTitle(page.getPageName());
+		Fragment fragment = _fragmentMapper.get(page.getPageType());
+		_transitionFragment = (OnDemandFragment)fragment;
+		_webView.loadDataWithBaseURL(null, page.getPageContent(), "text/html", "utf-8", null);
+	}
 	
 	private class FetchQuestPageTask extends FetchJSONTask<QuestPage> {
 
 		
-		private void loadNextFragment(QuestPage page) {
-			Fragment fragment = _fragmentMapper.get(page.getPageType());
-			_transitionFragment = (OnDemandFragment)fragment;
-		}
 		@Override
 		protected void onPostExecute(QuestPage result) {
 			stopProgressBar();
@@ -151,8 +202,7 @@ ProgressableProcess{
 				return;
 			}
 			_currentPage = result;
-			loadNextFragment(result);
-			_webView.loadDataWithBaseURL(null, result.getPageContent(), "text/html", "utf-8", null);
+			refreshQuestPage(result);
 		}
 
 		@Override
@@ -170,7 +220,6 @@ ProgressableProcess{
 		
 	}
 
-
 	@Override
 	public void startProgressBar(String title, String message) {
 		_progress.setTitle(title);
@@ -182,5 +231,6 @@ ProgressableProcess{
 	public void stopProgressBar() {
 		_progress.dismiss();
 	}
+
 
 }

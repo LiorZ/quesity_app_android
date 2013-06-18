@@ -30,6 +30,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				systemService.removeUpdates(_inter_listener);
 				super.onDetach();
 		}
+		
 		@Override
 		public void onAttach(Activity activity) {
 			super.onAttach(activity);
@@ -42,6 +43,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 		public LocationPageFragment() {
 			_inter_listener = new IntervalLocationListener();
 		}
+		
 		@Override
 		public void useLocation(Location location){
 			
@@ -105,6 +107,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			private LocationUser _user;
 			private IntervalLocationListener _listener;
 			private LocationManager _manager;
+			
 			public LocationDeterminant(LocationUser user, LocationManager manager) {
 				_user = user;
 				_listener = new IntervalLocationListener();

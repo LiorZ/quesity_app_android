@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="game_menu_items">
+        <item name="item_show_map">Show Map</item>
+        <item name="item_team_players">Teams &amp; Players</item>
+        <item name="item_exit">Exit &amp; Leave</item>
+    </string-array>
+    
+    <string-array name="tactics_menu_items">
+        <item name="item_hints">Get a hint</item>
+        <item name="item_surprise_team">Surprise a team</item>
+        <item name="item_stall_team">Stall a team</item>
+    </string-array>
+</resources>

@@ -14,11 +14,10 @@ import android.widget.Button;
 
 import com.quesity.R;
 import com.quesity.activities.QuestPageActivity;
-import com.quesity.controllers.HintMenuActivator;
+import com.quesity.controllers.HintsMenuActivator;
 import com.quesity.controllers.TacticsMenuController;
 
 public class InGameMenuFragment extends Fragment {
-	
 	
 	private TransitionFragmentInvokation _transition;
 	private InGameMenuPopup _menu_dialog;
@@ -38,14 +37,13 @@ public class InGameMenuFragment extends Fragment {
 		_tactics_dialog = new InGameMenuPopup();
 		_tactics_dialog.setItemArray(R.array.tactics_menu_items);
 		_tactics_dialog.setTitle(R.string.lbl_game_menu_tactics);
-
-		
 	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		_transition = (TransitionFragmentInvokation) activity;
-		_tactics_dialog.setClickListener( new TacticsMenuController((HintMenuActivator)activity));
+		_tactics_dialog.setClickListener( new TacticsMenuController((HintsMenuActivator)activity));
 	}
 
 	public interface TransitionFragmentInvokation {

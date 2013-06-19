@@ -14,7 +14,7 @@ import android.view.Menu;
 import android.webkit.WebView;
 
 import com.quesity.R;
-import com.quesity.controllers.HintMenuActivator;
+import com.quesity.controllers.HintsMenuActivator;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.StallFragment;
@@ -33,7 +33,7 @@ import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
 public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition,
-ProgressableProcess, HintMenuActivator{
+ProgressableProcess, HintsMenuActivator{
 
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
@@ -82,10 +82,10 @@ ProgressableProcess, HintMenuActivator{
 	}
 	
 	/**
-	 * Implements {@link HintMenuActivator}
+	 * Implements {@link HintsMenuActivator}
 	 */
 	@Override
-	public void showHints() {
+	public void showHintsMenuItem() {
 		_hints_fragment.show(getSupportFragmentManager(), "hints_dialog");
 	}
 	

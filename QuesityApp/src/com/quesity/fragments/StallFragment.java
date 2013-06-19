@@ -63,6 +63,8 @@ public class StallFragment extends DialogFragment implements OnDemandFragment {
 				_okOnlyDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 			}
 		});
+		
+		_okOnlyDialog.setCanceledOnTouchOutside(false);
 		_timer.schedule(new StallTimeTask(stallTime),0,1000);
 		return _okOnlyDialog;
 	}

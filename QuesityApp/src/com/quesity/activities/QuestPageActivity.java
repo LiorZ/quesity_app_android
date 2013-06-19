@@ -33,7 +33,7 @@ import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
 public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition,
-ProgressableProcess, HintsMenuActivator{
+ProgressableProcess{
 
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
@@ -45,7 +45,6 @@ ProgressableProcess, HintsMenuActivator{
 	private OpenQuestionFragment _open_question_fragment;
 	private ContentPageFragment _content_page_fragment;
 	private LocationPageFragment _location_page_fragment;
-	private HintsFragment _hints_fragment;
 	private StallFragment _stall_fragment;
 	private HashMap<String,Fragment> _fragmentMapper;
 	private QuestPage _currentPage;
@@ -71,7 +70,6 @@ ProgressableProcess, HintsMenuActivator{
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
 		_progress = new LoadingProgressFragment();
-		_hints_fragment = new HintsFragment();
 		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		_webView = (WebView) fragment.getView().findViewById(R.id.webView);
 		_webView.getSettings().setJavaScriptEnabled(false);
@@ -81,13 +79,6 @@ ProgressableProcess, HintsMenuActivator{
 		restoreSavedPage(savedInstanceState);
 	}
 	
-	/**
-	 * Implements {@link HintsMenuActivator}
-	 */
-	@Override
-	public void showHintsMenuItem() {
-		_hints_fragment.show(getSupportFragmentManager(), "hints_dialog");
-	}
 	
 	private void restoreSavedPage(Bundle savedInstanceState) {
 		String page = null;

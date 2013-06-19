@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -13,17 +14,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.quesity.R;
-import com.quesity.activities.QuestPageActivity;
-import com.quesity.controllers.HintsMenuActivator;
-import com.quesity.controllers.TacticsMenuController;
+import com.quesity.util.Constants;
 
 public class InGameMenuFragment extends Fragment {
 	
 	private TransitionFragmentInvokation _transition;
 	private InGameMenuPopup _menu_dialog;
 	private InGameMenuPopup _tactics_dialog;
+	private HintsFragment _hints_fragment;
+
 	public InGameMenuFragment() {
 		_menu_dialog = new InGameMenuPopup();
+		_hints_fragment = new HintsFragment();
+
 		_menu_dialog.setItemArray(R.array.game_menu_items);
 		_menu_dialog.setTitle(R.string.lbl_game_menu_title);
 		_menu_dialog.setClickListener(new DialogInterface.OnClickListener() {
@@ -42,8 +45,22 @@ public class InGameMenuFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		final FragmentManager fragmentManager = ((FragmentActivity)activity).getSupportFragmentManager();
 		_transition = (TransitionFragmentInvokation) activity;
-		_tactics_dialog.setClickListener( new TacticsMenuController((HintsMenuActivator)activity));
+		_tactics_dialog.setClickListener( new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch(which){
+				case Constants.HINTS_MENU_ITEM_INDEX:
+					_hints_fragment.show(fragmentManager, "HintsFragment");
+					break;
+				default:
+					dialog.dismiss();
+						
+				}				
+			}
+		});
 	}
 
 	public interface TransitionFragmentInvokation {

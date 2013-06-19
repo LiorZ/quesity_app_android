@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.quesity.R;
+import com.quesity.activities.QuestPageActivity;
 import com.quesity.util.Constants;
 
 public class InGameMenuFragment extends Fragment {
@@ -29,14 +30,6 @@ public class InGameMenuFragment extends Fragment {
 
 		_menu_dialog.setItemArray(R.array.game_menu_items);
 		_menu_dialog.setTitle(R.string.lbl_game_menu_title);
-		_menu_dialog.setClickListener(new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		});
-		
 		_tactics_dialog = new InGameMenuPopup();
 		_tactics_dialog.setItemArray(R.array.tactics_menu_items);
 		_tactics_dialog.setTitle(R.string.lbl_game_menu_tactics);
@@ -45,7 +38,8 @@ public class InGameMenuFragment extends Fragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		final FragmentManager fragmentManager = ((FragmentActivity)activity).getSupportFragmentManager();
+		final FragmentActivity factivity = (FragmentActivity) activity;
+		final FragmentManager fragmentManager = factivity.getSupportFragmentManager();
 		_transition = (TransitionFragmentInvokation) activity;
 		_tactics_dialog.setClickListener( new DialogInterface.OnClickListener() {
 
@@ -57,8 +51,22 @@ public class InGameMenuFragment extends Fragment {
 					break;
 				default:
 					dialog.dismiss();
-						
 				}				
+			}
+		});
+		
+		_menu_dialog.setClickListener(new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch(which){
+				case Constants.EXIT_MENU_ITEM_INDEX:
+					((QuestPageActivity)factivity).returnToMainPage();
+					break;
+				default:
+					dialog.dismiss();
+						
+				}	
 			}
 		});
 	}

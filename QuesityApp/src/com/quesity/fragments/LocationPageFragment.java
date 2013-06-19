@@ -24,19 +24,32 @@ import com.quesity.models.QuestPageLocationLink;
 
 public class LocationPageFragment extends Fragment implements OnDemandFragment, LocationUser {
 
+	
+			@Override
+		public void onPause() {
+			// TODO Auto-generated method stub
+			super.onPause();
+			stopListening();
+		}
+
+		private final long LOCATION_UPDATE_TIME = 10*1000;
 		@Override
 		public void onDetach() {
-				LocationManager systemService = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-				systemService.removeUpdates(_inter_listener);
+				Log.d("LocationPageFragment", "LocationPageFragment - OnDetach");
+				stopListening();
 				super.onDetach();
 		}
 		
+		private void stopListening() {
+			LocationManager systemService = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+			systemService.removeUpdates(_inter_listener);
+		}
 		@Override
 		public void onAttach(Activity activity) {
 			super.onAttach(activity);
 			LocationManager systemService = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
 			String locationProvider = LocationManager.GPS_PROVIDER;
-			systemService.requestLocationUpdates(locationProvider,10, 0, _inter_listener);
+			systemService.requestLocationUpdates(locationProvider,LOCATION_UPDATE_TIME, 0, _inter_listener);
 		}
 
 		private IntervalLocationListener _inter_listener;

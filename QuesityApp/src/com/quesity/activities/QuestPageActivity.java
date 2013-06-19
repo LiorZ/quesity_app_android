@@ -67,6 +67,7 @@ ProgressableProcess{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d("QuestPageActivity", "OnCreate - QuestPageActivity");
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
 		_progress = new LoadingProgressFragment();
@@ -108,14 +109,18 @@ ProgressableProcess{
 		_transitionFragment.invokeFragment(getSupportFragmentManager());
 	}
 	
+	public void returnToMainPage() {
+    	Intent intent = new Intent(QuestPageActivity.this, QuestsListViewActivity.class);
+    	startActivity(intent);
+	}
+	
 	public void finishQuest(){
 		AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_quest_over), this, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
-		    	Intent intent = new Intent(QuestPageActivity.this, QuestsListViewActivity.class);
-		    	startActivity(intent);
+				returnToMainPage();
 			}
 		});
 		okOnlyDialog.show();

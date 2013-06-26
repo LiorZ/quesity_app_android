@@ -14,26 +14,23 @@ import android.view.Menu;
 import android.webkit.WebView;
 
 import com.quesity.R;
-import com.quesity.controllers.HintsMenuActivator;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
-import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
-import com.quesity.fragments.HintsFragment;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.LocationPageFragment;
 import com.quesity.fragments.MultipleChoiceFragment;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.SimpleDialogs;
+import com.quesity.fragments.StallFragment;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
-public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition,
-ProgressableProcess{
+public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition{
 
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
@@ -194,10 +191,15 @@ ProgressableProcess{
 	
 	private class FetchQuestPageTask extends FetchJSONTask<QuestPage> {
 
+		public FetchQuestPageTask(){
+			super();
+			setActivity(QuestPageActivity.this).
+			setProgressBarHandler(_progress, getString(R.string.lbl_loading_page), getString(R.string.lbl_loading));
+		}
 		
 		@Override
 		protected void onPostExecute(QuestPage result) {
-			stopProgressBar();
+			super.onPostExecute(result);
 			if ( result == null ) {
 				Log.w("QuestPageActivity", "result page is null");
 				SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer),QuestPageActivity.this);
@@ -209,9 +211,8 @@ ProgressableProcess{
 
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
 			Log.d(this.getClass().getName(),"preparing to load page ..");
-			startProgressBar(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading));
+			super.onPreExecute();
 		}
 
 		@Override
@@ -221,18 +222,5 @@ ProgressableProcess{
 		}
 		
 	}
-
-	@Override
-	public void startProgressBar(String title, String message) {
-		_progress.setTitle(title);
-		_progress.setMessage(message);
-		_progress.show(getSupportFragmentManager(), "loading_dialog");
-	}
-
-	@Override
-	public void stopProgressBar() {
-		_progress.dismiss();
-	}
-
 
 }

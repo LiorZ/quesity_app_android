@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/splash_screen"
+    android:orientation="vertical" 
+    android:id="@+id/splash_main_layout">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="50sp"
+        android:textColor="@color/quesity_title_color"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_marginTop="90sp"
+        android:scaleType="fitStart"
+		android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_temp" />
+
+    <LinearLayout
+        android:id="@+id/login_box"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical" 
+        android:visibility="invisible">
+
+        <EditText
+            android:id="@+id/txt_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_username_splash"
+            android:inputType="textEmailAddress" >
+
+            <requestFocus />
+        </EditText>
+		<EditText
+            android:id="@+id/txt_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/hint_password_splash"
+            android:inputType="textPassword" >
+
+        </EditText>
+
+		<Button
+		    android:id="@+id/btn_login"
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:text="@string/lbl_login_button" 
+		    android:layout_gravity="center_horizontal"/>
+        
+    </LinearLayout>
+
+</RelativeLayout>

@@ -27,4 +27,13 @@
 	<string name="lbl_no_hints">There are no available hints for this page</string>
 	<string name="title_hints_dialog">Available hints for this page</string>
 	<string name="lbl_time_delay">You are being delayed for %1$02d:%2$02d minutes</string>
+	<string name="lbl_login_button">Login</string>
+	<string name="hint_username_splash">Username</string>
+	<string name="hint_password_splash">Password</string>
+	<string name="error_connecting">An error occured while connecting to server.\nPlease check your connection and try again</string>
+	<string name="error_general_authentication">An error occured while authenticating your request</string>
+	<string name="error_username_password">Wrong username or password. Please try again</string>
+	<string name="lbl_logging_in">Logging you in the game .. </string>
+	<string name="lbl_logging_in_title">Login</string>
+	
 </resources>

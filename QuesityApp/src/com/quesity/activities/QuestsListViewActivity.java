@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
@@ -21,14 +20,13 @@ import android.widget.TextView;
 import com.quesity.R;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.network.FetchJSONTask;
 import com.quesity.util.Constants;
 
-public class QuestsListViewActivity extends FragmentActivity implements ProgressableProcess {
+public class QuestsListViewActivity extends FragmentActivity {
 	private QuestAdapter array_adapter;
 	private LoadingProgressFragment _progress_dialog;
 	private ListFragment _quest_list_fragment;
@@ -47,7 +45,7 @@ public class QuestsListViewActivity extends FragmentActivity implements Progress
 		ListView listView = _quest_list_fragment.getListView();
 		listView.setOnItemClickListener(new StartQuestClickListener());
 		
-		new FetchNewQuestsTask().execute(Constants.SERVER_URL + "/all_quests");
+		new FetchNewQuestsTask().setActivity(this).execute(Constants.SERVER_URL + "/all_quests");
 	}
 
     private class StartQuestClickListener implements OnItemClickListener {
@@ -65,9 +63,14 @@ public class QuestsListViewActivity extends FragmentActivity implements Progress
     }
 	private class FetchNewQuestsTask extends FetchJSONTask<Quest[]>{
 
+		public FetchNewQuestsTask(){
+			super();
+			setActivity(QuestsListViewActivity.this).
+			setProgressBarHandler(_progress_dialog, getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
+		}
 		@Override
 		protected void onPostExecute(Quest[] result) {
-			stopProgressBar();
+			super.onPostExecute(result);
 			if ( result == null ) {
 				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
 				errorDialog.show();
@@ -79,7 +82,7 @@ public class QuestsListViewActivity extends FragmentActivity implements Progress
 
 		@Override
 		protected void onPreExecute() {
-			startProgressBar(getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
+			super.onPreExecute();
 		}
 
 		@Override
@@ -128,16 +131,5 @@ public class QuestsListViewActivity extends FragmentActivity implements Progress
 		
 	}
 
-	@Override
-	public void startProgressBar(String title, String message) {
-		_progress_dialog.setTitle(title);
-		_progress_dialog.setMessage(message);
-		_progress_dialog.show(getSupportFragmentManager(), "quests_loader");
-	}
-
-	@Override
-	public void stopProgressBar() {
-		_progress_dialog.dismiss();
-	}
 
 }

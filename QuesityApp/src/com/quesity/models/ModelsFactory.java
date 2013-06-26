@@ -38,6 +38,14 @@ public class ModelsFactory {
 		return pages;
 	}
 	
+	public Account AccountFromJSON(String json) {
+		return _gson.fromJson(json, Account.class);
+	}
+	
+	public String JSONFromAccount(Account a) {
+		return _gson.toJson(a);
+	}
+	
 	public String QuestPageToJSON(QuestPage page) {
 		String s = _gson.toJson(page);
 		return s;

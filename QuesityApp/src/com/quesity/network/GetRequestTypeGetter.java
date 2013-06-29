@@ -16,7 +16,7 @@ public class GetRequestTypeGetter implements NetworkParameterGetter {
 
 	@Override
 	public HttpClient getHTTPClient() {
-		return new DefaultHttpClient();
+		return HTTPClients.getDefaultHttpClient();
 	}
 	
 }

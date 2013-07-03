@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
+        <TextView
+        android:id="@+id/choose_quest_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/create_event_title"
+        android:layout_marginBottom="20sp"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <EditText
+        android:id="@+id/event_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_event_title"
+        android:layout_below="@id/choose_quest_title"
+        android:layout_marginBottom="20sp"
+        android:ems="10" >
+    </EditText>
 
-    <fragment
-        android:id="@+id/quest_list_fragment"
+    <ListView android:id="@+id/quest_list_fragment"
         android:name="com.quesity.fragments.QuestsListFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="300sp"
+        android:layout_below="@+id/event_title"
+         >
+        
+    </ListView>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btn_create_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/btn_create_event" 
+        android:layout_below="@id/quest_list_fragment"/>
+
+</RelativeLayout>

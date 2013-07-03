@@ -14,4 +14,5 @@ public final class Constants {
 	public static final String PREFS_NAME = "com.quesity.preferences";
 	public static final String PREF_USERNAME = "username";
 	public static final String PREF_PASSWORD = "password";
+	public static final String SELECTED_LIST_ITEM = "com.quesity.selected_list_item";
 }

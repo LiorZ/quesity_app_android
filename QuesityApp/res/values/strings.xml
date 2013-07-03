@@ -42,4 +42,8 @@
 	<string name="lbl_start_btn">Start</string>
 	<string name="lbl_invite_btn">Invite</string>
 	<string name="lbl_logout">Logout</string>
+	<string name="create_event_title">Create event</string>
+	<string name="hint_event_title">Event Title</string>
+	<string name="err_choose_quest">Please choose a quest for the event.</string>
+	<string name="err_fill_event_title">Please name your event!</string>
 </resources>

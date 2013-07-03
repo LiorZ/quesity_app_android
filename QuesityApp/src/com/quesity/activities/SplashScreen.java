@@ -1,7 +1,16 @@
 package com.quesity.activities;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.quesity.R;
 import com.quesity.fragments.LoadingProgressFragment;
@@ -10,21 +19,6 @@ import com.quesity.models.ModelsFactory;
 import com.quesity.network.FetchJSONTaskPost;
 import com.quesity.network.JSONPostRequestTypeGetter;
 import com.quesity.util.Constants;
-
-import android.app.Activity;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.util.Log;
-import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.EditText;
 
 public class SplashScreen extends FragmentActivity {
 

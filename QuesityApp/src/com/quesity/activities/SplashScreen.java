@@ -61,7 +61,7 @@ public class SplashScreen extends FragmentActivity {
 		account.setPassword(password);
 		account.setUsername(username);
 		
-		final String json = ModelsFactory.getInstance().JSONFromAccount(account);
+		final String json = ModelsFactory.getInstance().getJSONFromAccount(account);
 		new LoginTask(json).execute(Constants.SERVER_URL + "/login");
 	}
 	
@@ -186,13 +186,15 @@ public class SplashScreen extends FragmentActivity {
 		protected void onPostExecute(Account result) {
 			super.onPostExecute(result);
 			if ( result != null ) {
+				SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
+				prefs.edit().putString(Constants.PREF_USER_ACCOUNT_JSON,ModelsFactory.getInstance().getJSONFromAccount(result)).commit();
 				loadMainScreen();	
 			}
 		}
 		
 		@Override
 		protected Account resolveModel(String json) {
-			final Account account = ModelsFactory.getInstance().AccountFromJSON(json);
+			final Account account = ModelsFactory.getInstance().getAccountFromJSON(json);
 			return account;
 		}
 		

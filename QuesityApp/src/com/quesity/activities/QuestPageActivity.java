@@ -56,7 +56,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-		String page_json = ModelsFactory.getInstance().QuestPageToJSON(_currentPage);
+		String page_json = ModelsFactory.getInstance().getJSONFromQuestPage(_currentPage);
 		Log.d("QuestPageActivity", "Saving instance state with json");
 		outState.putString(QUEST_PAGE_KEY,page_json);
 	}

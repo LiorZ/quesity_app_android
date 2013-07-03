@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -26,9 +27,13 @@ import com.quesity.R;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.SimpleDialogs;
+import com.quesity.models.Account;
+import com.quesity.models.Event;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.network.FetchJSONTask;
+import com.quesity.network.FetchJSONTaskPost;
+import com.quesity.network.JSONPostRequestTypeGetter;
 import com.quesity.util.Constants;
 
 public class QuestsListViewActivity extends FragmentActivity {
@@ -64,18 +69,48 @@ public class QuestsListViewActivity extends FragmentActivity {
 				if ( !isReadyToCreate() ) {
 					return;
 				}
-				int selectedIndex = array_adapter.getSelectedIndex();
-				Quest selectedItem = (Quest) _quest_list_view.getItemAtPosition(selectedIndex);
-				if (selectedItem != null) {
-					Log.d("Dta",selectedItem.getTitle());
-				}else {
-					Log.d("Dta","Selected item is null!!");
-				}
+				createEvent();
 			}
 			
 		});
 		
 		new FetchNewQuestsTask().setActivity(this).execute(Constants.SERVER_URL + "/all_quests");
+	}
+	private Account getAccountFromStorage() {
+		SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
+		String account_json = prefs.getString(Constants.PREF_USER_ACCOUNT_JSON, null);
+		if ( account_json == null ) {
+			//TODO: Handle this case..
+			return null;
+		}
+		Account account = ModelsFactory.getInstance().getAccountFromJSON(account_json);
+		return account;
+	}
+	
+	//TODO: Err handling here... 
+	private void createEvent() {
+		int selectedIndex = array_adapter.getSelectedIndex();
+		Quest selectedItem = (Quest) _quest_list_view.getItemAtPosition(selectedIndex);
+		if ( selectedItem == null ) {
+			return;
+		}
+		Event new_event = new Event();
+		Account account = getAccountFromStorage();
+		if ( account == null ) {
+			return;
+		}
+		new_event.setCreator(account);
+		new_event.setQuest(selectedItem);
+		
+		new_event.setTitle(_event_title.getText().toString());
+		String json = ModelsFactory.getInstance().getJSONFromEvent(new_event);
+		new NewEventTask(json).execute(Constants.SERVER_URL + "/app/events/new_event");
+	}
+	
+	private void goToLobby(Event e) {
+		Intent i = new Intent(this,EventLobby.class);
+		i.putExtra(Constants.EVENT_JSON, ModelsFactory.getInstance().getJSONFromEvent(e));
+		startActivity(i);
 	}
 	
 	private boolean isReadyToCreate(){
@@ -220,5 +255,27 @@ public class QuestsListViewActivity extends FragmentActivity {
 		
 	}
 
+	private class NewEventTask extends FetchJSONTaskPost<Event> {
+
+		public NewEventTask(String json) {
+			super(new JSONPostRequestTypeGetter(json));
+			setActivity(QuestsListViewActivity.this).setProgressBarHandler(_progress_dialog, "New Event", "Creating new Event .. ");
+		}
+		
+		@Override
+		protected void onPostExecute(Event result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			
+		}
+
+		@Override
+		protected Event resolveModel(String json) {
+			Log.d("FUCK","Trying to resolve " + json);
+			Event event = ModelsFactory.getInstance().getEventFromJSON(json);
+			return event;
+		}
+		
+	}
 
 }

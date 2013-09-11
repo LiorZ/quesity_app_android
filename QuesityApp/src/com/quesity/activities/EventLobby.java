@@ -1,11 +1,11 @@
 package com.quesity.activities;
 
 import com.quesity.R;
+import com.quesity.general.Constants;
 import com.quesity.models.Account;
 import com.quesity.models.Event;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
-import com.quesity.util.Constants;
 
 import android.app.Activity;
 import android.content.Context;

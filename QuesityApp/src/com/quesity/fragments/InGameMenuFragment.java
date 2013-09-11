@@ -15,7 +15,7 @@ import android.widget.Button;
 
 import com.quesity.R;
 import com.quesity.activities.QuestPageActivity;
-import com.quesity.util.Constants;
+import com.quesity.general.Constants;
 
 public class InGameMenuFragment extends Fragment {
 	

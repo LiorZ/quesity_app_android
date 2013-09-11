@@ -1,4 +1,4 @@
-package com.quesity.util;
+package com.quesity.general;
 
 public final class Constants {
 	public static final String SERVER_URL = "http://10.0.0.6:8000";
@@ -10,11 +10,11 @@ public final class Constants {
 	
 	public static final int HINTS_MENU_ITEM_INDEX = 0;
 	public static final int EXIT_MENU_ITEM_INDEX = 2;
-	
 	public static final String PREFS_NAME = "com.quesity.preferences";
 	public static final String PREF_USERNAME = "username";
 	public static final String PREF_PASSWORD = "password";
 	public static final String SELECTED_LIST_ITEM = "com.quesity.selected_list_item";
 	public static final String PREF_USER_ACCOUNT_JSON = "com.quesity.user_account_json";
 	public static final String EVENT_JSON = "com.quesity.event_json";
+	
 }

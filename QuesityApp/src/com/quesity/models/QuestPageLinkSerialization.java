@@ -15,10 +15,10 @@ import com.google.gson.JsonSerializer;
 
 public class QuestPageLinkSerialization implements
 		JsonDeserializer<QuestPageLink> , JsonSerializer<QuestPageLink>{
-	private Map<String,Class> mapper;
+	private Map<String,Class<? extends QuestPageLink>> mapper;
 	private Gson gson;
 	public QuestPageLinkSerialization() {
-		mapper = new HashMap<String, Class>();
+		mapper = new HashMap<String, Class<? extends QuestPageLink>>();
 		mapper.put("location", QuestPageLocationLink.class);
 		mapper.put("answer", QuestPageQuestionLink.class);
 		gson = new Gson();

@@ -14,11 +14,12 @@ import android.widget.EditText;
 
 import com.quesity.R;
 import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.general.Config;
+import com.quesity.general.Constants;
 import com.quesity.models.Account;
 import com.quesity.models.ModelsFactory;
 import com.quesity.network.FetchJSONTaskPost;
 import com.quesity.network.JSONPostRequestTypeGetter;
-import com.quesity.util.Constants;
 
 public class SplashScreen extends FragmentActivity {
 
@@ -62,7 +63,7 @@ public class SplashScreen extends FragmentActivity {
 		account.setUsername(username);
 		
 		final String json = ModelsFactory.getInstance().getJSONFromAccount(account);
-		new LoginTask(json).execute(Constants.SERVER_URL + "/login");
+		new LoginTask(json).execute(Config.SERVER_URL + "/login");
 	}
 	
 	private void saveCredentials(String username, String password) {

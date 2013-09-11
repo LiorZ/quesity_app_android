@@ -2,9 +2,10 @@ package com.quesity.activities;
 
 import com.quesity.R;
 import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.general.Config;
+import com.quesity.general.Constants;
 import com.quesity.network.AbstractFetchJSONTask;
 import com.quesity.network.FetchJSONTask;
-import com.quesity.util.Constants;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,7 +34,7 @@ public class QuesityMain extends FragmentActivity {
     public void performLogout(View view) {
     	SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
     	prefs.edit().putString(Constants.PREF_USERNAME, null).putString(Constants.PREF_PASSWORD, null).commit();
-    	new LogoutAction().execute(Constants.SERVER_URL+"/logoff");
+    	new LogoutAction().execute(Config.SERVER_URL+"/logoff");
     }
     
     private class LogoutAction extends FetchJSONTask<String>{

@@ -25,11 +25,12 @@ import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.WebViewFragment;
+import com.quesity.general.Config;
+import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.network.FetchJSONTask;
-import com.quesity.util.Constants;
 
 public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition{
 
@@ -89,7 +90,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}else {
 			Log.d("QuesityPageActivity","Got a null page from the saved instance");
 			Log.d("QuestPageActivity","Current page is null, downloading the first page");
-			String url = Constants.SERVER_URL + "/app/"+_quest_id+"/first_page";
+			String url = Config.SERVER_URL + "/app/"+_quest_id+"/first_page";
 			new FetchQuestPageTask().execute(url);
 		}
 	}
@@ -169,7 +170,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	}
 	@Override
 	public void loadNextPage(String page_id) {
-		String address = Constants.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
+		String address = Config.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
 		Log.d(this.getClass().getName(),address);
 		new FetchQuestPageTask().execute(address);
 	}

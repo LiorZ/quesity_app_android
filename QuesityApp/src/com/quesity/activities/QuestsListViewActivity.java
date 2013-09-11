@@ -27,6 +27,8 @@ import com.quesity.R;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.SimpleDialogs;
+import com.quesity.general.Config;
+import com.quesity.general.Constants;
 import com.quesity.models.Account;
 import com.quesity.models.Event;
 import com.quesity.models.ModelsFactory;
@@ -34,7 +36,6 @@ import com.quesity.models.Quest;
 import com.quesity.network.FetchJSONTask;
 import com.quesity.network.FetchJSONTaskPost;
 import com.quesity.network.JSONPostRequestTypeGetter;
-import com.quesity.util.Constants;
 
 public class QuestsListViewActivity extends FragmentActivity {
 	@Override
@@ -64,7 +65,7 @@ public class QuestsListViewActivity extends FragmentActivity {
 		_start_quest_listener = new StartQuestClickListener();
 		_btn_start_quest.setOnClickListener(_start_quest_listener);
 		
-		new FetchNewQuestsTask().setActivity(this).execute(Constants.SERVER_URL + "/all_quests");
+		new FetchNewQuestsTask().setActivity(this).execute(Config.SERVER_URL + "/all_quests");
 	}
 	
 	private Account getAccountFromStorage() {

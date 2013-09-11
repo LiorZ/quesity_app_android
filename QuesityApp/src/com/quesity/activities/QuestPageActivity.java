@@ -24,6 +24,7 @@ import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
+import com.quesity.fragments.WebViewFragment;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
@@ -35,7 +36,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
 	private LoadingProgressFragment _progress;
-	private WebView _webView;
+	private WebViewFragment _webViewFragment;
 	private String _quest_id;
 	private OnDemandFragment _transitionFragment;
 	private MultipleChoiceFragment _multiple_choice_fragment;
@@ -68,9 +69,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
 		_progress = new LoadingProgressFragment();
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
-		_webView = (WebView) fragment.getView().findViewById(R.id.webView);
-		_webView.getSettings().setJavaScriptEnabled(false);
+		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		
 		constructFragmentMapper();
 		
@@ -186,7 +185,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		setTitle(page.getPageName());
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
-		_webView.loadDataWithBaseURL(null, page.getPageContent(), "text/html", "utf-8", null);
+		_webViewFragment.loadHTMLData(page.getPageContent());
 	}
 	
 	private class FetchQuestPageTask extends FetchJSONTask<QuestPage> {

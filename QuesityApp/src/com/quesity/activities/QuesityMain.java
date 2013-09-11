@@ -25,7 +25,7 @@ public class QuesityMain extends FragmentActivity {
         setContentView(R.layout.activity_quesity_main);
     }
     
-    public void showQuests(View view){
+    public void findQuestAction(View view){
     	Intent intent = new Intent(this, QuestsListViewActivity.class);
     	startActivity(intent);
     }

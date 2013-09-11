@@ -38,26 +38,26 @@
         android:layout_alignBottom="@+id/title_main_screen" />
 
             <Button
-                android:id="@+id/btn_create_event"
+                android:id="@+id/btn_find_quest"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_create_event" 
+                android:text="@string/lbl_find_quest" 
                 android:layout_below="@+id/title_main_screen"
-                android:onClick="showQuests"
+                android:onClick="findQuestAction"
                 android:layout_marginBottom="20sp"/>
             <Button
-                android:id="@+id/btn_join_event"
+                android:id="@+id/btn_my_quests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_join_event" 
-                android:layout_below="@+id/btn_create_event"
+                android:text="@string/lbl_my_quests" 
+                android:layout_below="@+id/btn_find_quest"
                 android:layout_marginBottom="20sp"/>
            	<Button
                 android:id="@+id/btn_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/btn_logout" 
-                android:layout_below="@+id/btn_join_event"
+                android:text="@string/lbl_logout" 
+                android:layout_below="@+id/btn_my_quests"
                 android:onClick="performLogout"/>
             
             

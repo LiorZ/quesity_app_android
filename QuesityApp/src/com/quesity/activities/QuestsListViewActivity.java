@@ -46,8 +46,8 @@ public class QuestsListViewActivity extends FragmentActivity {
 	private QuestAdapter array_adapter;
 	private LoadingProgressFragment _progress_dialog;
 	private ListView _quest_list_view;
-	private Button _create_event;
-	private EditText _event_title;
+	private Button _btn_start_quest; 
+	private StartQuestClickListener _start_quest_listener;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
 	@Override
@@ -58,24 +58,15 @@ public class QuestsListViewActivity extends FragmentActivity {
 		setTitle(R.string.app_name);
 		_progress_dialog = new LoadingProgressFragment();
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
+		_btn_start_quest = (Button) findViewById(R.id.btn_start_quest);
 		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
-		_create_event = (Button) findViewById(R.id.btn_create_event);
-		_event_title = (EditText) findViewById(R.id.event_title);
-		_create_event.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if ( !isReadyToCreate() ) {
-					return;
-				}
-				createEvent();
-			}
-			
-		});
+		_start_quest_listener = new StartQuestClickListener();
+		_btn_start_quest.setOnClickListener(_start_quest_listener);
 		
 		new FetchNewQuestsTask().setActivity(this).execute(Constants.SERVER_URL + "/all_quests");
 	}
+	
 	private Account getAccountFromStorage() {
 		SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
 		String account_json = prefs.getString(Constants.PREF_USER_ACCOUNT_JSON, null);
@@ -87,61 +78,20 @@ public class QuestsListViewActivity extends FragmentActivity {
 		return account;
 	}
 	
-	//TODO: Err handling here... 
-	private void createEvent() {
-		int selectedIndex = array_adapter.getSelectedIndex();
-		Quest selectedItem = (Quest) _quest_list_view.getItemAtPosition(selectedIndex);
-		if ( selectedItem == null ) {
-			return;
-		}
-		Event new_event = new Event();
-		Account account = getAccountFromStorage();
-		if ( account == null ) {
-			return;
-		}
-		new_event.setCreator(account);
-		new_event.setQuest(selectedItem);
-		
-		new_event.setTitle(_event_title.getText().toString());
-		String json = ModelsFactory.getInstance().getJSONFromEvent(new_event);
-		new NewEventTask(json).execute(Constants.SERVER_URL + "/app/events/new_event");
-	}
-	
-	private void goToLobby(Event e) {
-		Intent i = new Intent(this,EventLobby.class);
-		i.putExtra(Constants.EVENT_JSON, ModelsFactory.getInstance().getJSONFromEvent(e));
-		startActivity(i);
-	}
-	
-	private boolean isReadyToCreate(){
-		if ( array_adapter == null ){
-			return false;
-		}
-		
-		int selectedIndex = array_adapter.getSelectedIndex();
-		if ( selectedIndex < 0 ) {
-			AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.err_choose_quest), this);
-			errorDialog.show();
-			return false;
-		}
-		
-		String event_title_string = _event_title.getText().toString();
-		if ( event_title_string == null || event_title_string.isEmpty() ) {
-			AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.err_fill_event_title),this);
-			errorDialog.show();
-			return false;
-		}
-		return true;
-	}
 
-    private class StartQuestClickListener implements OnItemClickListener {
+    private class StartQuestClickListener implements View.OnClickListener {
 
 		@Override
-		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-				long arg3) {
-	    	Intent intent = new Intent(QuestsListViewActivity.this, QuestPageActivity.class);
-	    	Object obj = arg0.getItemAtPosition(arg2);
-	    	intent.putExtra(QUEST_ID, ((Quest)obj).getId());
+		public void onClick(View v) {
+			int selected_index = array_adapter.getSelectedIndex();
+			if ( selected_index < 0 )
+				return;
+			Object item = array_adapter.getItem(selected_index);
+			if ( item == null || !(item instanceof Quest)){
+				return;
+			}
+			Intent intent = new Intent(QuestsListViewActivity.this, QuestPageActivity.class);
+	    	intent.putExtra(QUEST_ID, ((Quest)item).getId());
 	    	startActivity(intent);
 		}
 
@@ -255,27 +205,5 @@ public class QuestsListViewActivity extends FragmentActivity {
 		
 	}
 
-	private class NewEventTask extends FetchJSONTaskPost<Event> {
-
-		public NewEventTask(String json) {
-			super(new JSONPostRequestTypeGetter(json));
-			setActivity(QuestsListViewActivity.this).setProgressBarHandler(_progress_dialog, "New Event", "Creating new Event .. ");
-		}
-		
-		@Override
-		protected void onPostExecute(Event result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			
-		}
-
-		@Override
-		protected Event resolveModel(String json) {
-			Log.d("FUCK","Trying to resolve " + json);
-			Event event = ModelsFactory.getInstance().getEventFromJSON(json);
-			return event;
-		}
-		
-	}
 
 }

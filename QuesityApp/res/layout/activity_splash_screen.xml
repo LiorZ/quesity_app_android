@@ -37,42 +37,14 @@
 		android:layout_centerHorizontal="true"
         android:src="@drawable/logo_temp" />
 
-    <LinearLayout
-        android:id="@+id/login_box"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/logo"
-        android:layout_centerHorizontal="true"
-        android:orientation="vertical" 
-        android:visibility="invisible">
-
-        <EditText
-            android:id="@+id/txt_username"
-            android:layout_width="match_parent"
+    <com.facebook.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_username_splash"
-            android:inputType="textEmailAddress" >
-
-            <requestFocus />
-        </EditText>
-		<EditText
-            android:id="@+id/txt_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/hint_password_splash"
-            android:inputType="textPassword" >
-
-        </EditText>
-
-		<Button
-		    android:id="@+id/btn_login"
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:text="@string/lbl_login_button" 
-		    android:layout_gravity="center_horizontal"/>
-        
-    </LinearLayout>
+            android:layout_gravity="center_horizontal"
+            android:layout_alignBottom="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp" />
+    
 
 </RelativeLayout>

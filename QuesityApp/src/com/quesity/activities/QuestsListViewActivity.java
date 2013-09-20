@@ -199,7 +199,6 @@ public class QuestsListViewActivity extends FragmentActivity {
 		private void highlightItem(View view) {
 			if (view == null)
 				return;
-			
 			view.setBackgroundColor(QuestsListViewActivity.this.getResources().getColor(R.color.list_selected_color));
 		}
 

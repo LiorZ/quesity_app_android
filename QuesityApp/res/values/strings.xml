@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<string name='applicationId'>211673598896341</string>
+    
     <string name="app_name">Quesity</string>
     <string name="app_version">v0.2</string>
     <string name="dummy_title">Quesity</string>

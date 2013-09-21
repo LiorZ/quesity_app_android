@@ -37,7 +37,7 @@
 		android:layout_centerHorizontal="true"
         android:src="@drawable/logo_temp" />
 
-    <com.facebook.widget.LoginButton
+	 <com.facebook.widget.LoginButton
             android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -45,6 +45,5 @@
             android:layout_alignBottom="@+id/logo"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="30dp" />
-    
 
 </RelativeLayout>

@@ -1,18 +1,12 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
-import com.quesity.controllers.ProgressableProcess;
-
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ProgressBar;
+
+import com.quesity.controllers.ProgressableProcess;
 
 public class LoadingProgressFragment extends DialogFragment implements ProgressableProcess{
 

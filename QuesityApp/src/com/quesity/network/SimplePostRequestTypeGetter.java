@@ -14,7 +14,7 @@ public class SimplePostRequestTypeGetter implements NetworkParameterGetter {
 	
 	public SimplePostRequestTypeGetter(){
 		_postObj = new HttpPost();
-		_client = new DefaultHttpClient();
+		_client = HTTPClients.getDefaultHttpClient();
 	}
 	@Override
 	public HttpRequestBase getRequestObj() {

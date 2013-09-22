@@ -14,6 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import com.quesity.controllers.ProgressableProcess;
+
 public class LoadingProgressFragment extends DialogFragment implements ProgressableProcess{
 
 	private String _message;

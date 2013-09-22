@@ -1,6 +1,6 @@
 package com.quesity.controllers;
 
-import com.quesity.util.Constants;
+import com.quesity.general.Constants;
 
 import android.content.DialogInterface;
 

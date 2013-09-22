@@ -38,16 +38,28 @@ public class ModelsFactory {
 		return pages;
 	}
 	
-	public Account AccountFromJSON(String json) {
+	public Account getAccountFromJSON(String json) {
 		return _gson.fromJson(json, Account.class);
 	}
 	
-	public String JSONFromAccount(Account a) {
+	public String getJSONFromAccount(Account a) {
 		return _gson.toJson(a);
 	}
 	
-	public String QuestPageToJSON(QuestPage page) {
+	public String getJSONFromQuestPage(QuestPage page) {
 		String s = _gson.toJson(page);
 		return s;
 	}
+	
+	public String getJSONFromEvent(Event e){ 
+		String s = _gson.toJson(e);
+		return s;
+	}
+	
+	public Event getEventFromJSON(String s) {
+		Event fromJson = _gson.fromJson(s, Event.class);
+		return fromJson;
+		
+	}
+	
 }

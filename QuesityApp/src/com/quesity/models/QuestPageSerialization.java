@@ -17,11 +17,11 @@ import com.google.gson.JsonSerializer;
 public class QuestPageSerialization implements
 JsonDeserializer<QuestPage> , JsonSerializer<QuestPage>{
 
-	private Map<String,Class> mapper;
+	private Map<String,Class<? extends QuestPage>> mapper;
 	private Gson _gson;
 
 	public QuestPageSerialization() {
-		mapper = new HashMap<String, Class>();
+		mapper = new HashMap<String, Class<? extends QuestPage>>();
 		mapper.put("stall",QuestPageStall.class);
 		_gson = new GsonBuilder().registerTypeAdapter(QuestPageLink.class,new QuestPageLinkSerialization()).create();
 	}
@@ -38,7 +38,7 @@ JsonDeserializer<QuestPage> , JsonSerializer<QuestPage>{
 		JsonObject json_object = elem.getAsJsonObject();
 		JsonElement jsonElement = json_object.get("page_type");
 		String page_type = jsonElement.getAsString();
-		Class cl = mapper.get(page_type);
+		Class<? extends QuestPage> cl = mapper.get(page_type);
 		QuestPage page;
 		if ( cl == null ) {
 			page = _gson.fromJson(elem, QuestPage.class);

@@ -2,8 +2,11 @@
 <resources>
 
     <string name="app_name">Quesity</string>
+    <string name="app_version">v0.2</string>
     <string name="dummy_title">Quesity</string>
-    <string name="btn_show_quests">Show Quests</string>
+    <string name="lbl_start_quest">Start Quest</string>
+    <string name="lbl_find_quest">Find Quest</string>
+    <string name="lbl_my_quests">My Quests</string>
     <string name="lbl_loading_quests">Loading Quests</string>
     <string name="ingame_btn_menu">Menu</string>
     <string name="ingame_btn_continue">Continue</string>
@@ -36,4 +39,11 @@
 	<string name="lbl_logging_in">Logging you in the game .. </string>
 	<string name="lbl_logging_in_title">Login</string>
 	
+	<string name="lbl_start_btn">Start</string>
+	<string name="lbl_invite_btn">Invite</string>
+	<string name="lbl_logout">Logout</string>
+	<string name="title_find_quest">Find a Quest</string>
+	<string name="hint_event_title">Event Title</string>
+	<string name="err_choose_quest">Please choose a quest for the event.</string>
+	<string name="err_fill_event_title">Please name your event!</string>
 </resources>

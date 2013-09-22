@@ -5,12 +5,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.util.Log;
 
 import com.quesity.network.AbstractFetchJSONTask.NetworkParameterGetter;
 import com.quesity.network.exceptions.Status401Exception;
@@ -23,6 +26,10 @@ public class NetworkInterface {
 	        HttpRequestBase request = getter.getRequestObj();
 	        request.setURI(new URI(uri));
 	        HttpResponse response = client.execute(request);
+	        Header[] headers = response.getHeaders("Set-Cookie");
+	        if ( headers != null && headers.length == 1) {
+	        	Log.d("N",headers[0].getElements().toString());
+	        }
 	        checkStatusLine(response);
 	        InputStream ips  = response.getEntity().getContent();
 	        BufferedReader buf = new BufferedReader(new InputStreamReader(ips,"UTF-8"));

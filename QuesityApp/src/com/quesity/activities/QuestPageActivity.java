@@ -6,12 +6,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
-import android.webkit.WebView;
 
 import com.quesity.R;
 import com.quesity.controllers.ProgressableProcess;
@@ -24,18 +24,20 @@ import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
+import com.quesity.fragments.WebViewFragment;
+import com.quesity.general.Config;
+import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.network.FetchJSONTask;
-import com.quesity.util.Constants;
 
-public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition{
+public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
 	private LoadingProgressFragment _progress;
-	private WebView _webView;
+	private WebViewFragment _webViewFragment;
 	private String _quest_id;
 	private OnDemandFragment _transitionFragment;
 	private MultipleChoiceFragment _multiple_choice_fragment;
@@ -56,7 +58,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-		String page_json = ModelsFactory.getInstance().QuestPageToJSON(_currentPage);
+		String page_json = ModelsFactory.getInstance().getJSONFromQuestPage(_currentPage);
 		Log.d("QuestPageActivity", "Saving instance state with json");
 		outState.putString(QUEST_PAGE_KEY,page_json);
 	}
@@ -68,9 +70,8 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
 		_progress = new LoadingProgressFragment();
-		Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
-		_webView = (WebView) fragment.getView().findViewById(R.id.webView);
-		_webView.getSettings().setJavaScriptEnabled(false);
+		_progress.setCancelable(false);
+		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		
 		constructFragmentMapper();
 		
@@ -90,7 +91,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}else {
 			Log.d("QuesityPageActivity","Got a null page from the saved instance");
 			Log.d("QuestPageActivity","Current page is null, downloading the first page");
-			String url = Constants.SERVER_URL + "/app/"+_quest_id+"/first_page";
+			String url = Config.SERVER_URL + "/app/"+_quest_id+"/first_page";
 			new FetchQuestPageTask().execute(url);
 		}
 	}
@@ -157,7 +158,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	private void addLocationPageFragment() {
 		_location_page_fragment = new LocationPageFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.add(_location_page_fragment, "locatio fragment");
+		transaction.add(_location_page_fragment, "location fragment");
 		transaction.commit();
 	}
 	
@@ -170,7 +171,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	}
 	@Override
 	public void loadNextPage(String page_id) {
-		String address = Constants.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
+		String address = Config.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
 		Log.d(this.getClass().getName(),address);
 		new FetchQuestPageTask().execute(address);
 	}
@@ -186,7 +187,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		setTitle(page.getPageName());
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
-		_webView.loadDataWithBaseURL(null, page.getPageContent(), "text/html", "utf-8", null);
+		_webViewFragment.loadHTMLData(page.getPageContent());
 	}
 	
 	private class FetchQuestPageTask extends FetchJSONTask<QuestPage> {
@@ -221,6 +222,18 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 			return questPage;
 		}
 		
+	}
+
+	@Override
+	public void startProgressBar(String title, String msg) {
+	    _progress.setTitle(title);
+	    _progress.setMessage(msg);
+	    
+		_progress.show(getSupportFragmentManager(), "ProgressBar");
+	}
+	@Override
+	public void stopProgressBar() {
+		_progress.dismiss();
 	}
 
 }

@@ -3,4 +3,6 @@
     <color name="black_overlay">#66000000</color>
 	<color name="splash_screen">#CCFFFF</color>
 	<color name="quesity_title_color">#000066</color>
+	<color name="list_selected_color">#FFE79E</color>
+	
 </resources>

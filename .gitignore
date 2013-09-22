@@ -18,3 +18,8 @@ local.properties
 # Eclipse project files
 .classpath
 .project
+.settings/
+
+#Config file (frequently changes)
+QuesityApp/src/com/quesity/general/Config.java
+org.eclipse.jdt.core.prefs

@@ -23,6 +23,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	private NetworkParameterGetter _getter;
 	private Activity _activity;
 	private LoadingProgressFragment _progress;
+	protected boolean _login_success;
 	public AbstractFetchJSONTask(NetworkParameterGetter getter) {
 		_getter = getter;
 		_activity = null;

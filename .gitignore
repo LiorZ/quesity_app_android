@@ -22,3 +22,4 @@ local.properties
 
 #Config file (frequently changes)
 QuesityApp/src/com/quesity/general/Config.java
+org.eclipse.jdt.core.prefs

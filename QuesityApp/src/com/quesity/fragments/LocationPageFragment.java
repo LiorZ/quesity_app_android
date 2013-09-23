@@ -108,6 +108,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 					
 				}
 			}
+			Log.d("LocationFragment", location.toString());
 			AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_wrong_location), getActivity());
 			errorDialog.show();
 			stopProgressBar();

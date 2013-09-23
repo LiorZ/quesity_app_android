@@ -1,7 +1,6 @@
 package com.quesity.models;
 
 public class Account extends JSONModel {
-	
 	private String email;
 	private String password;
 	private Name name;

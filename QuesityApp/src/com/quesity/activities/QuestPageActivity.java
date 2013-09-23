@@ -6,12 +6,12 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
-import android.webkit.WebView;
 
 import com.quesity.R;
 import com.quesity.controllers.ProgressableProcess;
@@ -32,7 +32,7 @@ import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.network.FetchJSONTask;
 
-public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition{
+public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
@@ -70,6 +70,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		setContentView(R.layout.activity_quest_page);
 		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
 		_progress = new LoadingProgressFragment();
+		_progress.setCancelable(false);
 		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		
 		constructFragmentMapper();
@@ -157,7 +158,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	private void addLocationPageFragment() {
 		_location_page_fragment = new LocationPageFragment();
 		FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-		transaction.add(_location_page_fragment, "locatio fragment");
+		transaction.add(_location_page_fragment, "location fragment");
 		transaction.commit();
 	}
 	
@@ -221,6 +222,18 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 			return questPage;
 		}
 		
+	}
+
+	@Override
+	public void startProgressBar(String title, String msg) {
+	    _progress.setTitle(title);
+	    _progress.setMessage(msg);
+	    
+		_progress.show(getSupportFragmentManager(), "progress");
+	}
+	@Override
+	public void stopProgressBar() {
+		_progress.dismiss();
 	}
 
 }

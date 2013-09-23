@@ -1,19 +1,17 @@
 package com.quesity.activities;
 
-import com.quesity.R;
-import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.general.Config;
-import com.quesity.general.Constants;
-import com.quesity.network.AbstractFetchJSONTask;
-import com.quesity.network.FetchJSONTask;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+
+import com.quesity.R;
+import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.general.Config;
+import com.quesity.general.Constants;
+import com.quesity.network.FetchJSONTask;
 
 public class QuesityMain extends FragmentActivity {
 

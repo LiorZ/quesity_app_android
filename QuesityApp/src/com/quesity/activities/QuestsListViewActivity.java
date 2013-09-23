@@ -38,12 +38,6 @@ import com.quesity.network.FetchJSONTaskPost;
 import com.quesity.network.JSONPostRequestTypeGetter;
 
 public class QuestsListViewActivity extends FragmentActivity {
-	@Override
-	protected void onPause() {
-		Log.d("Activity","Activity Paused");
-		super.onPause();
-	}
-
 	private QuestAdapter array_adapter;
 	private LoadingProgressFragment _progress_dialog;
 	private ListView _quest_list_view;

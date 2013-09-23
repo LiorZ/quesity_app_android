@@ -229,7 +229,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	    _progress.setTitle(title);
 	    _progress.setMessage(msg);
 	    
-		_progress.show(getSupportFragmentManager(), "ProgressBar");
+		_progress.show(getSupportFragmentManager(), "progress");
 	}
 	@Override
 	public void stopProgressBar() {

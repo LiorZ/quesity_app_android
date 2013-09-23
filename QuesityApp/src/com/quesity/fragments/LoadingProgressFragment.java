@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,13 @@ import android.widget.ProgressBar;
 import com.quesity.controllers.ProgressableProcess;
 
 public class LoadingProgressFragment extends DialogFragment implements ProgressableProcess{
+	
+	
+	private static final String TAG = "progress_bar_tag";
+	@Override
+	public void show(FragmentManager manager, String tag) {
+		super.show(manager, TAG);
+	}
 
 	private String _message;
 	private String _title;
@@ -46,7 +54,7 @@ public class LoadingProgressFragment extends DialogFragment implements Progressa
 		this.setMessage(message);
 		FragmentActivity a = getActivity();
 		if ( a!= null )
-			this.show(a.getSupportFragmentManager(), "background_progress");
+			this.show(a.getSupportFragmentManager(),TAG);
 	}
 
 	@Override

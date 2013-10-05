@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -26,8 +27,28 @@
         android:layout_marginBottom="20sp"
         android:layout_centerHorizontal="true"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-            
-           <TextView 
+
+    <com.facebook.widget.ProfilePictureView 
+        android:id="@+id/quesity_main_profile_pic"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_below="@id/title_main_screen"
+        facebook:preset_size="small"
+        android:layout_marginLeft="20sp"/>
+    <TextView 
+    	android:id="@+id/txt_welcome_msg"
+    	android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="15sp"
+        android:textColor="@color/quesity_title_color"
+        android:layout_toRightOf="@id/quesity_main_profile_pic"
+        android:layout_alignBottom="@id/quesity_main_profile_pic"
+        android:layout_marginLeft="10sp"
+    />
+    
+    <TextView 
         android:id= "@+id/version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,9 +63,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lbl_find_quest" 
-                android:layout_below="@+id/title_main_screen"
+                android:layout_below="@+id/quesity_main_profile_pic"
                 android:onClick="findQuestAction"
-                android:layout_marginBottom="20sp"/>
+                android:layout_marginBottom="20sp"
+                android:layout_marginTop="20sp"/>
             <Button
                 android:id="@+id/btn_my_quests"
                 android:layout_width="match_parent"
@@ -52,14 +74,14 @@
                 android:text="@string/lbl_my_quests" 
                 android:layout_below="@+id/btn_find_quest"
                 android:layout_marginBottom="20sp"/>
-           	<Button
-                android:id="@+id/btn_logout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lbl_logout" 
-                android:layout_below="@+id/btn_my_quests"
-                android:onClick="performLogout"/>
-            
-            
+    		<fragment
+		        android:id="@+id/main_login_fragment"
+		        android:name="com.quesity.fragments.LoginFragment"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_gravity="center_horizontal"
+		        android:layout_alignParentBottom="true"
+		        android:layout_centerHorizontal="true"
+		        />
 
 </RelativeLayout>

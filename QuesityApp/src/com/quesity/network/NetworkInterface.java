@@ -18,8 +18,21 @@ import android.util.Log;
 import com.quesity.network.AbstractFetchJSONTask.NetworkParameterGetter;
 import com.quesity.network.exceptions.Status401Exception;
 
-public class NetworkInterface {
-	public static String getStringContent(String uri, NetworkParameterGetter getter) throws Exception {
+public class NetworkInterface implements INetworkInterface{
+	
+	private static INetworkInterface _instance;
+	
+	private NetworkInterface(){
+		
+	}
+	public static INetworkInterface getInstance(){
+		if ( _instance == null ){
+			_instance = new NetworkInterface();
+		}
+		return _instance;
+	}
+	@Override
+	public String getStringContent(String uri, NetworkParameterGetter getter) throws Exception {
 
 	    try {
 	        HttpClient client = getter.getHTTPClient();

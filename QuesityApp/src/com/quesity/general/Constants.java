@@ -16,5 +16,8 @@ public final class Constants {
 	public static final String SELECTED_LIST_ITEM = "com.quesity.selected_list_item";
 	public static final String PREF_USER_ACCOUNT_JSON = "com.quesity.user_account_json";
 	public static final String EVENT_JSON = "com.quesity.event_json";
+	public static final String FACEBOOK_ID_PREF_KEY = "com.quesity.facebook.id";
+	public static final String FACEBOOK_FULL_NAME_KEY = "com.quesity.facebook.fullname";
+
 	
 }

@@ -23,43 +23,53 @@ public class ModelsFactory {
 		return _instance;
 	}
 	
+	@Deprecated
 	public Quest[] getQuestsFromJson(String json) {
 		Quest[] quests = _gson.fromJson(json, Quest[].class);
 		return quests;
 	}
 	
+	public <M> M getModelFromJSON(String json, Class<M> c){
+		M object = _gson.fromJson(json, c);
+		return object;
+	}
+	
+	public <M> String getJSONFromModel(M model){
+		return _gson.toJson(model);
+	}
+	
+	@Deprecated
 	public QuestPage getQuestPageFromJson(String json) {
 		QuestPage page = _gson.fromJson(json, QuestPage.class);
 		return page;
 	}
 	
+	@Deprecated
 	public QuestPage[] getQuestPageArrayFromJson(String json) {
 		QuestPage[] pages = _gson.fromJson(json, QuestPage[].class);
 		return pages;
 	}
 	
+	@Deprecated
 	public Account getAccountFromJSON(String json) {
 		return _gson.fromJson(json, Account.class);
 	}
 	
+	@Deprecated
 	public String getJSONFromAccount(Account a) {
 		return _gson.toJson(a);
 	}
 	
+	@Deprecated
 	public String getJSONFromQuestPage(QuestPage page) {
 		String s = _gson.toJson(page);
 		return s;
 	}
 	
+	@Deprecated
 	public String getJSONFromEvent(Event e){ 
 		String s = _gson.toJson(e);
 		return s;
-	}
-	
-	public Event getEventFromJSON(String s) {
-		Event fromJson = _gson.fromJson(s, Event.class);
-		return fromJson;
-		
 	}
 	
 }

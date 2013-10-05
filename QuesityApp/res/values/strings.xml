@@ -8,6 +8,7 @@
     <string name="lbl_start_quest">Start Quest</string>
     <string name="lbl_find_quest">Find Quest</string>
     <string name="lbl_my_quests">My Quests</string>
+    <string name="error_title">Error</string>
     <string name="lbl_loading_quests">Loading Quests</string>
     <string name="ingame_btn_menu">Menu</string>
     <string name="ingame_btn_continue">Continue</string>
@@ -35,11 +36,13 @@
 	<string name="hint_username_splash">Username</string>
 	<string name="hint_password_splash">Password</string>
 	<string name="error_connecting">An error occured while connecting to server.\nPlease check your connection and try again</string>
+	<string name="error_display_facebook_data">Error occured while connecting with your facebook account. Please try to login again</string>
 	<string name="error_general_authentication">An error occured while authenticating your request</string>
 	<string name="error_username_password">Wrong username or password. Please try again</string>
 	<string name="lbl_logging_in">Logging you in the game .. </string>
 	<string name="lbl_logging_in_title">Login</string>
-	
+	<string name="lbl_welcome">Welcome, </string>
+	<string name="lbl_exit_notice">Press the back button once again to close the application</string>
 	<string name="lbl_start_btn">Start</string>
 	<string name="lbl_invite_btn">Invite</string>
 	<string name="lbl_logout">Logout</string>

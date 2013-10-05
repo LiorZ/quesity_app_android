@@ -1,21 +1,25 @@
 package com.quesity.network;
 
-import org.apache.http.HttpRequest;
+import javax.inject.Inject;
+
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.HttpHostConnectException;
 
-import com.quesity.R;
-import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.SimpleDialogs;
-import com.quesity.network.exceptions.Status401Exception;
-
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+
+import com.quesity.R;
+import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.fragments.SimpleDialogs;
+import com.quesity.models.ModelsFactory;
+import com.quesity.network.dagger_modules.NetworkInterfaceModule;
+import com.quesity.network.exceptions.Status401Exception;
+
+import dagger.ObjectGraph;
 
 public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, Integer, Result> {
 	
@@ -24,9 +28,23 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	private Activity _activity;
 	private LoadingProgressFragment _progress;
 	protected boolean _login_success;
-	public AbstractFetchJSONTask(NetworkParameterGetter getter) {
+	@Inject INetworkInterface _network_interface;
+	
+	private IPostExecuteCallback<Result> _post_execute;
+
+	private Class<Result> _class_to_resolve;
+	public AbstractFetchJSONTask(NetworkParameterGetter getter, Class<Result> c) {
 		_getter = getter;
 		_activity = null;
+		_class_to_resolve = c;
+		
+		ObjectGraph graph = ObjectGraph.create(new NetworkInterfaceModule());
+		_network_interface = graph.get(INetworkInterface.class);
+	}
+	
+	public AbstractFetchJSONTask<Result> setPostExecuteCallback(IPostExecuteCallback<Result> post) {
+		_post_execute = post;
+		return this;
 	}
 	
 	@Override
@@ -34,13 +52,14 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		super.onPostExecute(result);
 		if ( _progress != null )
 			_progress.dismiss();
+		if ( _post_execute != null)
+			_post_execute.apply(result);
 	}
 
 	@Override
 	protected void onPreExecute() {
 		super.onPreExecute();
 		if ( _progress != null && _activity != null && _activity instanceof FragmentActivity) {
-			FragmentActivity activity;
 			_progress.show(((FragmentActivity)_activity).getSupportFragmentManager(), "tag");
 		}else {
 			Log.d("AbstractFetch","Progress is null!!!!");
@@ -59,9 +78,16 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		return this;
 	}
 		
-	protected abstract Result resolveModel(String json);
+	protected Result resolveModel(String json) {
+		return ModelsFactory.getInstance().getModelFromJSON(json,_class_to_resolve);
+		
+	}
 	
 	protected void handle401() {
+		if ( _post_execute != null && _post_execute.get401ErrorMessage() != -1) {
+			showErrorMessage(_post_execute.get401ErrorMessage());
+			return;
+		}
 		showErrorMessage(R.string.error_general_authentication);
 	}
 	
@@ -85,7 +111,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	protected Result doInBackground(String... params) {
 		String url = params[0];
 		try {
-			String json = NetworkInterface.getStringContent(url,_getter);
+			String json = NetworkInterface.getInstance().getStringContent(url,_getter);
 			Result model = resolveModel(json);
 			return model;
 		} catch (HttpHostConnectException e) {

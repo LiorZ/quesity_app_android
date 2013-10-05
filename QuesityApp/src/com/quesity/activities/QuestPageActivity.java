@@ -30,7 +30,8 @@ import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
-import com.quesity.network.FetchJSONTask;
+import com.quesity.network.FetchJSONTaskGet;
+import com.quesity.network.IPostExecuteCallback;
 
 public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
@@ -58,7 +59,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		
-		String page_json = ModelsFactory.getInstance().getJSONFromQuestPage(_currentPage);
+		String page_json = ModelsFactory.getInstance().getJSONFromModel(_currentPage);
 		Log.d("QuestPageActivity", "Saving instance state with json");
 		outState.putString(QUEST_PAGE_KEY,page_json);
 	}
@@ -86,13 +87,15 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}
 		Log.d("QuestPageActivity", "Restoring instance state");
 		if ( page != null ) {
-			_currentPage = ModelsFactory.getInstance().getQuestPageFromJson(page);
+			_currentPage = ModelsFactory.getInstance().getModelFromJSON(page, QuestPage.class);
 			refreshQuestPage(_currentPage);
 		}else {
 			Log.d("QuesityPageActivity","Got a null page from the saved instance");
 			Log.d("QuestPageActivity","Current page is null, downloading the first page");
 			String url = Config.SERVER_URL + "/app/"+_quest_id+"/first_page";
-			new FetchQuestPageTask().execute(url);
+			
+			new FetchJSONTaskGet<QuestPage>(QuestPage.class).setPostExecuteCallback(new QuestPagePostExecuteCallback())
+			.execute(url);
 		}
 	}
 	
@@ -169,11 +172,12 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	public QuestPage getCurrentQuestPage() {
 		return _currentPage;
 	}
+	
 	@Override
 	public void loadNextPage(String page_id) {
 		String address = Config.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
 		Log.d(this.getClass().getName(),address);
-		new FetchQuestPageTask().execute(address);
+		new FetchJSONTaskGet<QuestPage>(QuestPage.class).setPostExecuteCallback(new QuestPagePostExecuteCallback()).execute(address);
 	}
 	
 	@Override
@@ -190,17 +194,10 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		_webViewFragment.loadHTMLData(page.getPageContent());
 	}
 	
-	private class FetchQuestPageTask extends FetchJSONTask<QuestPage> {
+	private class QuestPagePostExecuteCallback implements IPostExecuteCallback<QuestPage>{
 
-		public FetchQuestPageTask(){
-			super();
-			setActivity(QuestPageActivity.this).
-			setProgressBarHandler(_progress, getString(R.string.lbl_loading_page), getString(R.string.lbl_loading));
-		}
-		
 		@Override
-		protected void onPostExecute(QuestPage result) {
-			super.onPostExecute(result);
+		public void apply(QuestPage result) {
 			if ( result == null ) {
 				Log.w("QuestPageActivity", "result page is null");
 				SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer),QuestPageActivity.this);
@@ -211,15 +208,8 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}
 
 		@Override
-		protected void onPreExecute() {
-			Log.d(this.getClass().getName(),"preparing to load page ..");
-			super.onPreExecute();
-		}
-
-		@Override
-		protected QuestPage resolveModel(String json) {
-			QuestPage questPage = ModelsFactory.getInstance().getQuestPageFromJson(json);
-			return questPage;
+		public int get401ErrorMessage() {
+			return -1;
 		}
 		
 	}

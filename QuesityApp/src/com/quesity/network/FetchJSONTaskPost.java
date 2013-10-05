@@ -1,12 +1,12 @@
 package com.quesity.network;
 
-public abstract class FetchJSONTaskPost<Result> extends AbstractFetchJSONTask<Result> {
+public class FetchJSONTaskPost<Result> extends AbstractFetchJSONTask<Result> {
 
-	public FetchJSONTaskPost(NetworkParameterGetter getter){
-		super(getter);
+	public FetchJSONTaskPost(NetworkParameterGetter getter, Class<Result> c){
+		super(getter,c);
 	}
-	public FetchJSONTaskPost() {
-		super(new SimplePostRequestTypeGetter());
+	public FetchJSONTaskPost(Class<Result> c) {
+		super(new SimplePostRequestTypeGetter(),c);
 	}
 
 

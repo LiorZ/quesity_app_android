@@ -4,38 +4,24 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.quesity.R;
-import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Config;
-import com.quesity.general.Constants;
-import com.quesity.models.Account;
-import com.quesity.models.Event;
-import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
-import com.quesity.network.FetchJSONTask;
-import com.quesity.network.FetchJSONTaskPost;
-import com.quesity.network.JSONPostRequestTypeGetter;
+import com.quesity.network.FetchJSONTaskGet;
+import com.quesity.network.IPostExecuteCallback;
 
 public class QuestsListViewActivity extends FragmentActivity {
 	private QuestAdapter array_adapter;
@@ -58,19 +44,8 @@ public class QuestsListViewActivity extends FragmentActivity {
 		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
 		_start_quest_listener = new StartQuestClickListener();
 		_btn_start_quest.setOnClickListener(_start_quest_listener);
-		
-		new FetchNewQuestsTask().setActivity(this).execute(Config.SERVER_URL + "/all_quests");
-	}
-	
-	private Account getAccountFromStorage() {
-		SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,MODE_PRIVATE);
-		String account_json = prefs.getString(Constants.PREF_USER_ACCOUNT_JSON, null);
-		if ( account_json == null ) {
-			//TODO: Handle this case..
-			return null;
-		}
-		Account account = ModelsFactory.getInstance().getAccountFromJSON(account_json);
-		return account;
+		new FetchJSONTaskGet<Quest[]>(Quest[].class).setActivity(this).setPostExecuteCallback(new NewQuestsPostExecuteCallback()).
+		execute(Config.SERVER_URL + "/all_quests");
 	}
 	
 
@@ -91,16 +66,11 @@ public class QuestsListViewActivity extends FragmentActivity {
 		}
 
     }
-	private class FetchNewQuestsTask extends FetchJSONTask<Quest[]>{
+    
+    private class NewQuestsPostExecuteCallback implements IPostExecuteCallback<Quest[]> {
 
-		public FetchNewQuestsTask(){
-			super();
-			setActivity(QuestsListViewActivity.this).
-			setProgressBarHandler(_progress_dialog, getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
-		}
 		@Override
-		protected void onPostExecute(Quest[] result) {
-			super.onPostExecute(result);
+		public void apply(Quest[] result) {
 			if ( result == null ) {
 				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
 				errorDialog.show();
@@ -112,17 +82,37 @@ public class QuestsListViewActivity extends FragmentActivity {
 		}
 
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
+		public int get401ErrorMessage() {
+			return -1;
 		}
-
-		@Override
-		protected Quest[] resolveModel(String json) {
-			Quest[] quests = ModelsFactory.getInstance().getQuestsFromJson(json);
-			return quests;
-		}
-		
-	}
+    	
+    }
+//	private class FetchNewQuestsTask extends FetchJSONTaskGet<Quest[]>{
+//
+//		public FetchNewQuestsTask(){
+//			super();
+//			setActivity(QuestsListViewActivity.this).
+//			setProgressBarHandler(_progress_dialog, getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
+//		}
+//		@Override
+//		protected void onPostExecute(Quest[] result) {
+//			super.onPostExecute(result);
+//			if ( result == null ) {
+//				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
+//				errorDialog.show();
+//				return;
+//			}
+//			array_adapter = new QuestAdapter(result,QuestsListViewActivity.this);
+//			_quest_list_view.setAdapter(array_adapter);
+//			_quest_list_view.setOnItemClickListener(array_adapter);
+//		}
+//
+//		@Override
+//		protected Quest[] resolveModel(String json) {
+//			Quest[] quests = ModelsFactory.getInstance().getModelFromJSON(json, Quest[].class);
+//			return quests;
+//		}
+//	}
 	
 	private class QuestAdapter extends BaseAdapter implements AdapterView.OnItemClickListener{
 

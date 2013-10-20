@@ -1,9 +1,8 @@
 package com.quesity.activities;
 
-import java.lang.reflect.Type;
+import javax.inject.Inject;
 
 import android.app.Activity;
-import android.app.UiModeManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,30 +15,35 @@ import android.widget.TextView;
 
 import com.facebook.widget.ProfilePictureView;
 import com.quesity.R;
+import com.quesity.application.IQuesityApplication;
+import com.quesity.application.QuesityApplication;
 import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.LoginFragment;
+import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.network.FetchJSONTaskGet;
+import com.quesity.network.INetworkInteraction;
+import com.quesity.network.INetworkInterface;
 import com.quesity.network.IPostExecuteCallback;
 import com.quesity.network.dagger_modules.NetworkInterfaceModule;
 
 import dagger.ObjectGraph;
 
-public class QuesityMain extends FragmentActivity {
+public class QuesityMain extends BaseActivity  implements INetworkInteraction{
 
-	private LoadingProgressFragment _progress;
 	private ProfilePictureView _profilePicture;
 	private TextView _welcomeText;
+	private LoadingProgressFragment _progress;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        _progress = new LoadingProgressFragment();
         setTitle(R.string.app_name);
         setContentView(R.layout.activity_quesity_main);
         _profilePicture = (ProfilePictureView) findViewById(R.id.quesity_main_profile_pic);
         _welcomeText = (TextView) findViewById(R.id.txt_welcome_msg);
+        _progress = new LoadingProgressFragment();
         loadUserDetails();
     }
     
@@ -66,7 +70,7 @@ public class QuesityMain extends FragmentActivity {
     	}
     	
     	_profilePicture.setProfileId(user_id);
-    	_welcomeText.setText(getString(R.string.lbl_welcome) + user_fullname);
+    	_welcomeText.setText(getString(R.string.lbl_welcome) + " "+ user_fullname);
     }
     
     public void returnToSplashScreen() {
@@ -82,14 +86,16 @@ public class QuesityMain extends FragmentActivity {
     public void performLogout(View view) {
     	SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
     	prefs.edit().putString(Constants.PREF_USERNAME, null).putString(Constants.PREF_PASSWORD, null).commit();
-    	ObjectGraph graph = ObjectGraph.create(new NetworkInterfaceModule());
-    	new FetchJSONTaskGet<String>(String.class).setPostExecuteCallback(new LogoutAction()).execute(Config.SERVER_URL+"/logoff");
+    	new FetchJSONTaskGet<String>(String.class).
+    	setActivity(this).setNetworkInteractionHandler(this).
+    	execute(Config.SERVER_URL+"/logoff");
     }
     
-    private class LogoutAction implements IPostExecuteCallback<String> {
+    private class LogoutAction implements IPostExecuteCallback {
 
 		@Override
-		public void apply(String result) {
+		public void apply(Object r) {
+			String result = (String) r;
 			Log.d("LogoutAction", "Result: " + result);
 	    	Intent intent = new Intent(QuesityMain.this,SplashScreen.class);
 	    	startActivity(intent);
@@ -102,5 +108,15 @@ public class QuesityMain extends FragmentActivity {
 		}
     	
     }
+
+	@Override
+	public IPostExecuteCallback getPostExecuteCallback() {
+		return new LogoutAction();
+	}
+
+	@Override
+	public ProgressBarHandler getProgressBarHandler() {
+		return new ProgressBarHandler(getString(R.string.lbl_logging_out),getString(R.string.lbl_logout),_progress);
+	}
     
 }

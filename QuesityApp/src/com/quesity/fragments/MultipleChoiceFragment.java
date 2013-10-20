@@ -28,6 +28,7 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 public class MultipleChoiceFragment extends DialogFragment implements OnDemandFragment{
+	public static final String DIALOG_VIEW_TAG = "com.quesity.fragments.MultipleChoiceDialog";
 
 	@Override
 	public void invokeFragment(FragmentManager manager) {
@@ -51,9 +52,7 @@ public class MultipleChoiceFragment extends DialogFragment implements OnDemandFr
 	    return builder.create();
 	}
 
-	
 	private class AnswersListAdapter extends BaseAdapter implements ListAdapter {
-
 		
 		private QuestPage _page;
 		private QuestPageLink[] _links;
@@ -73,6 +72,7 @@ public class MultipleChoiceFragment extends DialogFragment implements OnDemandFr
 		public long getItemId(int position) {
 			return position;
 		}
+		
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			   if(convertView == null) {
@@ -84,6 +84,7 @@ public class MultipleChoiceFragment extends DialogFragment implements OnDemandFr
 			   
 			   TextView text_view = (TextView) convertView.findViewById(android.R.id.text1);
 			   text_view.setText(((QuestPageQuestionLink)link).getAnswerTxt());
+			   convertView.setTag(DIALOG_VIEW_TAG);
 			   return convertView;
 		}
 		

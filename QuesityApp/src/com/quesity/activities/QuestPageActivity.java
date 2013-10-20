@@ -2,18 +2,20 @@ package com.quesity.activities;
 
 import java.util.HashMap;
 
+import javax.inject.Inject;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 
 import com.quesity.R;
+import com.quesity.application.IQuesityApplication;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
@@ -22,6 +24,7 @@ import com.quesity.fragments.LocationPageFragment;
 import com.quesity.fragments.MultipleChoiceFragment;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.OpenQuestionFragment;
+import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.WebViewFragment;
@@ -30,11 +33,18 @@ import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
-import com.quesity.network.FetchJSONTaskGet;
+import com.quesity.network.IFetchJSONTask;
+import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
 
-public class QuestPageActivity extends FragmentActivity implements TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
+public class QuestPageActivity extends BaseActivity implements INetworkInteraction,TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
+	
+	@Override
+	public ProgressBarHandler getProgressBarHandler() {
+		
+		return new ProgressBarHandler(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading), _progress);
+	}
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
 	private LoadingProgressFragment _progress;
@@ -49,7 +59,8 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	private HashMap<String,Fragment> _fragmentMapper;
 	private QuestPage _currentPage;
 	
-	
+	@Inject IFetchJSONTask<QuestPage> _fetchQuestPageTask; 
+	private IPostExecuteCallback _post_callback;
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -73,9 +84,10 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		_progress = new LoadingProgressFragment();
 		_progress.setCancelable(false);
 		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
-		
+		_post_callback = new QuestPagePostExecuteCallback();
+		((IQuesityApplication)getApplication()).inject(this);
 		constructFragmentMapper();
-		
+		_fetchQuestPageTask.setActivity(this).setNetworkInteractionHandler(this);
 		restoreSavedPage(savedInstanceState);
 	}
 	
@@ -92,10 +104,10 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}else {
 			Log.d("QuesityPageActivity","Got a null page from the saved instance");
 			Log.d("QuestPageActivity","Current page is null, downloading the first page");
-			String url = Config.SERVER_URL + "/app/"+_quest_id+"/first_page";
+			String url = Config.SERVER_URL + String.format(getString(R.string.request_first_page),_quest_id);
 			
-			new FetchJSONTaskGet<QuestPage>(QuestPage.class).setPostExecuteCallback(new QuestPagePostExecuteCallback())
-			.execute(url);
+			
+			_fetchQuestPageTask.execute(url);
 		}
 	}
 	
@@ -107,7 +119,10 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 			return;
 		}
 		
-		_transitionFragment.invokeFragment(getSupportFragmentManager());
+		FragmentManager supportFragmentManager = getSupportFragmentManager();
+		supportFragmentManager.executePendingTransactions();
+		_transitionFragment.invokeFragment(supportFragmentManager);
+
 	}
 	
 	public void returnToMainPage() {
@@ -175,9 +190,13 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	
 	@Override
 	public void loadNextPage(String page_id) {
-		String address = Config.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
+		String address =  Config.SERVER_URL + String.format(getString(R.string.request_page),_quest_id,page_id);
 		Log.d(this.getClass().getName(),address);
-		new FetchJSONTaskGet<QuestPage>(QuestPage.class).setPostExecuteCallback(new QuestPagePostExecuteCallback()).execute(address);
+		_fetchQuestPageTask.execute(address);
+	}
+	
+	public OnDemandFragment getCurrentFragment() {
+		return _transitionFragment;
 	}
 	
 	@Override
@@ -191,13 +210,15 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		setTitle(page.getPageName());
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
+		getSupportFragmentManager().executePendingTransactions();
 		_webViewFragment.loadHTMLData(page.getPageContent());
 	}
 	
-	private class QuestPagePostExecuteCallback implements IPostExecuteCallback<QuestPage>{
+	private class QuestPagePostExecuteCallback implements IPostExecuteCallback{
 
 		@Override
-		public void apply(QuestPage result) {
+		public void apply(Object r) {
+			QuestPage result = (QuestPage)r;
 			if ( result == null ) {
 				Log.w("QuestPageActivity", "result page is null");
 				SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer),QuestPageActivity.this);
@@ -224,6 +245,10 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	@Override
 	public void stopProgressBar() {
 		_progress.dismiss();
+	}
+	@Override
+	public IPostExecuteCallback getPostExecuteCallback() {
+		return _post_callback;
 	}
 
 }

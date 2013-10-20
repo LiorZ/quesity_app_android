@@ -22,10 +22,16 @@ public class QuestPage extends JSONModel {
 	public QuestPageHint[] getHints() {
 		return hints;
 	}
+	
+	public String getQuestId() {
+		return quest_id;
+	}
+	
 	private String page_content;
 	private String page_name;
 	private int page_number;
 	private String page_type;
 	private QuestPageLink[] links;
 	private QuestPageHint[] hints;
+	private String quest_id;
 }

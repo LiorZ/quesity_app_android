@@ -17,18 +17,20 @@ import android.widget.TextView;
 
 import com.quesity.R;
 import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Config;
 import com.quesity.models.Quest;
 import com.quesity.network.FetchJSONTaskGet;
+import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
 
-public class QuestsListViewActivity extends FragmentActivity {
+public class QuestsListViewActivity extends BaseActivity implements INetworkInteraction{
 	private QuestAdapter array_adapter;
-	private LoadingProgressFragment _progress_dialog;
 	private ListView _quest_list_view;
 	private Button _btn_start_quest; 
 	private StartQuestClickListener _start_quest_listener;
+	private LoadingProgressFragment _progress;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
 	@Override
@@ -37,14 +39,14 @@ public class QuestsListViewActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		setTitle(R.string.app_name);
-		_progress_dialog = new LoadingProgressFragment();
+		_progress = new LoadingProgressFragment();
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
 		_btn_start_quest = (Button) findViewById(R.id.btn_start_quest);
 		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
 		_start_quest_listener = new StartQuestClickListener();
 		_btn_start_quest.setOnClickListener(_start_quest_listener);
-		new FetchJSONTaskGet<Quest[]>(Quest[].class).setActivity(this).setPostExecuteCallback(new NewQuestsPostExecuteCallback()).
+		new FetchJSONTaskGet<Quest[]>(Quest[].class).setNetworkInteractionHandler(this).setActivity(this).
 		execute(Config.SERVER_URL + "/all_quests");
 	}
 	
@@ -67,10 +69,11 @@ public class QuestsListViewActivity extends FragmentActivity {
 
     }
     
-    private class NewQuestsPostExecuteCallback implements IPostExecuteCallback<Quest[]> {
+    private class NewQuestsPostExecuteCallback implements IPostExecuteCallback {
 
 		@Override
-		public void apply(Quest[] result) {
+		public void apply(Object r) {
+			Quest[] result = (Quest[])r;
 			if ( result == null ) {
 				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
 				errorDialog.show();
@@ -187,6 +190,16 @@ public class QuestsListViewActivity extends FragmentActivity {
 		}
 
 		
+	}
+
+	@Override
+	public IPostExecuteCallback getPostExecuteCallback() {
+		return new NewQuestsPostExecuteCallback();
+	}
+
+	@Override
+	public ProgressBarHandler getProgressBarHandler() {
+		return new ProgressBarHandler (getString(R.string.lbl_loading_quests), getString(R.string.lbl_loading),_progress);
 	}
 
 

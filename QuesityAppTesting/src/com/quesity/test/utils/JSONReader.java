@@ -1,4 +1,4 @@
-package com.quesity.models.tests.utils;
+package com.quesity.test.utils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

@@ -13,7 +13,9 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.quesity.R;
+import com.quesity.activities.BaseActivity;
 import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.ModelsFactory;
 import com.quesity.network.dagger_modules.NetworkInterfaceModule;
@@ -21,29 +23,31 @@ import com.quesity.network.exceptions.Status401Exception;
 
 import dagger.ObjectGraph;
 
-public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, Integer, Result> {
+public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, Integer, Result> implements IFetchJSONTask<Result>{
 	
 
 	private NetworkParameterGetter _getter;
 	private Activity _activity;
 	private LoadingProgressFragment _progress;
 	protected boolean _login_success;
-	@Inject INetworkInterface _network_interface;
+	private INetworkInterface _network_interface;
 	
-	private IPostExecuteCallback<Result> _post_execute;
+	private IPostExecuteCallback _post_execute;
 
 	private Class<Result> _class_to_resolve;
 	public AbstractFetchJSONTask(NetworkParameterGetter getter, Class<Result> c) {
 		_getter = getter;
 		_activity = null;
 		_class_to_resolve = c;
-		
-		ObjectGraph graph = ObjectGraph.create(new NetworkInterfaceModule());
-		_network_interface = graph.get(INetworkInterface.class);
 	}
 	
-	public AbstractFetchJSONTask<Result> setPostExecuteCallback(IPostExecuteCallback<Result> post) {
+	public AbstractFetchJSONTask<Result> setPostExecuteCallback(IPostExecuteCallback post) {
 		_post_execute = post;
+		return this;
+	}
+	
+	public AbstractFetchJSONTask<Result> setNetworkInterface(INetworkInterface i) {
+		_network_interface = i;
 		return this;
 	}
 	
@@ -70,6 +74,18 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		_progress = p;
 		_progress.setTitle(p_title);
 		_progress.setMessage(p_msg);
+		return this;
+	}
+	
+	public AbstractFetchJSONTask<Result> setNetworkInteractionHandler(INetworkInteraction n) {
+		_post_execute = n.getPostExecuteCallback();
+		_network_interface = n.getNetworkInterface();
+		ProgressBarHandler progressBarHandler = n.getProgressBarHandler();
+		if ( progressBarHandler != null ){
+			_progress = progressBarHandler.getProgressBarFragment();
+			_progress.setTitle(progressBarHandler.getTitle());
+			_progress.setMessage(progressBarHandler.getMessage());
+		}
 		return this;
 	}
 	
@@ -110,10 +126,10 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	@Override
 	protected Result doInBackground(String... params) {
 		String url = params[0];
+		Result model = null;
 		try {
-			String json = NetworkInterface.getInstance().getStringContent(url,_getter);
-			Result model = resolveModel(json);
-			return model;
+			String json = _network_interface.getStringContent(url,_getter);
+			model = resolveModel(json);
 		} catch (HttpHostConnectException e) {
 			e.printStackTrace();
 			handleConnectionException();
@@ -126,7 +142,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 			e_general.printStackTrace();
 		}
 		
-		return null;
+		return model;
 		
 	}
 	public interface NetworkParameterGetter {

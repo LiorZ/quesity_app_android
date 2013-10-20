@@ -1,4 +1,4 @@
-package com.quesity.models.tests;
+package com.quesity.test.models;
 
 import java.io.BufferedReader;
 import java.io.FileDescriptor;
@@ -18,7 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
-import com.quesity.models.tests.utils.JSONReader;
+import com.quesity.test.utils.JSONReader;
 
 import junit.framework.TestCase;
 

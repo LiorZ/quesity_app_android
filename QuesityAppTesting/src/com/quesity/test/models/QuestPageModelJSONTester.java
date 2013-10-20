@@ -1,4 +1,4 @@
-package com.quesity.models.tests;
+package com.quesity.test.models;
 
 import java.io.InputStream;
 
@@ -9,7 +9,7 @@ import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageLocationLink;
 import com.quesity.models.QuestPageQuestionLink;
 import com.quesity.models.QuestPageStall;
-import com.quesity.models.tests.utils.JSONReader;
+import com.quesity.test.utils.JSONReader;
 
 import android.test.InstrumentationTestCase;
 

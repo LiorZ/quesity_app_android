@@ -1,17 +1,15 @@
 package com.quesity.activities;
 
-import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.quesity.R;
 
-public class SplashScreen extends FragmentActivity {
+public class SplashScreen extends BaseActivity {
 	
 	private int _backButtonCount;
 	private Timer _t;
@@ -46,6 +44,6 @@ public class SplashScreen extends FragmentActivity {
 				}
 			}, 2000);
 	    } 
-	} 
-	
+	}
+
 }

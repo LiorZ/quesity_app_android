@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     	<string name='register_facebook_user'>/register/facebook</string>
-    
+    	<string name='request_first_page'>/app/%1$s/first_page</string>
+    	<string name='request_page'>/app/%1$s/page/%2$s</string>
 </resources>

@@ -20,13 +20,15 @@ import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
 import com.quesity.R;
+import com.quesity.activities.BaseActivity;
 import com.quesity.activities.QuesityMain;
 import com.quesity.activities.SplashScreen;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.Account;
-import com.quesity.models.ModelsFactory;
 import com.quesity.network.FetchJSONTaskPost;
+import com.quesity.network.INetworkInteraction;
+import com.quesity.network.INetworkInterface;
 import com.quesity.network.IPostExecuteCallback;
 import com.quesity.network.JSONPostRequestTypeGetter;
 
@@ -135,10 +137,27 @@ public class LoginFragment extends Fragment {
 							Log.d("LoginFragment", "Login Completed and was successful");
 							String json_to_send = "{\"facebook_id\":\""+user.getId()+"\", \"access_token\":\""+session.getAccessToken()+"\"}";
 							saveUserToPreferences(user);
+							final BaseActivity activity = (BaseActivity) getActivity();
 							
+							INetworkInteraction net_handler = new INetworkInteraction() {
+								
+								@Override
+								public ProgressBarHandler getProgressBarHandler() {
+									return new ProgressBarHandler(getString(R.string.lbl_logging_in), getString(R.string.lbl_loading), _progress);
+								}
+								
+								@Override
+								public IPostExecuteCallback getPostExecuteCallback() {
+									return new SendLoginToServerTask();
+								}
+								
+								@Override
+								public INetworkInterface getNetworkInterface() {
+									return activity.getNetworkInterface();
+								}
+							};
 							new FetchJSONTaskPost<Account>(new JSONPostRequestTypeGetter(json_to_send), Account.class).
-							setPostExecuteCallback(new SendLoginToServerTask()).execute(Config.SERVER_URL+getString(R.string.register_facebook_user));
-//							new SendLoginToServerTask(json_to_send).execute(Config.SERVER_URL+getString(R.string.register_facebook_user));
+							setActivity(activity).setNetworkInteractionHandler(net_handler).execute(Config.SERVER_URL+getString(R.string.register_facebook_user));
 						}
 					}
 	        	});
@@ -166,10 +185,11 @@ public class LoginFragment extends Fragment {
     	startActivity(intent);
 	}
 	
-	private class SendLoginToServerTask implements IPostExecuteCallback<Account> {
+	private class SendLoginToServerTask implements IPostExecuteCallback {
 
 		@Override
-		public void apply(Account result) {
+		public void apply(Object r) {
+			Account result = (Account) r;
 			if ( result != null ) {
 				loadMainScreen();	
 			}
@@ -183,7 +203,7 @@ public class LoginFragment extends Fragment {
 		
 	
 	}
-	
+
 //	private class SendLoginToServerTask extends FetchJSONTaskPost<Account>{
 //
 //

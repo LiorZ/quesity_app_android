@@ -6,13 +6,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
-import android.webkit.WebView;
 
 import com.quesity.R;
 import com.quesity.controllers.ProgressableProcess;
@@ -29,6 +27,7 @@ import com.quesity.fragments.WebViewFragment;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
+import com.quesity.models.Quest;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.network.FetchJSONTask;
@@ -48,7 +47,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	private StallFragment _stall_fragment;
 	private HashMap<String,Fragment> _fragmentMapper;
 	private QuestPage _currentPage;
-	
+	private QuestPage[] _all_pages;
 	
 	@Override
 	protected void onPause() {
@@ -92,7 +91,7 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}else {
 			Log.d("QuesityPageActivity","Got a null page from the saved instance");
 			Log.d("QuestPageActivity","Current page is null, downloading the first page");
-			String url = Config.SERVER_URL + "/app/"+_quest_id+"/first_page";
+			String url = Config.SERVER_URL + "/quest/"+_quest_id+"/pages/";
 			new FetchQuestPageTask().execute(url);
 		}
 	}
@@ -172,9 +171,11 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	}
 	@Override
 	public void loadNextPage(String page_id) {
-		String address = Config.SERVER_URL + "/app/"+_quest_id+"/page/"+page_id;
-		Log.d(this.getClass().getName(),address);
-		new FetchQuestPageTask().execute(address);
+		for (int i=0; i<_all_pages.length; ++i) {
+			if ( _all_pages[i].getId().equals(page_id) ) {
+				refreshQuestPage(_all_pages[i]);
+			}
+		}
 	}
 	
 	@Override
@@ -186,12 +187,13 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 	
 	public void refreshQuestPage(QuestPage page) {
 		setTitle(page.getPageName());
+		_currentPage = page;
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
 		_webViewFragment.loadHTMLData(page.getPageContent());
 	}
 	
-	private class FetchQuestPageTask extends FetchJSONTask<QuestPage> {
+	private class FetchQuestPageTask extends FetchJSONTask<QuestPage[]> {
 
 		public FetchQuestPageTask(){
 			super();
@@ -200,15 +202,19 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}
 		
 		@Override
-		protected void onPostExecute(QuestPage result) {
+		protected void onPostExecute(QuestPage[] result) {
 			super.onPostExecute(result);
 			if ( result == null ) {
 				Log.w("QuestPageActivity", "result page is null");
 				SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer),QuestPageActivity.this);
 				return;
 			}
-			_currentPage = result;
-			refreshQuestPage(result);
+			_all_pages = result;
+			for (int i = 0; i < result.length; i++) {
+				if ( result[i].getIsFirst() ){
+					refreshQuestPage(result[i]);
+				}
+			}
 		}
 
 		@Override
@@ -218,8 +224,8 @@ public class QuestPageActivity extends FragmentActivity implements TransitionFra
 		}
 
 		@Override
-		protected QuestPage resolveModel(String json) {
-			QuestPage questPage = ModelsFactory.getInstance().getQuestPageFromJson(json);
+		protected QuestPage[] resolveModel(String json) {
+			QuestPage[] questPage = ModelsFactory.getInstance().getQuestPageArrayFromJson(json);
 			return questPage;
 		}
 		

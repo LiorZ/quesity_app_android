@@ -22,6 +22,10 @@ public class QuestPage extends JSONModel {
 	public QuestPageHint[] getHints() {
 		return hints;
 	}
+	public boolean getIsFirst(){
+		return is_first;
+	}
+	private boolean is_first;
 	private String page_content;
 	private String page_name;
 	private int page_number;

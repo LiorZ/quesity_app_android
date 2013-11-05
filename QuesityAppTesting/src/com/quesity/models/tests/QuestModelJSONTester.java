@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
+import com.quesity.models.QuestPage;
 import com.quesity.models.tests.utils.JSONReader;
 
 import junit.framework.TestCase;
@@ -28,14 +29,18 @@ public class QuestModelJSONTester extends InstrumentationTestCase{
 	protected void setUp() throws Exception{
 
 		InputStream stream = getInstrumentation().getContext().getResources().getAssets().open("json/quests.json");
-		String jsonString = JSONReader.getJSONString(stream);
+		_json = JSONReader.getJSONString(stream);
 	}
 	public void testQuestModel() throws Exception {
 		Quest[] quests = ModelsFactory.getInstance().getQuestsFromJson(_json);
 		assertEquals(4, quests.length);
 		assertEquals(quests[3].getTitle(), "test quest");
 		assertEquals(quests[0].getTitle(), "Untitled Quest");
+		assertTrue(quests[0].getPages().size() > 0);
 		
+		QuestPage page_1 = quests[0].getPages().get(0);
+		assertEquals(1,page_1.getPageNumber());
+		assertEquals("Untitled",page_1.getPageName());
 	}
 
 }

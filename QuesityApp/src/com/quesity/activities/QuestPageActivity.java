@@ -33,8 +33,10 @@ import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
+import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.IFetchJSONTask;
 import com.quesity.network.INetworkInteraction;
+import com.quesity.network.INetworkInterface;
 import com.quesity.network.IPostExecuteCallback;
 
 public class QuestPageActivity extends BaseActivity implements INetworkInteraction,TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
@@ -58,9 +60,10 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private StallFragment _stall_fragment;
 	private HashMap<String,Fragment> _fragmentMapper;
 	private QuestPage _currentPage;
-	
-	@Inject IFetchJSONTask<QuestPage> _fetchQuestPageTask; 
 	private IPostExecuteCallback _post_callback;
+	private QuestPage[] _all_pages;
+	@Inject
+	INetworkInterface _network_interface;
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -84,10 +87,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		_progress = new LoadingProgressFragment();
 		_progress.setCancelable(false);
 		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
-		_post_callback = new QuestPagePostExecuteCallback();
 		((IQuesityApplication)getApplication()).inject(this);
 		constructFragmentMapper();
-		_fetchQuestPageTask.setActivity(this).setNetworkInteractionHandler(this);
 		restoreSavedPage(savedInstanceState);
 	}
 	
@@ -104,10 +105,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		}else {
 			Log.d("QuesityPageActivity","Got a null page from the saved instance");
 			Log.d("QuestPageActivity","Current page is null, downloading the first page");
-			String url = Config.SERVER_URL + String.format(getString(R.string.request_first_page),_quest_id);
-			
-			
-			_fetchQuestPageTask.execute(url);
+			String url = Config.SERVER_URL + "/quest/"+_quest_id+"/pages/";
+			new FetchAllQuestsTask(QuestPage[].class).execute(url);
 		}
 	}
 	
@@ -190,9 +189,12 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	
 	@Override
 	public void loadNextPage(String page_id) {
-		String address =  Config.SERVER_URL + String.format(getString(R.string.request_page),_quest_id,page_id);
-		Log.d(this.getClass().getName(),address);
-		_fetchQuestPageTask.execute(address);
+	
+		for (int i=0; i<_all_pages.length; ++i) {
+			if ( _all_pages[i].getId().equals(page_id) ) {
+				refreshQuestPage(_all_pages[i]);
+			}
+		}
 	}
 	
 	public OnDemandFragment getCurrentFragment() {
@@ -208,29 +210,54 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	
 	public void refreshQuestPage(QuestPage page) {
 		setTitle(page.getPageName());
+		_currentPage = page;
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
 		getSupportFragmentManager().executePendingTransactions();
 		_webViewFragment.loadHTMLData(page.getPageContent());
 	}
 	
-	private class QuestPagePostExecuteCallback implements IPostExecuteCallback{
+	
+	private class AfterLoadingAllQuests implements IPostExecuteCallback {
 
 		@Override
-		public void apply(Object r) {
-			QuestPage result = (QuestPage)r;
-			if ( result == null ) {
-				Log.w("QuestPageActivity", "result page is null");
-				SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer),QuestPageActivity.this);
-				return;
+		public void apply(Object result) {
+			_all_pages = (QuestPage[])result;
+			for (int i = 0; i < _all_pages.length; i++) {
+				if ( _all_pages[i].getIsFirst() ){
+					refreshQuestPage(_all_pages[i]);
+					return;
+				}
 			}
-			_currentPage = result;
-			refreshQuestPage(result);
 		}
 
 		@Override
 		public int get401ErrorMessage() {
 			return -1;
+		}
+		
+	}
+	
+	
+	private class FetchAllQuestsTask extends FetchJSONTaskGet<QuestPage[]> {
+
+
+		public FetchAllQuestsTask(Class<QuestPage[]> c) {
+			super(c);
+			setNetworkInterface(_network_interface);
+			setPostExecuteCallback(new AfterLoadingAllQuests());
+		}
+
+		
+		protected void onPreExecute() {
+			Log.d(this.getClass().getName(),"preparing to load all quests ..");
+			super.onPreExecute();
+		}
+
+		@Override
+		protected QuestPage[] resolveModel(String json) {
+			QuestPage[] questPages = ModelsFactory.getInstance().getQuestPageArrayFromJson(json);
+			return questPages;
 		}
 		
 	}

@@ -20,7 +20,8 @@ import dagger.Provides;
 				QuesityMain.class,
 				QuestPageActivity.class,
 				QuestsListViewActivity.class
-		}
+		},
+		library = true
 )
 public class NetworkInterfaceModule {
 	@Provides INetworkInterface provideNetworkInterface(){

@@ -1,14 +1,17 @@
 package com.quesity.models;
 
 import java.util.Date;
-
-import org.json.JSONObject;
+import java.util.List;
 
 public class Quest extends JSONModel{
 	private String title;
 	private String accountId;
 	private Date date_created;
+	private List<QuestPage> pages;
 	
+	public List<QuestPage> getPages() {
+		return pages;
+	}
 	public String getTitle() {
 		return title;
 	}

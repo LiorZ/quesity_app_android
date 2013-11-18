@@ -88,7 +88,7 @@ public class StallFragment extends DialogFragment implements OnDemandFragment {
 				stopTask();
 				NextPageTransition activity = (NextPageTransition) getActivity();
 				QuestPageLink[] links = stall_page.getLinks();
-				activity.loadNextPage(links[0].getLinksToPage());
+				activity.loadNextPage(links[0]);
 			}
 		});
 		

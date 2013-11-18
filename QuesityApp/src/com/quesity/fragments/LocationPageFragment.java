@@ -1,5 +1,8 @@
 package com.quesity.fragments;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,23 +16,24 @@ import android.util.Log;
 import com.quesity.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
-import com.quesity.controllers.IntervalLocationListener;
 import com.quesity.controllers.LocationUser;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageLocationLink;
+import com.quesity.services.location.IntervalLocationListener;
+import com.quesity.services.location.LocationService;
 
 public class LocationPageFragment extends Fragment implements OnDemandFragment, LocationUser {
-	private IntervalLocationListener _inter_listener;
-	private final long LOCATION_UPDATE_TIME = 2*1000;
-	
+	private static final long GPS_TIMEOUT = 10*1000;
+	private Timer _timeoutTimer;
+	private TimerTask _task;
+	public LocationPageFragment() {
+	}
 		@Override
 		public void onPause() {
-			// TODO Auto-generated method stub
 			super.onPause();
 			Log.d("LocationPageFragment","Location Fragment paused");
-//			stopListening();
 		}
 
 		@Override
@@ -38,12 +42,21 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			Log.d("LocationPageFragment","Location Fragment resumed");
 //			startListening(getActivity());
 		}
-
+		
+		public void stopTimer() {
+			if ( _task != null ) {
+				_task.cancel();
+			}
+			if ( _timeoutTimer != null ){
+				_timeoutTimer.cancel();
+				_timeoutTimer.purge();
+			}
+		}
+		
 		@Override
 		public void onStop() {
 //			stopListening();
 			super.onStop();
-			
 		}
 		@Override
 		public void onDetach() {
@@ -52,10 +65,6 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				super.onDetach();
 		}
 		
-		private void stopListening() {
-			LocationManager systemService = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-			systemService.removeUpdates(_inter_listener);
-		}
 		@Override
 		public void onAttach(Activity activity) {
 			super.onAttach(activity);
@@ -63,23 +72,40 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 		}
 
 		private void startListening(Activity activity) {
-			LocationManager systemService = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
-			String locationProvider = LocationManager.GPS_PROVIDER;
-			systemService.requestLocationUpdates(locationProvider,LOCATION_UPDATE_TIME, 0, _inter_listener);
+			LocationService service = LocationService.getInstance();
+			if ( service == null) {
+				return; // TODO: Handle the case where the service is dead.
+			}
+			service.requestImmediateLocation(this);
+			_task = new TimerTask() {
+				
+				@Override
+				public void run() {
+					handleLocationError();
+				}
+			};
+			_timeoutTimer = new Timer();
+			_timeoutTimer.schedule(_task, GPS_TIMEOUT);
 		}
 		
-		public LocationPageFragment() {
-			_inter_listener = new IntervalLocationListener(this);
+		private void handleLocationError() {
+			stopTimer();
+			stopProgressBar();
+			getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_cant_find_location), getActivity());
+					errorDialog.show();
+				}
+			});
 		}
 		
 		@Override
 		public void useLocation(Location location){
 			
 			if ( location == null ){
-				stopListening();
-				stopProgressBar();
-				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_cant_find_location), getActivity());
-				errorDialog.show();
+				handleLocationError();
 				return;
 			}
 			
@@ -101,8 +127,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 					Log.d("LocationPageFragment","Distance between points is " + result[0] + " while radius is " + radius);
 					if ( radius > result[0] ){
 						stopProgressBar();
-						stopListening();
-						activity.loadNextPage(link.getLinksToPage());
+						activity.loadNextPage(link);
 						return;
 					}
 					
@@ -112,12 +137,12 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_wrong_location), getActivity());
 			errorDialog.show();
 			stopProgressBar();
-			stopListening();
 		}
 		
 		@Override
 		public void stopProgressBar() {
 			if (getActivity() instanceof ProgressableProcess) {
+				stopTimer();
 				ProgressableProcess activity = (ProgressableProcess) getActivity();
 				activity.stopProgressBar();
 			}
@@ -138,38 +163,10 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			startListening(getActivity());
 		}
 		
-		private class LocationDeterminant extends AsyncTask<Void, Integer, Location> {
-			
-			private LocationUser _user;
-			private LocationManager _manager;
-			
-			public LocationDeterminant(LocationUser user, LocationManager manager) {
-				_user = user;
-				_manager = manager;
-			}
-			@Override
-			protected void onPostExecute(Location result) {
-				_user.stopProgressBar();
-				_manager.removeUpdates(_inter_listener);
-				_user.useLocation(result);
-			}
 
-			@Override
-			protected void onPreExecute() {
-				_user.startProgressBar(getString(R.string.lbl_location_fix_title), getString(R.string.lbl_location_fix_message));
-				String locationProvider = LocationManager.GPS_PROVIDER;
-				_manager.requestLocationUpdates(locationProvider, 0, 0, _inter_listener);
-			}
-
-			@Override
-			protected Location doInBackground(Void... params) {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				return _inter_listener.getCurrentLocation();
-			}
+		@Override
+		public void lowAccuracyLocation(Location loc) {
+			// TODO Auto-generated method stub
 			
 		}
 }

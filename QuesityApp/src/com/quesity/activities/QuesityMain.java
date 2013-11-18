@@ -1,22 +1,17 @@
 package com.quesity.activities;
 
-import javax.inject.Inject;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.facebook.widget.ProfilePictureView;
 import com.quesity.R;
-import com.quesity.application.IQuesityApplication;
-import com.quesity.application.QuesityApplication;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
@@ -24,13 +19,17 @@ import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.INetworkInteraction;
-import com.quesity.network.INetworkInterface;
 import com.quesity.network.IPostExecuteCallback;
-import com.quesity.network.dagger_modules.NetworkInterfaceModule;
-
-import dagger.ObjectGraph;
 
 public class QuesityMain extends BaseActivity  implements INetworkInteraction{
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		backToHome();
+	}
+	
+	
 
 	private ProfilePictureView _profilePicture;
 	private TextView _welcomeText;

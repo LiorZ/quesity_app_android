@@ -3,4 +3,8 @@
     	<string name='register_facebook_user'>/register/facebook</string>
     	<string name='request_first_page'>/app/%1$s/first_page</string>
     	<string name='request_page'>/app/%1$s/page/%2$s</string>
+    	<string name='new_game'>/quest/%1$s/game/new</string>
+    	<string name='quest_pages'>/quest/%1$s/pages</string>
+    	<string name='new_move'>/quest/%1$s/game/%2$s/move/new</string>
+    	<string name='new_location'>/quest/%1$s/game/%2$s/location/new</string>
 </resources>

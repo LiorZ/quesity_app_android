@@ -14,7 +14,7 @@ public class ContentPageFragment extends Fragment implements OnDemandFragment {
 	public void invokeFragment(FragmentManager manager) {
 		NextPageTransition activity = (NextPageTransition) getActivity();
 		QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
-	    activity.loadNextPage(page.getLinks()[0].getLinksToPage());
+	    activity.loadNextPage(page.getLinks()[0]);
 	}
 	
 	

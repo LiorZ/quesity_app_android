@@ -26,4 +26,14 @@ public class SimpleDialogs {
 		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), what_to_do);
 		return ad;
 	}
+	
+	public static AlertDialog getConfirmationDialog(String message, Context context, DialogInterface.OnClickListener yesAnswer, DialogInterface.OnClickListener noAnswer){
+		AlertDialog ad = new AlertDialog.Builder(context).create();
+		ad.setCancelable(false);
+		ad.setMessage(message);
+		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.yes),yesAnswer);
+		ad.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(android.R.string.no),noAnswer);
+		
+		return ad;
+	}
 }

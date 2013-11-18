@@ -1,7 +1,5 @@
 package com.quesity.network;
 
-import javax.inject.Inject;
-
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.HttpHostConnectException;
@@ -13,15 +11,11 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.quesity.R;
-import com.quesity.activities.BaseActivity;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.ModelsFactory;
-import com.quesity.network.dagger_modules.NetworkInterfaceModule;
 import com.quesity.network.exceptions.Status401Exception;
-
-import dagger.ObjectGraph;
 
 public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, Integer, Result> implements IFetchJSONTask<Result>{
 	
@@ -33,12 +27,18 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	private INetworkInterface _network_interface;
 	
 	private IPostExecuteCallback _post_execute;
+	private IBackgroundCallback<Result> _background_callback;
 
 	private Class<Result> _class_to_resolve;
 	public AbstractFetchJSONTask(NetworkParameterGetter getter, Class<Result> c) {
 		_getter = getter;
 		_activity = null;
 		_class_to_resolve = c;
+	}
+	
+	public AbstractFetchJSONTask<Result> setBackgroundCallback(IBackgroundCallback<Result> c) {
+		_background_callback = c;
+		return this;
 	}
 	
 	public AbstractFetchJSONTask<Result> setPostExecuteCallback(IPostExecuteCallback post) {
@@ -125,11 +125,15 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	
 	@Override
 	protected Result doInBackground(String... params) {
-		String url = params[0];
 		Result model = null;
 		try {
-			String json = _network_interface.getStringContent(url,_getter);
-			model = resolveModel(json);
+			if ( _background_callback != null ) {
+				model = _background_callback.apply(params);
+			}else {
+				String url = params[0];
+				String json = _network_interface.getStringContent(url,_getter);
+				model = resolveModel(json);
+			}
 		} catch (HttpHostConnectException e) {
 			e.printStackTrace();
 			handleConnectionException();

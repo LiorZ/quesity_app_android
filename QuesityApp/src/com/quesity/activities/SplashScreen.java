@@ -1,49 +1,37 @@
 package com.quesity.activities;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.preference.PreferenceManager;
 
 import com.quesity.R;
+import com.quesity.general.Constants;
 
 public class SplashScreen extends BaseActivity {
 	
-	private int _backButtonCount;
-	private Timer _t;
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+        backToHome(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(this);
+		String account_id = p.getString(Constants.CURRENT_ACCOUNT_ID,null);
+		if ( account_id != null ) {
+			Intent i = new Intent(this,QuesityMain.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			startActivity(i);
+			finish();
+			return;
+		}
 		setContentView(R.layout.activity_splash_screen);
-		_t = new Timer();
 	}
 	
-	@Override
-	public void onBackPressed() 
-	{ 
-	    if(_backButtonCount >= 1) 
-	    { 
-	        Intent intent = new Intent(Intent.ACTION_MAIN);
-	        intent.addCategory(Intent.CATEGORY_HOME);
-	        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	        _backButtonCount = 0;
-	        startActivity(intent);
-	    } 
-	    else 
-	    { 
-	        Toast.makeText(this, getString(R.string.lbl_exit_notice), Toast.LENGTH_SHORT).show();
-	        _backButtonCount++;
-	        _t.schedule(new TimerTask() {
-				
-				@Override
-				public void run() {
-					_backButtonCount = 0;
-				}
-			}, 2000);
-	    } 
-	}
 
 }

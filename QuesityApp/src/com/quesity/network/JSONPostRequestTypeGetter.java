@@ -6,6 +6,16 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 
 public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
+	
+	public JSONPostRequestTypeGetter() {
+		setHeaders();
+	}
+	
+	private void setHeaders() {
+		_postObj.setHeader("Accept", "application/json");
+	    _postObj.setHeader("Content-type", "application/json");
+	}
+	
 	public JSONPostRequestTypeGetter(String json){
 		super();
 		try {
@@ -13,7 +23,10 @@ public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-		_postObj.setHeader("Accept", "application/json");
-	    _postObj.setHeader("Content-type", "application/json");
+		setHeaders();
+	}
+	
+	public void setJSON(String json) throws UnsupportedEncodingException {
+		_postObj.setEntity(new StringEntity(json));
 	}
 }

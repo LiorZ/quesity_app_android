@@ -46,7 +46,7 @@ public class MultipleChoiceFragment extends DialogFragment implements OnDemandFr
 						Log.d("MultipleChoiceFragment", "Item " + which + "Clicked");
 						NextPageTransition activity = (NextPageTransition) getActivity();
 						QuestPageLink questPageLink = quest_page.getLinks()[which];
-						activity.loadNextPage(questPageLink.getLinksToPage());
+						activity.loadNextPage(questPageLink);
 					}
 				});
 	    return builder.create();

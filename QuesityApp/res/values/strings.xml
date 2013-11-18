@@ -43,7 +43,7 @@
 	<string name="lbl_logging_out">Logging you out of the game .. </string>
 	<string name="lbl_logging_in_title">Login</string>
 	<string name="lbl_welcome">Welcome, </string>
-	<string name="lbl_exit_notice">Press the back button once again to close the application</string>
+	<string name="lbl_exit_notice">Press once again to close the app</string>
 	<string name="lbl_start_btn">Start</string>
 	<string name="lbl_invite_btn">Invite</string>
 	<string name="lbl_logout">Logout</string>
@@ -51,4 +51,6 @@
 	<string name="hint_event_title">Event Title</string>
 	<string name="err_choose_quest">Please choose a quest for the event.</string>
 	<string name="err_fill_event_title">Please name your event!</string>
+	<string name="lbl_resume_quest">Resume Quest</string>	
+	<string name="lbl_sure_leave_quest">Are you sure you want to leave the quest?</string>
 </resources>

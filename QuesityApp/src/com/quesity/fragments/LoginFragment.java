@@ -166,8 +166,9 @@ public class LoginFragment extends Fragment {
 	            // If the session state is closed:
 	            // Show the login fragment
 	        	Log.d("LoginFragment","Session and state are closed!");
-	        	Intent intent = new Intent(getActivity(), SplashScreen.class);
-	        	startActivity(intent);
+				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				p.edit().putString(Constants.CURRENT_ACCOUNT_ID, null).commit();
+	        	((BaseActivity) getActivity()).backToHome(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        }
 	        
 	    }else {
@@ -182,6 +183,7 @@ public class LoginFragment extends Fragment {
 	}
 	private void loadMainScreen() {
     	Intent intent = new Intent(getActivity(), QuesityMain.class);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     	startActivity(intent);
 	}
 	
@@ -191,6 +193,8 @@ public class LoginFragment extends Fragment {
 		public void apply(Object r) {
 			Account result = (Account) r;
 			if ( result != null ) {
+				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				p.edit().putString(Constants.CURRENT_ACCOUNT_ID, result.getId()).commit();
 				loadMainScreen();	
 			}
 		}
@@ -203,37 +207,6 @@ public class LoginFragment extends Fragment {
 		
 	
 	}
-
-//	private class SendLoginToServerTask extends FetchJSONTaskPost<Account>{
-//
-//
-//		@Override
-//		protected void handle401() {
-//			showErrorMessage(R.string.error_general_authentication);
-//		}
-//
-//
-//
-//		public SendLoginToServerTask(String json) {
-//			super(new JSONPostRequestTypeGetter(json));
-//			setActivity(getActivity()).setProgressBarHandler(_progress,getString(R.string.lbl_logging_in_title), getString(R.string.lbl_logging_in));
-//		}
-//		
-//		
-//		
-//		@Override
-//		protected void onPostExecute(Account result) {
-//			super.onPostExecute(result);
-//			if ( result != null ) {
-//				loadMainScreen();	
-//			}
-//		}
-//		
-//		@Override
-//		protected Account resolveModel(String json) {
-//			Account account = ModelsFactory.getInstance().getModelFromJSON(json, Account.class);
-//			return account;
-//		}
 		
 	}
 	

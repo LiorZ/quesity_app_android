@@ -11,12 +11,15 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import android.util.Log;
 
 import com.quesity.network.AbstractFetchJSONTask.NetworkParameterGetter;
+import com.quesity.network.exceptions.GeneralConnectionException;
 import com.quesity.network.exceptions.Status401Exception;
+import com.quesity.network.exceptions.Status500Exception;
 
 public class NetworkInterface implements INetworkInterface{
 	
@@ -34,8 +37,8 @@ public class NetworkInterface implements INetworkInterface{
 	@Override
 	public String getStringContent(String uri, NetworkParameterGetter getter) throws Exception {
 
+		HttpClient client = getter.getHTTPClient();
 	    try {
-	        HttpClient client = getter.getHTTPClient();
 	        HttpRequestBase request = getter.getRequestObj();
 	        request.setURI(new URI(uri));
 	        HttpResponse response = client.execute(request);
@@ -63,7 +66,7 @@ public class NetworkInterface implements INetworkInterface{
 
 	        } 
 	    finally {
-	    	
+	    	client.getConnectionManager().closeExpiredConnections();
 	    }
 	} 
 	
@@ -75,6 +78,12 @@ public class NetworkInterface implements INetworkInterface{
 		int statusCode = statusLine.getStatusCode();
 		if (statusCode == 401) {
 			throw new Status401Exception();
+		}
+		if ( statusCode == 500 ){
+			throw new Status500Exception();
+		}
+		if (statusCode != 200){
+			throw new GeneralConnectionException();
 		}
 		
 	}

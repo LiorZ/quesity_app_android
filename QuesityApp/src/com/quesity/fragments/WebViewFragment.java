@@ -19,7 +19,8 @@ public class WebViewFragment extends Fragment {
 		super.onAttach(activity);
 	}
 	
-	public void loadHTMLData(String data) {
+	public void loadHTMLData(String raw_data) {
+		String data  = "<html><body style='padding:0; margin:0'>"+raw_data+"</body></html>";
 		_w.loadDataWithBaseURL(null, data, "text/html", "utf-8", null);
 		_w.scrollTo(0, 0);
 	}
@@ -31,6 +32,7 @@ public class WebViewFragment extends Fragment {
 		 View frag = inflater.inflate(R.layout.fragment_webview, container);
 		 _w = (WebView) frag.findViewById(R.id.webView);
 		 _w.getSettings().setJavaScriptEnabled(false);
+		 _w.getSettings().setSupportZoom(true);
 		 return frag;
 	}
 

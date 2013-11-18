@@ -28,7 +28,7 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	    alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton) {
 	            String value = input.getText().toString().trim();
-	            String nextPage = getNextPageByAnswer(value, page);
+	            QuestPageLink nextPage = getNextPageByAnswer(value, page);
 	            if ( nextPage == null ) {
 	            	AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer), getActivity());
 	            	errorDialog.show();
@@ -48,12 +48,12 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	    return alert.create();
 	}
 
-	private String getNextPageByAnswer(String answer, QuestPage page) {
+	private QuestPageLink getNextPageByAnswer(String answer, QuestPage page) {
 		QuestPageLink[] links = page.getLinks();
 		for (int i = 0; i < links.length; i++) {
 			QuestPageQuestionLink link =(QuestPageQuestionLink) links[i];
 			if ( answer.equals(link.getAnswerTxt()) ) {
-				return link.getLinksToPage();
+				return link;
 			}
 		}
 		

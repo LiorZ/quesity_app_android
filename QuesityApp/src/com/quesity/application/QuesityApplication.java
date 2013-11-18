@@ -10,18 +10,18 @@ import dagger.ObjectGraph;
 public class QuesityApplication extends Application implements IQuesityApplication {
 
 	
-	private ObjectGraph _object_graph;
+//	private ObjectGraph _object_graph;
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		
-		_object_graph = ObjectGraph.create(new NetworkInterfaceModule());
+//		_object_graph = ObjectGraph.create(new NetworkInterfaceModule());
 		
 	}
 	
 	@Override
 	public void inject(Activity a) {
-		_object_graph.inject(a);
+//		_object_graph.inject(a);
 	}
 
 }

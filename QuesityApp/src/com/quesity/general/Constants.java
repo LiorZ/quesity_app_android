@@ -19,5 +19,9 @@ public final class Constants {
 	public static final String FACEBOOK_ID_PREF_KEY = "com.quesity.facebook.id";
 	public static final String FACEBOOK_FULL_NAME_KEY = "com.quesity.facebook.fullname";
 
-	
+	public static final String CURRENT_ACCOUNT_ID = "com.quesity.current_account_id";
+	public static final String CURRENT_GAME_ID = "com.quesity.current_game_id";
+
+	public static final long GPS_UPDATE_INTERVAL = 10*1000; //milliseconds
+	public static final float GPS_MIN_ACCURACY = 20; // meters
 }

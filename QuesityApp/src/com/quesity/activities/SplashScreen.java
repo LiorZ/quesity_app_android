@@ -24,8 +24,7 @@ public class SplashScreen extends BaseActivity {
 		String account_id = p.getString(Constants.CURRENT_ACCOUNT_ID,null);
 		if ( account_id != null ) {
 			Intent i = new Intent(this,QuesityMain.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(i);
 			finish();
 			return;

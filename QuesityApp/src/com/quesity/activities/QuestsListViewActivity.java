@@ -29,8 +29,8 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 	private QuestAdapter array_adapter;
 	private ListView _quest_list_view;
 	private Button _btn_start_quest; 
-	private StartQuestClickListener _start_quest_listener;
 	private LoadingProgressFragment _progress;
+	private StartQuestClickListener _start_quest_listener;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
 	@Override
@@ -39,13 +39,13 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		setTitle(R.string.app_name);
-		_progress = new LoadingProgressFragment();
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
 		_btn_start_quest = (Button) findViewById(R.id.btn_start_quest);
 		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
 		_start_quest_listener = new StartQuestClickListener();
 		_btn_start_quest.setOnClickListener(_start_quest_listener);
+		_progress = new LoadingProgressFragment();
 		new FetchJSONTaskGet<Quest[]>(Quest[].class).setNetworkInteractionHandler(this).setActivity(this).
 		execute(Config.SERVER_URL + "/all_quests");
 	}
@@ -65,6 +65,7 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 			Intent intent = new Intent(QuestsListViewActivity.this, QuestPageActivity.class);
 	    	intent.putExtra(QUEST_ID, ((Quest)item).getId());
 	    	startActivity(intent);
+	    	finish();
 		}
 
     }
@@ -90,32 +91,6 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 		}
     	
     }
-//	private class FetchNewQuestsTask extends FetchJSONTaskGet<Quest[]>{
-//
-//		public FetchNewQuestsTask(){
-//			super();
-//			setActivity(QuestsListViewActivity.this).
-//			setProgressBarHandler(_progress_dialog, getString(R.string.lbl_loading),getString(R.string.lbl_loading_quests));
-//		}
-//		@Override
-//		protected void onPostExecute(Quest[] result) {
-//			super.onPostExecute(result);
-//			if ( result == null ) {
-//				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
-//				errorDialog.show();
-//				return;
-//			}
-//			array_adapter = new QuestAdapter(result,QuestsListViewActivity.this);
-//			_quest_list_view.setAdapter(array_adapter);
-//			_quest_list_view.setOnItemClickListener(array_adapter);
-//		}
-//
-//		@Override
-//		protected Quest[] resolveModel(String json) {
-//			Quest[] quests = ModelsFactory.getInstance().getModelFromJSON(json, Quest[].class);
-//			return quests;
-//		}
-//	}
 	
 	private class QuestAdapter extends BaseAdapter implements AdapterView.OnItemClickListener{
 
@@ -147,13 +122,12 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 			   if(convertView == null) {
 			        LayoutInflater vi = (LayoutInflater)getSystemService(Context
 			        		.LAYOUT_INFLATER_SERVICE);
-			        convertView = vi.inflate(android.R.layout.simple_list_item_1, null);
+			        convertView = vi.inflate(android.R.layout.simple_list_item_2, null);
 			    }
 			   Quest q =(Quest) getItem(position);
+			   setMainTextView(convertView,q);
+			   setSubTextView(convertView, q);
 			   
-			   TextView text_view = (TextView) convertView.findViewById(android.R.id.text1);
-
-			   text_view.setText(q.getTitle());
 			   if ( position == _selected ){
 				   highlightItem(convertView);
 			   }else {
@@ -161,6 +135,22 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 			   }
 			   return convertView;
 		}
+		
+		private void setMainTextView(View convertView, Quest model) {
+			   TextView text_view = (TextView) convertView.findViewById(android.R.id.text1);
+
+			   text_view.setText(model.getTitle());
+			   text_view.setTextColor(getResources().getColor(R.color.quesity_title_color));
+		}
+		
+		private void setSubTextView(View convertView, Quest model) {
+			TextView text_view = (TextView) convertView.findViewById(android.R.id.text2);
+			String description = model.getDescription();
+			if ( description != null ) {
+				text_view.setText(description);
+			}
+		}
+		
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View view, int pos,
 				long arg3) {
@@ -180,7 +170,7 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 		private void unHighlightItem(View view) {
 			if ( view == null )
 				return;
-			view.setBackgroundColor(QuestsListViewActivity.this.getResources().getColor(android.R.color.white));
+			view.setBackgroundColor(QuestsListViewActivity.this.getResources().getColor(R.color.splash_screen));
 		}
 		
 		private void highlightItem(View view) {

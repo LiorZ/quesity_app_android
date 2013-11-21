@@ -22,18 +22,11 @@ import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
 
 public class QuesityMain extends BaseActivity  implements INetworkInteraction{
-
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		backToHome();
-	}
 	
 	
 
 	private ProfilePictureView _profilePicture;
 	private TextView _welcomeText;
-	private LoadingProgressFragment _progress;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +35,6 @@ public class QuesityMain extends BaseActivity  implements INetworkInteraction{
         setContentView(R.layout.activity_quesity_main);
         _profilePicture = (ProfilePictureView) findViewById(R.id.quesity_main_profile_pic);
         _welcomeText = (TextView) findViewById(R.id.txt_welcome_msg);
-        _progress = new LoadingProgressFragment();
         loadUserDetails();
     }
     
@@ -81,6 +73,23 @@ public class QuesityMain extends BaseActivity  implements INetworkInteraction{
     	Intent intent = new Intent(this, QuestsListViewActivity.class);
     	startActivity(intent);
     }
+
+	@Override
+	public void onBackPressed() {
+		super.onBackPressed();
+		backToHome();
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(this);
+		String current_account_id = p.getString(Constants.CURRENT_ACCOUNT_ID, null);
+		if ( current_account_id == null ) {
+			Intent i = new Intent(this,SplashScreen.class);
+			startActivity(i);
+			finish();
+		}
+	}
     
     public void performLogout(View view) {
     	SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE);
@@ -115,7 +124,8 @@ public class QuesityMain extends BaseActivity  implements INetworkInteraction{
 
 	@Override
 	public ProgressBarHandler getProgressBarHandler() {
-		return new ProgressBarHandler(getString(R.string.lbl_logging_out),getString(R.string.lbl_logout),_progress);
+//		return new ProgressBarHandler(getString(R.string.lbl_logging_out),getString(R.string.lbl_logout),_progress);
+		return null;
 	}
     
 }

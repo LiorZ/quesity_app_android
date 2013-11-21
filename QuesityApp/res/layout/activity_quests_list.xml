@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/splash_screen">
         <TextView
         android:id="@+id/choose_quest_title"
         android:layout_width="wrap_content"
@@ -9,7 +10,9 @@
         android:layout_centerHorizontal="true"
         android:text="@string/title_find_quest"
         android:layout_marginBottom="20sp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/quesity_title_color"
+        />
 
     <ListView
         android:id="@+id/quest_list_fragment"
@@ -22,10 +25,11 @@
 
     <Button
         android:id="@+id/btn_start_quest"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:text="@string/lbl_start_quest" 
+        android:layout_marginTop="30sp"
         android:layout_below="@id/quest_list_fragment"/>
 
 </RelativeLayout>

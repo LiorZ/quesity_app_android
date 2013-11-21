@@ -25,7 +25,7 @@
     <string name="lbl_wrong_location">You are not at the right location... Try again.</string>
     <string name="lbl_location_fix_title">Finding Location</string>
     <string name="lbl_location_fix_message">Getting a fix on your location</string>
-    <string name="lbl_cant_find_location">An error occured while finding your location. Please try again.</string>
+    <string name="lbl_cant_find_location">No GPS Signal - Please try again.</string>
 	<string name="lbl_quest_over">The Quest is over!</string>
 	<string name="lbl_game_menu_title">Game Menu</string>
 	<string name="lbl_game_menu_tactics">Tactics</string>
@@ -39,6 +39,7 @@
 	<string name="error_display_facebook_data">Error occured while connecting with your facebook account. Please try to login again</string>
 	<string name="error_general_authentication">An error occured while authenticating your request</string>
 	<string name="error_username_password">Wrong username or password. Please try again</string>
+	<string name="error_starting_quest">Error occured when starting the quest.\nPlease restart it from the main menu</string>
 	<string name="lbl_logging_in">Logging you in the game .. </string>
 	<string name="lbl_logging_out">Logging you out of the game .. </string>
 	<string name="lbl_logging_in_title">Login</string>

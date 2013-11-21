@@ -155,8 +155,10 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	
 	public void returnToMainPage() {
     	stopLocationService();
-    	Intent intent = new Intent(QuestPageActivity.this, QuestsListViewActivity.class);
+    	Intent intent = new Intent(QuestPageActivity.this, QuesityMain.class);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     	startActivity(intent);
+    	finish();
 	}
 	
 	public void finishQuest(){
@@ -166,6 +168,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				returnToMainPage();
+				finish();
 			}
 		});
 		stopLocationService();
@@ -282,6 +285,12 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		@Override
 		public void apply(Object result) {
 			_all_pages = (QuestPage[])result;
+			if ( _all_pages == null ){
+				SimpleDialogs.getErrorDialog(getString(R.string.error_starting_quest), QuestPageActivity.this).show();
+				backToHome();
+				finish();
+				return;
+			}
 			for (int i = 0; i < _all_pages.length; i++) {
 				if ( _all_pages[i].getIsFirst() ){
 					refreshQuestPage(_all_pages[i]);
@@ -304,9 +313,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				stopLocationService();
-				Intent i = new Intent(QuestPageActivity.this,QuesityMain.class);
-				startActivity(i);
+				returnToMainPage();
 			}
 		};
 		

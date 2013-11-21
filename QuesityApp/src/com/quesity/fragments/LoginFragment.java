@@ -34,9 +34,10 @@ import com.quesity.network.JSONPostRequestTypeGetter;
 
 public class LoginFragment extends Fragment {
 
-	private LoadingProgressFragment _progress;
+//	private LoadingProgressFragment _progress;
 	private UiLifecycleHelper _uiHelper;
 	private LoginButton _loginBtn;
+	public static final String TAG = "com.quesity.fragment.facebook_login_fragment";
 	private Session.StatusCallback _sessionCallback = 
 		    new Session.StatusCallback() {
 		    @Override
@@ -51,11 +52,11 @@ public class LoginFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		 View frag = inflater.inflate(R.layout.fragment_login, container);
+		 View frag = inflater.inflate(R.layout.fragment_login, container,false);
 		 _loginBtn = (LoginButton) frag.findViewById(R.id.facebook_login_button);
 		_loginBtn.setReadPermissions(Arrays.asList("user_birthday", "email", "user_location"));
 		_loginBtn.setFragment(this);
-		_progress = new LoadingProgressFragment();
+//		_progress = new LoadingProgressFragment();
 		return frag;
 	}
 	@Override
@@ -143,7 +144,8 @@ public class LoginFragment extends Fragment {
 								
 								@Override
 								public ProgressBarHandler getProgressBarHandler() {
-									return new ProgressBarHandler(getString(R.string.lbl_logging_in), getString(R.string.lbl_loading), _progress);
+//									return new ProgressBarHandler(getString(R.string.lbl_logging_in), getString(R.string.lbl_loading), _progress);
+									return null;
 								}
 								
 								@Override
@@ -183,7 +185,6 @@ public class LoginFragment extends Fragment {
 	}
 	private void loadMainScreen() {
     	Intent intent = new Intent(getActivity(), QuesityMain.class);
-    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
     	startActivity(intent);
 	}
 	
@@ -191,11 +192,14 @@ public class LoginFragment extends Fragment {
 
 		@Override
 		public void apply(Object r) {
+			Log.d(TAG, "Attempted login succeeded");
 			Account result = (Account) r;
 			if ( result != null ) {
 				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
+				String current_account_id = p.getString(Constants.CURRENT_ACCOUNT_ID, null);
 				p.edit().putString(Constants.CURRENT_ACCOUNT_ID, result.getId()).commit();
-				loadMainScreen();	
+				if ( current_account_id == null ) //This is a fresh login, therefore load main screen
+					loadMainScreen();	
 			}
 		}
 

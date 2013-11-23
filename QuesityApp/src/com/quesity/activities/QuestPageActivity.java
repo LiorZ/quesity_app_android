@@ -2,9 +2,8 @@ package com.quesity.activities;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Timer;
-import java.util.TimerTask;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,7 +17,6 @@ import android.view.Menu;
 
 import com.quesity.R;
 import com.quesity.application.IQuesityApplication;
-import com.quesity.controllers.LocationUser;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
@@ -56,8 +54,9 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		
 		return new ProgressBarHandler(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading), _progress);
 	}
-	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	
+	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
+	public static final String TAG = "com.quesity.activities.QuestPageActivity";
 	private LoadingProgressFragment _progress;
 	private WebViewFragment _webViewFragment;
 	private String _quest_id;
@@ -137,6 +136,9 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		}
 	}
 	
+	public Game getCurrentGame() {
+		return _current_game;
+	}
 	@Override
 	public void transitToNextPage() {
 		if ( _currentPage == null )
@@ -258,6 +260,10 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		report.send(report_url);
 	}
 	
+	public Activity getActivity() {
+		return this;
+	}
+	
 	public OnDemandFragment getCurrentFragment() {
 		return _transitionFragment;
 	}
@@ -286,9 +292,17 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		public void apply(Object result) {
 			_all_pages = (QuestPage[])result;
 			if ( _all_pages == null ){
-				SimpleDialogs.getErrorDialog(getString(R.string.error_starting_quest), QuestPageActivity.this).show();
-				backToHome();
-				finish();
+				DialogInterface.OnClickListener click_listener = new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						returnToMainPage();
+						finish();						
+					}
+				};
+				SimpleDialogs.getErrorDialog(getString(R.string.error_starting_quest), getActivity(), click_listener ).show();
+
 				return;
 			}
 			for (int i = 0; i < _all_pages.length; i++) {
@@ -346,7 +360,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			String game_json_input = ModelsFactory.getInstance().getJSONFromModel(game);
 			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input));
 			_current_game = ModelsFactory.getInstance().getModelFromJSON(game_json, Game.class);
-			
+			Log.d(TAG, "Started Game with " + _current_game.getRemainingHints() + " available hints");
 			startLocationService();
 		}
 		@Override

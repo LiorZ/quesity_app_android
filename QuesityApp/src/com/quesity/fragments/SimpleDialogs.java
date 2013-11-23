@@ -6,16 +6,22 @@ import android.content.DialogInterface;
 
 public class SimpleDialogs {
 	public static AlertDialog getErrorDialog(String message, Context context) {
-		AlertDialog ad = new AlertDialog.Builder(context).create();
-		ad.setCancelable(false); // This blocks the 'BACK' button
-		ad.setMessage(message);
-		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
-		}); 
+		};
+		
+		return getErrorDialog(message, context, listener);
+	}
+	
+	public static AlertDialog getErrorDialog(String message, Context context, DialogInterface.OnClickListener click_listener){
+		AlertDialog ad = new AlertDialog.Builder(context).create();
+		ad.setCancelable(false); // This blocks the 'BACK' button
+		ad.setMessage(message);
+		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), click_listener); 
 		return ad;
 	}
 	

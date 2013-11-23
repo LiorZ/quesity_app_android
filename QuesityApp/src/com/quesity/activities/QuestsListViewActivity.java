@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -20,16 +21,17 @@ import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Config;
+import com.quesity.general.Constants;
+import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
 
-public class QuestsListViewActivity extends BaseActivity implements INetworkInteraction{
+public class QuestsListViewActivity extends BaseActivity{
 	private QuestAdapter array_adapter;
 	private ListView _quest_list_view;
 	private Button _btn_start_quest; 
-	private LoadingProgressFragment _progress;
 	private StartQuestClickListener _start_quest_listener;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
@@ -45,12 +47,18 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
 		_start_quest_listener = new StartQuestClickListener();
 		_btn_start_quest.setOnClickListener(_start_quest_listener);
-		_progress = new LoadingProgressFragment();
-		new FetchJSONTaskGet<Quest[]>(Quest[].class).setNetworkInteractionHandler(this).setActivity(this).
-		execute(Config.SERVER_URL + "/all_quests");
+		String quests_json = getIntent().getStringExtra(Constants.LOADED_QUESTS);
+		if (quests_json != null && quests_json.length() > 0 )
+			showLoadedQuests(quests_json);
 	}
 	
-
+	private void showLoadedQuests(String json) {
+		Quest[] quests = ModelsFactory.getInstance().getModelFromJSON(json, Quest[].class);
+		array_adapter = new QuestAdapter(quests,QuestsListViewActivity.this);
+		_quest_list_view.setAdapter(array_adapter);
+		_quest_list_view.setOnItemClickListener(array_adapter);
+	}
+	
     private class StartQuestClickListener implements View.OnClickListener {
 
 		@Override
@@ -80,9 +88,6 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 				errorDialog.show();
 				return;
 			}
-			array_adapter = new QuestAdapter(result,QuestsListViewActivity.this);
-			_quest_list_view.setAdapter(array_adapter);
-			_quest_list_view.setOnItemClickListener(array_adapter);
 		}
 
 		@Override
@@ -180,16 +185,6 @@ public class QuestsListViewActivity extends BaseActivity implements INetworkInte
 		}
 
 		
-	}
-
-	@Override
-	public IPostExecuteCallback getPostExecuteCallback() {
-		return new NewQuestsPostExecuteCallback();
-	}
-
-	@Override
-	public ProgressBarHandler getProgressBarHandler() {
-		return new ProgressBarHandler (getString(R.string.lbl_loading_quests), getString(R.string.lbl_loading),_progress);
 	}
 
 

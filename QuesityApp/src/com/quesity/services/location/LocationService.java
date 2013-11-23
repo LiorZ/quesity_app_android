@@ -69,6 +69,10 @@ public class LocationService extends Service implements LocationUser{
 		_systemService.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, _one_time_location_listener);
 	}
 	
+	public void cancelImmediateLocationRequest() {
+		_systemService.removeUpdates(_one_time_location_listener);
+	}
+	
 	private void startLocationService() {
 		String service = Context.LOCATION_SERVICE;
 		_one_time_location_listener = new IntervalLocationListener(_minAccuracy);

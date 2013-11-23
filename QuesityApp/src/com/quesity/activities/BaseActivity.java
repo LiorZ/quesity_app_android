@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
 import com.quesity.application.IQuesityApplication;
+import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.models.JSONModel;
 import com.quesity.network.INetworkInterface;
@@ -19,10 +20,13 @@ import dagger.ObjectGraph;
 public abstract class BaseActivity extends FragmentActivity {
 	
 	INetworkInterface _network_interface;
+	protected LoadingProgressFragment _progress;
+	
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		_network_interface = NetworkInterface.getInstance();
+		_progress = new LoadingProgressFragment();
 	}
 	
 	public INetworkInterface getNetworkInterface() {

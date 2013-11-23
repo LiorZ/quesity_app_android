@@ -12,7 +12,8 @@ public class Game extends JSONModel {
 	private String quest_id;
 	private List<Move> moves;
 	private List<Location> locations;
-	
+	private int remaining_hints;
+
 	public Date getDateStarted() {
 		return date_started;
 	}
@@ -50,4 +51,11 @@ public class Game extends JSONModel {
 		this.locations = locations;
 	}
 
+	public void setRemainingHints(int h) {
+		remaining_hints = h;
+	}
+	
+	public int getRemainingHints() {
+		return remaining_hints;
+	}
 }

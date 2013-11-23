@@ -207,8 +207,6 @@ public class LoginFragment extends Fragment {
 		public int get401ErrorMessage() {
 			return R.string.error_general_authentication;
 		}	
-		
-		
 	
 	}
 		

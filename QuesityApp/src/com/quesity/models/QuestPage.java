@@ -23,6 +23,10 @@ public class QuestPage extends JSONModel {
 		return hints;
 	}
 	
+	public void setQuestPageHints(QuestPageHint[] h){
+		hints = h;
+	}
+	
 	public String getQuestId() {
 		return quest_id;
 	}

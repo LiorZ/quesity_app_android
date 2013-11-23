@@ -1,5 +1,9 @@
 package com.quesity.fragments;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -13,43 +17,76 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.quesity.R;
-import com.quesity.R.string;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.models.Game;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageHint;
 
 public class HintsFragment extends DialogFragment {
 
+	private HintsListAdapter _hintsListAdapter;
+
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		QuestPage page = ((QuestPageActivity) getActivity()).getCurrentQuestPage();
+		final QuestPage page = ((QuestPageActivity) getActivity()).getCurrentQuestPage();
+		final Game currentGame = ((QuestPageActivity) getActivity()).getCurrentGame();
+		if ( currentGame != null && currentGame.getRemainingHints() == 0) {
+			Dialog emptyHintsDlg = getNoHintsDialog(R.string.lbl_out_of_hints);
+			return emptyHintsDlg;
+		}
 		if ( page.getHints().length == 0 ){
-			Dialog emptyHintsDlg = getEmptyHintsDialog();
+			Dialog emptyHintsDlg = getNoHintsDialog(R.string.lbl_no_hints);
 			return emptyHintsDlg;
 		}
 		
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		final HintsListAdapter hintsListAdapter = new HintsListAdapter(page);
-		builder.setTitle(string.title_hints_dialog).setAdapter(hintsListAdapter, new DialogInterface.OnClickListener() {
+		_hintsListAdapter = new HintsListAdapter(page);
+		builder.setTitle(R.string.title_hints_dialog).setAdapter(_hintsListAdapter, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				QuestPageHint item = (QuestPageHint) hintsListAdapter.getItem(which);
+				final QuestPageHint item = (QuestPageHint) _hintsListAdapter.getItem(which);
+				
+				currentGame.setRemainingHints(currentGame.getRemainingHints()-1);
 				AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(item.getHintTxt(), getActivity(), new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
+						removeHintFromPage(page, item);
 						dialog.dismiss();
+						
 					}
 				});
 				okOnlyDialog.show();
+			}
+			
+			private void removeHintFromPage(QuestPage page,QuestPageHint hint) {
+				
+				QuestPageHint[] hints = page.getHints();
+				if ( hints == null )
+					return;
+				if ( hints.length == 0 ){
+					QuestPageHint[] n = new QuestPageHint[0];
+					page.setQuestPageHints(n);
+					return;
+				}
+				QuestPageHint[] new_hints = new QuestPageHint[hints.length-1]; 
+				
+				int i = 0;
+				while ( i< hints.length ){
+					if ( hints[i] != hint ) {
+						new_hints[i] = hints[i];
+					}
+					++i;
+				}
+				page.setQuestPageHints(new_hints);
 			}
 		});
 		return builder.create();
 	}
 	
-	private Dialog getEmptyHintsDialog(){
-		AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_no_hints), getActivity(),new DialogInterface.OnClickListener() {
+	private Dialog getNoHintsDialog(int message){
+		AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(message), getActivity(),new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

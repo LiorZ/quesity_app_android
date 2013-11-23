@@ -13,7 +13,6 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/quesity_title_color"
         />
-
     <ListView
         android:id="@+id/quest_list_fragment"
         android:name="com.quesity.fragments.QuestsListFragment"

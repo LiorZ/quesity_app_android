@@ -16,6 +16,7 @@ import android.widget.Button;
 import com.quesity.R;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.general.Constants;
+import com.quesity.models.Game;
 
 public class InGameMenuFragment extends Fragment {
 	
@@ -28,16 +29,47 @@ public class InGameMenuFragment extends Fragment {
 		_menu_dialog = new InGameMenuPopup();
 		_hints_fragment = new HintsFragment();
 
-		_menu_dialog.setItemArray(R.array.game_menu_items);
-		_menu_dialog.setTitle(R.string.lbl_game_menu_title);
-		_tactics_dialog = new InGameMenuPopup();
-		_tactics_dialog.setItemArray(R.array.tactics_menu_items);
-		_tactics_dialog.setTitle(R.string.lbl_game_menu_tactics);
+	}
+	
+	/**
+	 * Ugly!!!
+	 * @return
+	 */
+	private String[] getTacticsMenuItems() {
+		String string_hint = getString(R.string.menu_get_a_hint);
+		int hints = 0;
+		Game currentGame = ((QuestPageActivity)getActivity()).getCurrentGame();
+		if ( currentGame != null ) {
+			hints = currentGame.getRemainingHints();
+		}
+		
+		String formatted_string_hint = String.format(string_hint, hints);
+		String[] as_array = {formatted_string_hint};
+		return as_array;
 	}
 	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+		
+		_menu_dialog.setItemProvider(new ItemProvider() {
+			
+			@Override
+			public String[] getItems() {
+				return getResources().getStringArray(R.array.game_menu_items);
+			}
+		});
+		_menu_dialog.setTitle(R.string.lbl_game_menu_title);
+		_tactics_dialog = new InGameMenuPopup();
+		_tactics_dialog.setTitle(R.string.lbl_game_menu_tactics);
+		_tactics_dialog.setItemProvider(new ItemProvider() {
+			
+			@Override
+			public String[] getItems() {
+				return getTacticsMenuItems();
+			}
+		});
+		
 		final FragmentActivity factivity = (FragmentActivity) activity;
 		final FragmentManager fragmentManager = factivity.getSupportFragmentManager();
 		_transition = (TransitionFragmentInvokation) activity;
@@ -78,7 +110,8 @@ public class InGameMenuFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+
+		
 		View v = inflater.inflate(R.layout.fragment_ingame_menu,container);
 		Button continue_button = (Button) v.findViewById(R.id.btn_continue);
 		continue_button.setOnClickListener(new OnClickListener() {

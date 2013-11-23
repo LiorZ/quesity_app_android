@@ -61,7 +61,6 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 		@Override
 		public void onDetach() {
 				Log.d("LocationPageFragment", "LocationPageFragment - OnDetach");
-//				stopListening();
 				super.onDetach();
 		}
 		
@@ -89,6 +88,10 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 		}
 		
 		private void handleLocationError() {
+			LocationService instance = LocationService.getInstance();
+			if ( instance != null ){
+				instance.cancelImmediateLocationRequest();
+			}
 			stopTimer();
 			stopProgressBar();
 			getActivity().runOnUiThread(new Runnable() {
@@ -135,8 +138,8 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			}
 			Log.d("LocationFragment", location.toString());
 			AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_wrong_location), getActivity());
-			errorDialog.show();
 			stopProgressBar();
+			errorDialog.show();
 		}
 		
 		@Override

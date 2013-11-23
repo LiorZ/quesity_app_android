@@ -9,7 +9,7 @@ public final class Constants {
 	public static final String STALL_PAGE_TYPE="stall";
 	
 	public static final int HINTS_MENU_ITEM_INDEX = 0;
-	public static final int EXIT_MENU_ITEM_INDEX = 2;
+	public static final int EXIT_MENU_ITEM_INDEX = 1;
 	public static final String PREFS_NAME = "com.quesity.preferences";
 	public static final String PREF_USERNAME = "username";
 	public static final String PREF_PASSWORD = "password";
@@ -21,6 +21,7 @@ public final class Constants {
 
 	public static final String CURRENT_ACCOUNT_ID = "com.quesity.current_account_id";
 	public static final String CURRENT_GAME_ID = "com.quesity.current_game_id";
+	public static final String LOADED_QUESTS = "com.quesity.loaded_quests";
 
 	public static final long GPS_UPDATE_INTERVAL = 10*1000; //milliseconds
 	public static final float GPS_MIN_ACCURACY = 20; // meters

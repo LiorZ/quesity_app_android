@@ -4,18 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/splash_screen"
+    android:id="@+id/layout_container"
     tools:context=".QuesityMain" >
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight="20sp"
-        android:layout_marginTop="90sp"
-        android:scaleType="fitStart"
-		android:layout_centerHorizontal="true"
-        android:src="@drawable/logo_temp" 
-        android:alpha="0.2"/>
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:id="@+id/frag_background_image"
+		android:name="com.quesity.fragments.BackgroundImageFragment"        
+    />
     <TextView
         android:id="@+id/title_main_screen"
         android:layout_width="wrap_content"

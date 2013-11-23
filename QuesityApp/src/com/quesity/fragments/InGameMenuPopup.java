@@ -12,15 +12,14 @@ import android.support.v4.app.DialogFragment;
 public class InGameMenuPopup extends DialogFragment{
 
 	private int _title_id;
-	private int _item_array;
-
+	private ItemProvider _provider;
 	private DialogInterface.OnClickListener _listener;
 	public void setTitle(int id) {
 		_title_id = id;
 	}
 	
-	public void setItemArray(int id) {
-		_item_array = id;
+	public void setItemProvider(ItemProvider provider) {
+		_provider = provider;
 	}
 	
 	public void setClickListener(DialogInterface.OnClickListener listener){
@@ -29,7 +28,8 @@ public class InGameMenuPopup extends DialogFragment{
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle(_title_id).setItems(_item_array, _listener);
+		String[] items = _provider.getItems();
+		builder.setTitle(_title_id).setItems(items, _listener);
 		return builder.create();
 	}
 	

@@ -1,7 +1,11 @@
 package com.quesity.models;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.quesity.general.Constants;
 
 public class ModelsFactory {
 
@@ -72,4 +76,21 @@ public class ModelsFactory {
 		return s;
 	}
 	
+	public <M> M getFromPreferenceStore(Context c, String key, Class<M> cl) {
+		String json = PreferenceManager.getDefaultSharedPreferences(c).getString(key, null);
+		if ( json == null ) {
+			return null;
+		}
+		M model = ModelsFactory.getInstance().getModelFromJSON(json, cl);
+		if ( model == null ){
+			return null;
+		}
+		
+		return model;
+	}
+	
+	public  <M> void putInPreferenceStore(Context c, String key, M model){
+		String json = getJSONFromModel(model);
+		PreferenceManager.getDefaultSharedPreferences(c).edit().putString(key, json).commit();
+	}
 }

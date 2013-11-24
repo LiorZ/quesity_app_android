@@ -29,6 +29,5 @@ public class ModelReport {
 		        headers
 		);
 		StoreService.start(_context, message);
-			
 	}
 }

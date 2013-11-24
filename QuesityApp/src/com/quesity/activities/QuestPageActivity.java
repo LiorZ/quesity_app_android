@@ -1,12 +1,17 @@
 package com.quesity.activities;
 
+import java.io.ObjectOutputStream.PutField;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -35,8 +40,10 @@ import com.quesity.models.Game;
 import com.quesity.models.Location;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Move;
+import com.quesity.models.Quest;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
+import com.quesity.models.SavedGame;
 import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.GetRequestTypeGetter;
 import com.quesity.network.IBackgroundCallback;
@@ -60,6 +67,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private LoadingProgressFragment _progress;
 	private WebViewFragment _webViewFragment;
 	private String _quest_id;
+	private Quest _quest_obj;
 	private OnDemandFragment _transitionFragment;
 	private MultipleChoiceFragment _multiple_choice_fragment;
 	private OpenQuestionFragment _open_question_fragment;
@@ -77,27 +85,69 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		super.onPause();
 		Log.d("QuestPageActivity","Activity Paused");
 	}
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
+	
+	private Bundle getInstanceState(Bundle existing) {
+		Bundle b = existing;
+		if ( existing == null ) {
+			b = new Bundle();
+		}
+		
 		
 		String page_json = ModelsFactory.getInstance().getJSONFromModel(_currentPage);
 		Log.d("QuestPageActivity", "Saving instance state with json");
-		outState.putString(QUEST_PAGE_KEY,page_json);
+		b.putString(QUEST_PAGE_KEY,page_json);
+		return b;
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState = getInstanceState(outState);
 	}
 
+	private boolean  restoreFromPreferences() {
+		SavedGame[] saved_games = ModelsFactory.getInstance().getFromPreferenceStore(this, Constants.SAVED_GAMES, SavedGame[].class);
+		
+		if ( saved_games == null || saved_games.length == 0 )
+			return false;
+		Bundle b = new Bundle();
+		for(int i = 0; i<saved_games.length; ++i) {
+			if (saved_games[i].getQuest().getId().equals(_quest_id) ){
+				_current_game = saved_games[i].getGame();
+				_currentPage = saved_games[i].getCurrentPage();
+				_all_pages = saved_games[i].getPages();
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("QuestPageActivity", "OnCreate - QuestPageActivity");
 		setContentView(R.layout.activity_quest_page);
-		_quest_id = getIntent().getStringExtra(QuestsListViewActivity.QUEST_ID);
+		String quest_json = getIntent().getStringExtra(Constants.QUEST_OBJ);
+
+		_quest_obj = ModelsFactory.getInstance().getModelFromJSON(quest_json, Quest.class);
+		_quest_id = _quest_obj.getId();
+		
 		_progress = new LoadingProgressFragment();
 		_progress.setCancelable(false);
 		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
 		((IQuesityApplication)getApplication()).inject(this);
+		
 		constructFragmentMapper();
-		restoreSavedPage(savedInstanceState);
+		
+		boolean shouldResume = getIntent().getBooleanExtra(Constants.QUEST_RESUME_KEY, false);
+		if ( shouldResume ) {
+			restoreFromPreferences();
+			startLocationService();
+			refreshQuestPage(_currentPage);
+		}else {
+			restoreSavedPage(savedInstanceState);	
+		}
+		
 	}
 
 	private void startLocationService() {
@@ -113,6 +163,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		super.onDestroy();
 		stopLocationService();
 	}
+	
 	private void stopLocationService() {
 		Intent i = new Intent(this,LocationService.class);
 		stopService(i);
@@ -173,10 +224,28 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 				finish();
 			}
 		});
+		removeGameFromSaved();
 		stopLocationService();
 		okOnlyDialog.show();
 	}
 	
+	private void removeGameFromSaved() {
+		SavedGame[] saved_games = ModelsFactory.getInstance().getFromPreferenceStore(this, Constants.SAVED_GAMES, SavedGame[].class);
+		if ( saved_games == null || saved_games.length == 0 )
+			return;
+		SavedGame[] removed = new SavedGame[saved_games.length-1];
+		int i_src  = 0;
+		int i_tgt = 0;
+		while ( i_src < saved_games.length ){
+			if ( !saved_games[i_src].getGame().getQuestId().equals(_quest_id) ){
+				removed[i_tgt] =saved_games[i_src];
+				i_tgt++;
+			}
+			i_src++;
+		}
+		
+		ModelsFactory.getInstance().putInPreferenceStore(this, Constants.SAVED_GAMES, removed);
+	}
 	
 	private void constructFragmentMapper() {
 		addMultipleChoiceFragment();
@@ -229,10 +298,54 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		for (int i=0; i<_all_pages.length; ++i) {
 			if ( _all_pages[i].getId().equals(page_id) ) {
 				reportMove(link);
+				savePage(_all_pages[i]);
 				refreshQuestPage(_all_pages[i]);
 				return;
 			}
 		}
+	}
+	
+	private void savePage(QuestPage page) {
+		String savedGamesJson = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.SAVED_GAMES, null);
+		SavedGame[] games;
+		SavedGame g = null;
+		int index = 0;
+		if (savedGamesJson == null){
+			Log.d(TAG,"Creating new array for games");
+			games = new SavedGame[0];
+		}else {
+			Log.d(TAG,"Creating a new entry in an existing array of saved games");
+			games = ModelsFactory.getInstance().getModelFromJSON(savedGamesJson, SavedGame[].class);
+		}
+		
+		for(int i=0; i<games.length; ++i) {
+			if ( games[i] == null || games[i].getGame() == null )
+				continue;
+			
+			if ( games[i].getGame().getQuestId().equals( _current_game.getQuestId() ) ){
+				Log.d(TAG,"Retrieved existing game");
+				g = games[i];
+				break;
+			}
+		}
+		
+		if ( g == null ) {
+			games = Arrays.copyOf(games, games.length+1);
+			index = games.length-1;
+			Log.d(TAG,"Could not find existing game, so I'm creating a new entry in index " + index);
+			games[index] = new SavedGame();
+			games[index].setCurrentPage(page);
+			games[index].setGame(_current_game);
+			games[index].setPages(_all_pages);
+			games[index].setQuest(_quest_obj);
+		}else {
+			Log.d(TAG,"Found existing game, updating the page");
+			g.setCurrentPage(page);
+		}
+		Editor edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+		String games_json = ModelsFactory.getInstance().getJSONFromModel(games);
+		edit.putString(Constants.SAVED_GAMES, games_json).commit();
+		
 	}
 	
 	private void reportMove(QuestPageLink l){ 
@@ -360,6 +473,9 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			String game_json_input = ModelsFactory.getInstance().getJSONFromModel(game);
 			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input));
 			_current_game = ModelsFactory.getInstance().getModelFromJSON(game_json, Game.class);
+			
+			removeGameFromSaved(); //If we started a new game, remove the old one.
+			
 			Log.d(TAG, "Started Game with " + _current_game.getRemainingHints() + " available hints");
 			startLocationService();
 		}

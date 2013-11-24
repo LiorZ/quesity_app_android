@@ -57,4 +57,7 @@
 	<string name="lbl_out_of_hints">You\'ve used all your available hints :(</string>
 	
 	<string name="menu_get_a_hint">Get a hint (%d)</string>
+	<string name="lbl_resume_start_over">You have started playing this quest before. Would you like to resume or start over?</string>
+	<string name = "lbl_resume">Resume</string>
+	<string name="lbl_start_over">Start Over</string>
 </resources>

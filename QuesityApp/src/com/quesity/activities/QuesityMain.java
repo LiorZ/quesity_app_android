@@ -19,6 +19,7 @@ import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
+import com.quesity.models.SavedGame;
 import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.INetworkInteraction;
 import com.quesity.network.INetworkInterface;
@@ -73,6 +74,17 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 				+ user_fullname);
 	}
 
+	public void showMyQuests(View view) {
+		String saved_games_json = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.SAVED_GAMES, "[]");
+		SavedGame[] saved_games = ModelsFactory.getInstance().getModelFromJSON(saved_games_json, SavedGame[].class);
+		Quest[] quests = new Quest[saved_games.length];
+		for (int i=0; i<saved_games.length; ++i) {
+			quests[i] = saved_games[i].getQuest();
+		}
+		showQuestList(quests);
+		
+	}
+	
 	public void findQuestAction(View view){
 		INetworkInteraction interactor = new INetworkInteraction() {
 
@@ -122,7 +134,12 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 			finish();
 		}
 	}
-
+	public void showQuestList(Quest[] quests) {
+		Intent i = new Intent(QuesityMain.this, QuestsListViewActivity.class);
+		String json = ModelsFactory.getInstance().getJSONFromModel(quests);
+		i.putExtra(Constants.LOADED_QUESTS, json);
+		startActivity(i);
+	}
 	public void performLogout(View view) {
 		SharedPreferences prefs = getSharedPreferences(Constants.PREFS_NAME,
 				MODE_PRIVATE);
@@ -173,10 +190,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 				errorDialog.show();
 				return;
 			}
-			Intent i = new Intent(QuesityMain.this, QuestsListViewActivity.class);
-			String json = ModelsFactory.getInstance().getJSONFromModel(result);
-			i.putExtra(Constants.LOADED_QUESTS, json);
-			startActivity(i);
+			showQuestList(result);
 		}
 
 		@Override

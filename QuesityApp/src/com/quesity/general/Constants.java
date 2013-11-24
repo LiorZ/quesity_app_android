@@ -22,7 +22,11 @@ public final class Constants {
 	public static final String CURRENT_ACCOUNT_ID = "com.quesity.current_account_id";
 	public static final String CURRENT_GAME_ID = "com.quesity.current_game_id";
 	public static final String LOADED_QUESTS = "com.quesity.loaded_quests";
-
+	public static final String SAVED_GAMES = "com.quesity.saved_games";
+	public static final String QUEST_OBJ = "com.quesity.quest_obj";
+	public static final String QUEST_CURRENT_PAGE = "com.quesity.current_page";
+	public static final String QUEST_RESUME_KEY = "com.quesity.resume_key";
+	
 	public static final long GPS_UPDATE_INTERVAL = 10*1000; //milliseconds
 	public static final float GPS_MIN_ACCURACY = 20; // meters
 }

@@ -3,6 +3,7 @@ package com.quesity.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -24,6 +25,7 @@ import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
+import com.quesity.models.SavedGame;
 import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
@@ -59,6 +61,23 @@ public class QuestsListViewActivity extends BaseActivity{
 		_quest_list_view.setOnItemClickListener(array_adapter);
 	}
 	
+	private boolean existsInCache( Quest q ) {
+		SavedGame[] saved_games = ModelsFactory.getInstance().getFromPreferenceStore(this, Constants.SAVED_GAMES, SavedGame[].class);
+		if ( saved_games == null ) 
+			return false;
+		for(int i = 0; i<saved_games.length; ++i ) {
+			if (saved_games[i].getQuest().getId().equals(q.getId())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private void startQuestActivity(Intent i) {
+		startActivity(i);
+		finish();
+	}
+	
     private class StartQuestClickListener implements View.OnClickListener {
 
 		@Override
@@ -70,12 +89,39 @@ public class QuestsListViewActivity extends BaseActivity{
 			if ( item == null || !(item instanceof Quest)){
 				return;
 			}
+			
 			Intent intent = new Intent(QuestsListViewActivity.this, QuestPageActivity.class);
-	    	intent.putExtra(QUEST_ID, ((Quest)item).getId());
-	    	startActivity(intent);
-	    	finish();
+	    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(item));
+	    	if ( existsInCache((Quest)item)) {
+	    		askStartOrResume(intent);
+	    	}else{
+				startQuestActivity(intent);
+	    	}
 		}
 
+		private void askStartOrResume(final Intent i) {
+			DialogInterface.OnClickListener resume = new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					i.putExtra(Constants.QUEST_RESUME_KEY,true);
+					dialog.dismiss();
+					startQuestActivity(i);
+				}
+			};
+			
+			DialogInterface.OnClickListener start_over = new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					startQuestActivity(i);
+				}
+			};
+			int[] msgs = {R.string.lbl_resume, R.string.lbl_start_over};
+			DialogInterface.OnClickListener[] listeners = {resume,start_over};
+			SimpleDialogs.getGeneralQuestionDialog(getString(R.string.lbl_resume_start_over), QuestsListViewActivity.this, 
+					msgs , listeners).show();
+		}
     }
     
     private class NewQuestsPostExecuteCallback implements IPostExecuteCallback {

@@ -42,4 +42,22 @@ public class SimpleDialogs {
 		
 		return ad;
 	}
+	
+	/**
+	 * Asks a certain question with two custom answers.
+	 * answers[0] = positive, answers[1] = negative
+	 * @param message
+	 * @param context
+	 * @param answers
+	 * @param listeners
+	 * @return
+	 */
+	public static AlertDialog getGeneralQuestionDialog(String message, Context context, int[] answers, DialogInterface.OnClickListener[] listeners) {
+		AlertDialog ad = new AlertDialog.Builder(context).create();
+		ad.setCancelable(true);
+		ad.setMessage(message);
+		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(answers[0]), listeners[0]);
+		ad.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(answers[1]), listeners[1]);
+		return ad;
+	}
 }

@@ -6,11 +6,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -18,16 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.quesity.R;
-import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.general.Config;
+import com.quesity.fragments.TitleFragment;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.models.SavedGame;
-import com.quesity.network.FetchJSONTaskGet;
-import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
 
 public class QuestsListViewActivity extends BaseActivity{
@@ -43,6 +37,7 @@ public class QuestsListViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		setTitle(R.string.app_name);
+		setPageTitle();
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
 		_btn_start_quest = (Button) findViewById(R.id.btn_start_quest);
 		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -52,6 +47,13 @@ public class QuestsListViewActivity extends BaseActivity{
 		String quests_json = getIntent().getStringExtra(Constants.LOADED_QUESTS);
 		if (quests_json != null && quests_json.length() > 0 )
 			showLoadedQuests(quests_json);
+	}
+	
+	private void setPageTitle() {
+		TitleFragment title_fragment =(TitleFragment) getSupportFragmentManager().findFragmentById(R.id.title_find_quest);
+		title_fragment.setText(getString(R.string.lbl_find_quest));
+//		title_fragment.SetAppearance(android.R.attr.textAppearanceSmall);
+		
 	}
 	
 	private void showLoadedQuests(String json) {

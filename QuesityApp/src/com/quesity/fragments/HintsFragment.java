@@ -65,19 +65,22 @@ public class HintsFragment extends DialogFragment {
 				QuestPageHint[] hints = page.getHints();
 				if ( hints == null )
 					return;
-				if ( hints.length == 0 ){
+				
+				if ( hints.length == 0  || hints.length == 1){
 					QuestPageHint[] n = new QuestPageHint[0];
 					page.setQuestPageHints(n);
 					return;
 				}
 				QuestPageHint[] new_hints = new QuestPageHint[hints.length-1]; 
 				
-				int i = 0;
-				while ( i< hints.length ){
-					if ( hints[i] != hint ) {
-						new_hints[i] = hints[i];
+				int i_src = 0;
+				int i_tgt = 0;
+				while ( i_src< hints.length ){
+					if ( hints[i_src].getId().equals(hint.getId()) ) {
+						new_hints[i_tgt] = hints[i_src];
+						i_tgt++;
 					}
-					++i;
+					i_src++;
 				}
 				page.setQuestPageHints(new_hints);
 			}

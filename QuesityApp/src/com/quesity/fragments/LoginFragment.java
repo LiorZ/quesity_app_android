@@ -34,10 +34,12 @@ import com.quesity.network.JSONPostRequestTypeGetter;
 
 public class LoginFragment extends Fragment {
 
-//	private LoadingProgressFragment _progress;
+	//	private LoadingProgressFragment _progress;
 	private UiLifecycleHelper _uiHelper;
 	private LoginButton _loginBtn;
 	public static final String TAG = "com.quesity.fragment.facebook_login_fragment";
+	private LoginStateChangeListener _listener;
+	
 	private Session.StatusCallback _sessionCallback = 
 		    new Session.StatusCallback() {
 		    @Override
@@ -81,6 +83,7 @@ public class LoginFragment extends Fragment {
 	
 	@Override
 	public void onStop() {
+		_listener = null;
 		if ( _uiHelper != null )
 			_uiHelper.onStop();
 		super.onStop();
@@ -88,6 +91,7 @@ public class LoginFragment extends Fragment {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
+		_listener = null;
 		if ( _uiHelper != null )
 			_uiHelper.onDestroy();
 	}
@@ -130,6 +134,9 @@ public class LoginFragment extends Fragment {
 	            // Show the authenticated fragment
 //	        	Intent intent = new Intent(this, QuesityMain.class);
 //	        	startActivity(intent);
+	        	if ( _listener != null ) {
+	        		_listener.stateChanged(true);
+	        	}
 	        	Request newMeRequest = Request.newMeRequest(session, new Request.GraphUserCallback() {
 
 					@Override
@@ -165,8 +172,10 @@ public class LoginFragment extends Fragment {
 	        	});
 	        	newMeRequest.executeAsync();
 	        } else if (state.isClosed() || session.isClosed()) {
-	            // If the session state is closed:
-	            // Show the login fragment
+	        	
+	        	if (_listener != null)
+	        		_listener.stateChanged(false);
+	        	
 	        	Log.d("LoginFragment","Session and state are closed!");
 				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
 				p.edit().putString(Constants.CURRENT_ACCOUNT_ID, null).commit();
@@ -209,6 +218,13 @@ public class LoginFragment extends Fragment {
 		}	
 	
 	}
-		
+	public void setLoginStateChangeListener(LoginStateChangeListener listener) {
+		_listener = listener;
+	}
+	
+	public interface LoginStateChangeListener {
+		public void stateChanged(boolean loggedin);
+	}
+	
 	}
 	

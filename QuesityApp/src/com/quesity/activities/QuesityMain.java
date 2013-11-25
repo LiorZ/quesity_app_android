@@ -85,6 +85,11 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 		
 	}
 	
+	public void showAbout(View view) {
+		Intent i = new Intent(this,AboutActivity.class);
+		startActivity(i);
+	}
+	
 	public void findQuestAction(View view){
 		INetworkInteraction interactor = new INetworkInteraction() {
 

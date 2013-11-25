@@ -1,17 +1,15 @@
 package com.quesity.activities;
 
-import java.io.ObjectOutputStream.PutField;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -209,7 +207,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	public void returnToMainPage() {
     	stopLocationService();
     	Intent intent = new Intent(QuestPageActivity.this, QuesityMain.class);
-    	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);	
     	startActivity(intent);
     	finish();
 	}
@@ -233,6 +231,16 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		SavedGame[] saved_games = ModelsFactory.getInstance().getFromPreferenceStore(this, Constants.SAVED_GAMES, SavedGame[].class);
 		if ( saved_games == null || saved_games.length == 0 )
 			return;
+		boolean has = false;
+		for(int i=0; i<saved_games.length; ++i) {
+			if (saved_games[i].getGame().getQuestId().equals(_quest_id)) {
+				has = true;
+			}
+		}
+		if ( ! has ){
+			return;
+		}
+		
 		SavedGame[] removed = new SavedGame[saved_games.length-1];
 		int i_src  = 0;
 		int i_tgt = 0;
@@ -306,46 +314,60 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	}
 	
 	private void savePage(QuestPage page) {
-		String savedGamesJson = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.SAVED_GAMES, null);
-		SavedGame[] games;
-		SavedGame g = null;
-		int index = 0;
-		if (savedGamesJson == null){
-			Log.d(TAG,"Creating new array for games");
-			games = new SavedGame[0];
-		}else {
-			Log.d(TAG,"Creating a new entry in an existing array of saved games");
-			games = ModelsFactory.getInstance().getModelFromJSON(savedGamesJson, SavedGame[].class);
-		}
-		
-		for(int i=0; i<games.length; ++i) {
-			if ( games[i] == null || games[i].getGame() == null )
-				continue;
+		final Activity a = this;
+		AsyncTask<QuestPage, Void, Integer> task = new AsyncTask<QuestPage, Void, Integer>() {
 			
-			if ( games[i].getGame().getQuestId().equals( _current_game.getQuestId() ) ){
-				Log.d(TAG,"Retrieved existing game");
-				g = games[i];
-				break;
+			@Override
+			protected Integer doInBackground(QuestPage... params) {
+				QuestPage page = params[0];
+				String savedGamesJson = PreferenceManager.getDefaultSharedPreferences(a).getString(Constants.SAVED_GAMES, null);
+				SavedGame[] games;
+				SavedGame g = null;
+				int index = 0;
+				if (savedGamesJson == null){
+					Log.d(TAG,"Creating new array for games");
+					games = new SavedGame[0];
+				}else {
+					Log.d(TAG,"Creating a new entry in an existing array of saved games");
+					games = ModelsFactory.getInstance().getModelFromJSON(savedGamesJson, SavedGame[].class);
+				}
+				
+				for(int i=0; i<games.length; ++i) {
+					if ( games[i] == null || games[i].getGame() == null )
+						continue;
+					
+					if ( games[i].getGame().getQuestId().equals( _current_game.getQuestId() ) ){
+						Log.d(TAG,"Retrieved existing game");
+						g = games[i];
+						break;
+					}
+				}
+				
+				if ( g == null ) {
+					games = Arrays.copyOf(games, games.length+1);
+					index = games.length-1;
+					Log.d(TAG,"Could not find existing game, so I'm creating a new entry in index " + index);
+					games[index] = new SavedGame();
+					putProgressInSavedGame(games[index], page);
+				}else {
+					Log.d(TAG,"Found existing game, updating the page");
+					putProgressInSavedGame(g, page);
+				}
+				Editor edit = PreferenceManager.getDefaultSharedPreferences(a).edit();
+				String games_json = ModelsFactory.getInstance().getJSONFromModel(games);
+				edit.putString(Constants.SAVED_GAMES, games_json).commit();
+				return 0;
 			}
-		}
+		};
+		task.execute(page);
 		
-		if ( g == null ) {
-			games = Arrays.copyOf(games, games.length+1);
-			index = games.length-1;
-			Log.d(TAG,"Could not find existing game, so I'm creating a new entry in index " + index);
-			games[index] = new SavedGame();
-			games[index].setCurrentPage(page);
-			games[index].setGame(_current_game);
-			games[index].setPages(_all_pages);
-			games[index].setQuest(_quest_obj);
-		}else {
-			Log.d(TAG,"Found existing game, updating the page");
-			g.setCurrentPage(page);
-		}
-		Editor edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
-		String games_json = ModelsFactory.getInstance().getJSONFromModel(games);
-		edit.putString(Constants.SAVED_GAMES, games_json).commit();
-		
+	}
+	
+	private void putProgressInSavedGame(SavedGame game, QuestPage page) {
+		game.setCurrentPage(page);
+		game.setGame(_current_game);
+		game.setPages(_all_pages);
+		game.setQuest(_quest_obj);
 	}
 	
 	private void reportMove(QuestPageLink l){ 

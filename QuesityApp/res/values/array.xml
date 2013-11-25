@@ -2,7 +2,7 @@
 <resources>
     <string-array name="game_menu_items">
         <item name="item_show_map">Show Map</item>
-        <item name="item_exit">Exit &amp; Leave</item>
+        <item name="item_exit">Leave Quest</item>
     </string-array>
     
 </resources>

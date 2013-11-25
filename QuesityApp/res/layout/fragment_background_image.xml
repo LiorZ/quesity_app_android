@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:layout_marginLeft="20sp"
         android:layout_marginRight="20sp"
-        android:layout_marginTop="130sp"
+        android:layout_marginTop="180sp"
         android:scaleType="fitStart"
 		android:layout_centerHorizontal="true"
         android:src="@drawable/logo_temp" 

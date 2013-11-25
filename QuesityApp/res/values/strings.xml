@@ -60,4 +60,7 @@
 	<string name="lbl_resume_start_over">You have started playing this quest before. Would you like to resume or start over?</string>
 	<string name = "lbl_resume">Resume</string>
 	<string name="lbl_start_over">Start Over</string>
+	<string name="lbl_about">About</string>
+	<string name="err_display_about">Error occurred while displaying about screen</string>
+	
 </resources>

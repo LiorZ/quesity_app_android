@@ -3,22 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/splash_screen">
-        <TextView
-        android:id="@+id/choose_quest_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <fragment 
+        android:id="@+id/title_find_quest"
+        android:name="com.quesity.fragments.TitleFragment"
         android:layout_centerHorizontal="true"
-        android:text="@string/title_find_quest"
-        android:layout_marginBottom="20sp"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/quesity_title_color"
-        />
+        android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+    />
     <ListView
         android:id="@+id/quest_list_fragment"
         android:name="com.quesity.fragments.QuestsListFragment"
         android:layout_width="match_parent"
         android:layout_height="300sp"
-        android:layout_below="@id/choose_quest_title" >
+        android:layout_below="@id/title_find_quest" >
         
     </ListView>
 

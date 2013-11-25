@@ -40,6 +40,12 @@
             android:theme="@android:style/Theme.Light.NoTitleBar" 
             android:screenOrientation="portrait"  >
         </activity>
+        
+        <activity android:name="com.quesity.activities.AboutActivity"
+            android:theme="@android:style/Theme.Light.NoTitleBar" 
+            android:screenOrientation="portrait"  >
+        </activity>
+        
         <activity
             android:name="com.quesity.activities.QuestPageActivity"
             android:label="@string/title_activity_quest_page" 

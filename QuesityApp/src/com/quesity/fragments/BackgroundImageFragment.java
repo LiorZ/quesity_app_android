@@ -9,6 +9,7 @@ import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
 import com.quesity.R;
+import com.quesity.util.ViewAlpha;
 
 public class BackgroundImageFragment extends Fragment {
 
@@ -18,15 +19,9 @@ public class BackgroundImageFragment extends Fragment {
 			Bundle savedInstanceState) {
 		View main_view = inflater.inflate(R.layout.fragment_background_image, container,false);
 		ImageView logo = (ImageView) main_view.findViewById(R.id.logo);
-		setAlphaForView(logo, ALPHA);
+		ViewAlpha.setAlphaForView(logo, ALPHA,0);
 		return main_view;
 	}
 	
-	private void setAlphaForView(View v, float alpha) {
-		AlphaAnimation animation = new AlphaAnimation(alpha, alpha);
-		animation.setDuration(0);
-		animation.setFillAfter(true);
-		v.startAnimation(animation);
-	}
 	
 }

@@ -5,11 +5,14 @@ import java.util.TimerTask;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.TextView;
 
 import com.quesity.R;
 import com.quesity.fragments.LoginFragment;
@@ -51,6 +54,7 @@ public class SplashScreen extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_splash_screen);	
+		
 	}
 	
 	private void startMainActivity() {
@@ -72,7 +76,7 @@ public class SplashScreen extends BaseActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
-		LoginFragment loginFragment = new LoginFragment();
+		final LoginFragment loginFragment = new LoginFragment();
 		fragmentTransaction.setCustomAnimations(R.anim.default_fade_in,R.anim.default_fade_out);
 		fragmentTransaction.add(R.id.facebook_login_fragment_container,loginFragment,LoginFragment.TAG);
 		fragmentTransaction.commit();

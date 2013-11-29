@@ -75,8 +75,8 @@ public class HintsFragment extends DialogFragment {
 				
 				int i_src = 0;
 				int i_tgt = 0;
-				while ( i_src< hints.length ){
-					if ( hints[i_src].getId().equals(hint.getId()) ) {
+				while ( i_src < hints.length ){
+					if ( !hints[i_src].getId().equals(hint.getId()) ) {
 						new_hints[i_tgt] = hints[i_src];
 						i_tgt++;
 					}

@@ -81,7 +81,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 		for (int i=0; i<saved_games.length; ++i) {
 			quests[i] = saved_games[i].getQuest();
 		}
-		showQuestList(quests);
+		showQuestList(quests,getString(R.string.lbl_my_quests));
 		
 	}
 	
@@ -139,10 +139,11 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 			finish();
 		}
 	}
-	public void showQuestList(Quest[] quests) {
+	public void showQuestList(Quest[] quests, String title) {
 		Intent i = new Intent(QuesityMain.this, QuestsListViewActivity.class);
 		String json = ModelsFactory.getInstance().getJSONFromModel(quests);
 		i.putExtra(Constants.LOADED_QUESTS, json);
+		i.putExtra(Constants.QUEST_LIST_ACTIVITY_TITLE, title);
 		startActivity(i);
 	}
 	public void performLogout(View view) {
@@ -195,7 +196,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 				errorDialog.show();
 				return;
 			}
-			showQuestList(result);
+			showQuestList(result,getString(R.string.lbl_find_quest));
 		}
 
 		@Override

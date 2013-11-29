@@ -37,7 +37,8 @@ public class QuestsListViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		setTitle(R.string.app_name);
-		setPageTitle();
+		String title = getIntent().getStringExtra(Constants.QUEST_LIST_ACTIVITY_TITLE);
+		setPageTitle(title);
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
 		_btn_start_quest = (Button) findViewById(R.id.btn_start_quest);
 		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -49,9 +50,9 @@ public class QuestsListViewActivity extends BaseActivity{
 			showLoadedQuests(quests_json);
 	}
 	
-	private void setPageTitle() {
+	private void setPageTitle(String title) {
 		TitleFragment title_fragment =(TitleFragment) getSupportFragmentManager().findFragmentById(R.id.title_find_quest);
-		title_fragment.setText(getString(R.string.lbl_find_quest));
+		title_fragment.setText(title);
 //		title_fragment.SetAppearance(android.R.attr.textAppearanceSmall);
 		
 	}

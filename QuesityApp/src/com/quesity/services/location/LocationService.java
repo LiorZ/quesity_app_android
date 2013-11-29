@@ -17,6 +17,7 @@ import android.util.Log;
 import com.quesity.R;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.controllers.LocationUser;
+import com.quesity.general.Constants;
 import com.quesity.network.reporting.ModelReport;
 
 public class LocationService extends Service implements LocationUser{
@@ -55,7 +56,7 @@ public class LocationService extends Service implements LocationUser{
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		_updateInterval = intent.getLongExtra(KEY_UPDATE_INTERVAL, 1000);
+		_updateInterval = intent.getLongExtra(KEY_UPDATE_INTERVAL, Constants.GPS_UPDATE_INTERVAL);
 		_minAccuracy = intent.getFloatExtra(KEY_GPS_ACCURACY, DEFAULT_ACCURACY);
 		_report_url = intent.getStringExtra(KEY_URL_TO_REPORT);
 		startLocationService();

@@ -26,6 +26,7 @@ public final class Constants {
 	public static final String QUEST_OBJ = "com.quesity.quest_obj";
 	public static final String QUEST_CURRENT_PAGE = "com.quesity.current_page";
 	public static final String QUEST_RESUME_KEY = "com.quesity.resume_key";
+	public static final String QUEST_LIST_ACTIVITY_TITLE = "com.quesity.quest_list_activity_title";
 	
 	public static final long GPS_UPDATE_INTERVAL = 10*1000; //milliseconds
 	public static final float GPS_MIN_ACCURACY = 20; // meters

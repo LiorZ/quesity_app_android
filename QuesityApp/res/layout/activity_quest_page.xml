@@ -1,31 +1,30 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     tools:context=".QuestPageActivity" >
 
     <fragment
         android:id="@+id/webview_fragment"
         android:name="com.quesity.fragments.WebViewFragment"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="0dp"
+        android:layout_weight="0.9"
+    />
     
       <fragment
         android:id="@+id/ingame_menu_fragment"
         android:name="com.quesity.fragments.InGameMenuFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true" 
         />
 
       <FrameLayout
           android:id="@+id/transition_place_holder"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_centerHorizontal="true" >
+          android:layout_gravity="center_horizontal" >
       </FrameLayout>
         
-</RelativeLayout>
+</LinearLayout>

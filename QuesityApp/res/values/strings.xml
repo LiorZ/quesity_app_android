@@ -7,6 +7,7 @@
     <string name="dummy_title">Quesity</string>
     <string name="lbl_start_quest">Start Quest</string>
     <string name="lbl_find_quest">Find Quest</string>
+    <string name="lbl_about_quesity">About Quesity</string>
     <string name="lbl_my_quests">My Quests</string>
     <string name="error_title">Error</string>
     <string name="lbl_loading_quests">Loading Quests</string>

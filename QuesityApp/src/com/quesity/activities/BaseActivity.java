@@ -1,21 +1,12 @@
 package com.quesity.activities;
 
-import javax.inject.Inject;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.quesity.application.IQuesityApplication;
 import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.ProgressBarHandler;
-import com.quesity.models.JSONModel;
 import com.quesity.network.INetworkInterface;
-import com.quesity.network.IPostExecuteCallback;
 import com.quesity.network.NetworkInterface;
-import com.quesity.network.dagger_modules.NetworkInterfaceModule;
-
-import dagger.ObjectGraph;
 
 public abstract class BaseActivity extends FragmentActivity {
 	

@@ -3,10 +3,6 @@ package com.quesity.application;
 import android.app.Activity;
 import android.app.Application;
 
-import com.quesity.network.dagger_modules.NetworkInterfaceModule;
-
-import dagger.ObjectGraph;
-
 public class QuesityApplication extends Application implements IQuesityApplication {
 
 	

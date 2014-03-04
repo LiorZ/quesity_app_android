@@ -9,9 +9,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
-import com.facebook.widget.ProfilePictureView;
 import com.quesity.R;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
@@ -28,16 +26,12 @@ import com.quesity.network.NetworkInterface;
 
 public class QuesityMain extends BaseActivity implements INetworkInteraction {
 
-	private ProfilePictureView _profilePicture;
-	private TextView _welcomeText;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.app_name);
 		setContentView(R.layout.activity_quesity_main);
-		_profilePicture = (ProfilePictureView) findViewById(R.id.quesity_main_profile_pic);
-		_welcomeText = (TextView) findViewById(R.id.txt_welcome_msg);
 		loadUserDetails();
 	}
 
@@ -69,9 +63,6 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 			});
 		}
 
-		_profilePicture.setProfileId(user_id);
-		_welcomeText.setText(getString(R.string.lbl_welcome) + " "
-				+ user_fullname);
 	}
 
 	public void showMyQuests(View view) {

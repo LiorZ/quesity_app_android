@@ -78,7 +78,7 @@ public class SplashScreen extends BaseActivity {
 		
 		final LoginFragment loginFragment = new LoginFragment();
 		fragmentTransaction.setCustomAnimations(R.anim.default_fade_in,R.anim.default_fade_out);
-//		fragmentTransaction.add(R.id.facebook_login_fragment_container,loginFragment,LoginFragment.TAG);
+		fragmentTransaction.add(R.id.facebook_login_fragment_container,loginFragment,LoginFragment.TAG);
 		fragmentTransaction.commit();
 	}
 	

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/main_menu_button_pressed"
+    android:insetTop="@dimen/button_border_width"
+    android:insetBottom="@dimen/button_border_width_neg"
+    android:visible="true">
+
+</inset>

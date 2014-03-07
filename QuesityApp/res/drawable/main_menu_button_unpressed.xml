@@ -8,7 +8,9 @@
                     <corners android:radius="10dp" />
                 </shape></item>
                 
-            <item android:bottom="3dp"><shape android:shape="rectangle">
+            <item android:bottom="@dimen/button_border_width">
+          
+                <shape android:shape="rectangle">
                     <solid android:color="#61a2be" />
 
                     <corners android:radius="10dp" />

@@ -60,7 +60,7 @@ public class WebViewFragment extends Fragment {
 		 _w = (WebView) frag.findViewById(R.id.webView);
 		 if ( _showLoading )
 			 setUpLoading(frag);
-		 _w.getSettings().setJavaScriptEnabled(false);
+		 _w.getSettings().setJavaScriptEnabled(true);
 		 _w.setHorizontalScrollBarEnabled(false);
 		 _w.getSettings().setSupportZoom(true);
 		 return frag;

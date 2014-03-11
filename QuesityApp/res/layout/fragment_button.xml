@@ -18,8 +18,8 @@
 
     <ImageView
         android:id="@+id/button_img"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="@dimen/icons_size"
+        android:layout_height="@dimen/icons_size"
         android:layout_alignParentLeft="true"
      />
 

@@ -1,5 +1,10 @@
 package com.quesity.activities;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,13 +16,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.quesity.R;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.fragments.TitleFragment;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
@@ -27,7 +31,6 @@ import com.quesity.network.IPostExecuteCallback;
 public class QuestsListViewActivity extends BaseActivity{
 	private QuestAdapter array_adapter;
 	private ListView _quest_list_view;
-	private Button _btn_start_quest; 
 	private StartQuestClickListener _start_quest_listener;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
@@ -37,28 +40,30 @@ public class QuestsListViewActivity extends BaseActivity{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		setTitle(R.string.app_name);
-		String title = getIntent().getStringExtra(Constants.QUEST_LIST_ACTIVITY_TITLE);
-		setPageTitle(title);
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
-		_btn_start_quest = (Button) findViewById(R.id.btn_start_quest);
 		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
 		_start_quest_listener = new StartQuestClickListener();
-		_btn_start_quest.setOnClickListener(_start_quest_listener);
 		String quests_json = getIntent().getStringExtra(Constants.LOADED_QUESTS);
 		if (quests_json != null && quests_json.length() > 0 )
 			showLoadedQuests(quests_json);
 	}
 	
-	private void setPageTitle(String title) {
-		TitleFragment title_fragment =(TitleFragment) getSupportFragmentManager().findFragmentById(R.id.title_find_quest);
-		title_fragment.setText(title);
-//		title_fragment.SetAppearance(android.R.attr.textAppearanceSmall);
-		
-	}
 	
 	private void showLoadedQuests(String json) {
 		Quest[] quests = ModelsFactory.getInstance().getModelFromJSON(json, Quest[].class);
+		List<Quest> quest_list = Arrays.asList(quests);
+		Collections.sort(quest_list, new Comparator<Quest>() {
+
+			@Override
+			public int compare(Quest lhs, Quest rhs) {
+				Float rating_lhs = new Float(Float.valueOf(lhs.getRating()));
+				Float rating_rhs = new Float(Float.valueOf(rhs.getRating()));
+				return rating_rhs.compareTo(rating_lhs);
+			}
+		});
+		
+		quests = (Quest[]) quest_list.toArray();
 		array_adapter = new QuestAdapter(quests,QuestsListViewActivity.this);
 		_quest_list_view.setAdapter(array_adapter);
 		_quest_list_view.setOnItemClickListener(array_adapter);
@@ -176,22 +181,40 @@ public class QuestsListViewActivity extends BaseActivity{
 			   if(convertView == null) {
 			        LayoutInflater vi = (LayoutInflater)getSystemService(Context
 			        		.LAYOUT_INFLATER_SERVICE);
-			        convertView = vi.inflate(android.R.layout.simple_list_item_2, null);
+			        convertView = vi.inflate(R.layout.list_item_view, null);
 			    }
 			   Quest q =(Quest) getItem(position);
 			   setMainTextView(convertView,q);
-			   setSubTextView(convertView, q);
+//			   setSubTextView(convertView, q);
+			   setQuestProperties(convertView, q);
 			   
-			   if ( position == _selected ){
-				   highlightItem(convertView);
-			   }else {
-				   unHighlightItem(convertView);
-			   }
+			   setBackground(convertView, position);
 			   return convertView;
 		}
 		
+		
+		private void setQuestProperties(View v, Quest q) {
+			TextView distanceView = (TextView) v.findViewById(R.id.quest_list_distance);
+			TextView timeView = (TextView) v.findViewById(R.id.quest_list_time);
+			TextView playedView = (TextView) v.findViewById(R.id.quest_list_played);
+			TextView ratingTextView = (TextView) v.findViewById(R.id.quest_list_rating_text);
+			RatingBar ratingBar = (RatingBar) v.findViewById(R.id.quest_list_rating_bar);
+			
+			ratingBar.setRating(q.getRating());
+			playedView.setText(q.getGamesPlayed() + "\n" + getString(R.string.lbl_games_played));
+			timeView.setText(q.getTime()/60 + "\n" + getString(R.string.lbl_hours));
+			distanceView.setText(q.getDistance() + "\n" + getString(R.string.lbl_distance_unit));
+			ratingTextView.setText("("+q.getRating() + ")");
+		}
+		
+		private void setBackground(View v,int position) {
+			if ( position % 2 == 1)
+				v.setBackgroundResource(R.color.list_color_odd);
+			else
+				v.setBackgroundResource(R.color.list_color_even);
+		}
 		private void setMainTextView(View convertView, Quest model) {
-			   TextView text_view = (TextView) convertView.findViewById(android.R.id.text1);
+			   TextView text_view = (TextView) convertView.findViewById(R.id.quest_list_title);
 
 			   text_view.setText(model.getTitle());
 			   text_view.setTextColor(getResources().getColor(R.color.quesity_title_color));

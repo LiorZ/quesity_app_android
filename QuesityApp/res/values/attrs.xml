@@ -3,5 +3,12 @@
         <attr name="button_text" format="string"/>
         <attr name="button_icon" format="integer"/>
     </declare-styleable> 
-
+    
+    <declare-styleable name="QuesityPageTitleView">
+        <attr name="page_title_text" format="string"/>
+        <attr name="title_icon" format="integer"/>
+    </declare-styleable> 
+	<declare-styleable name="StyledTextView">
+	    <attr name="font_path" format="string"/>
+	</declare-styleable>
 </resources>

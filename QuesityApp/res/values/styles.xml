@@ -32,5 +32,12 @@
     </style>
 
     <style name="ButtonBarButton" />
+    
+    <style name="quest_rating_bar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/quest_rating_bar</item>
+        <item name="android:minHeight">14dip</item>
+        <item name="android:maxHeight">14dip</item>
+    </style>
+    
 
 </resources>

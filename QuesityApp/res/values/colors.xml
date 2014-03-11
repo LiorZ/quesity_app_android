@@ -2,7 +2,10 @@
 
     <color name="black_overlay">#66000000</color>
 	<color name="splash_screen">#CCFFFF</color>
-	<color name="quesity_title_color">#000066</color>
+	<color name="quesity_title_color">#103e41</color>
 	<color name="list_selected_color">#FFE79E</color>
+	<color name="list_color_even">#66a9c7cb</color>
+	<color name="list_color_odd">#66c9d9dc</color>
+	<color name="blue_btn_color">#ff61a2be</color>
 	
 </resources>

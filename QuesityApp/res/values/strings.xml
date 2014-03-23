@@ -66,4 +66,8 @@
 	<string name="lbl_games_played">Played</string>
 	<string name="lbl_hours">Hours</string>
 	<string name="lbl_distance_unit">Km</string>
+	
+	<string name="lbl_accordion_description">Description</string>
+	<string name="lbl_accordion_starting_point">Starting Point</string>
+	<string name="lbl_accordion_reviews">Reviews</string>
 </resources>

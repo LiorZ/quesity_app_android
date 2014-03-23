@@ -15,11 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.quesity.R;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Constants;
@@ -31,19 +34,18 @@ import com.quesity.network.IPostExecuteCallback;
 public class QuestsListViewActivity extends BaseActivity{
 	private QuestAdapter array_adapter;
 	private ListView _quest_list_view;
-	private StartQuestClickListener _start_quest_listener;
+	private ShowQuestPropertiesClickListener _start_quest_listener;
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_quests_list);
 		setTitle(R.string.app_name);
 		_quest_list_view =  (ListView) findViewById(R.id.quest_list_fragment);
-		_quest_list_view.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		_quest_list_view.setSelector(getResources().getDrawable(R.drawable.list_item_selectable));
-		_start_quest_listener = new StartQuestClickListener();
+		_start_quest_listener = new ShowQuestPropertiesClickListener();
+		_quest_list_view.setOnItemClickListener(_start_quest_listener);
 		String quests_json = getIntent().getStringExtra(Constants.LOADED_QUESTS);
 		if (quests_json != null && quests_json.length() > 0 )
 			showLoadedQuests(quests_json);
@@ -66,7 +68,6 @@ public class QuestsListViewActivity extends BaseActivity{
 		quests = (Quest[]) quest_list.toArray();
 		array_adapter = new QuestAdapter(quests,QuestsListViewActivity.this);
 		_quest_list_view.setAdapter(array_adapter);
-		_quest_list_view.setOnItemClickListener(array_adapter);
 	}
 	
 	private boolean existsInCache( Quest q ) {
@@ -86,26 +87,7 @@ public class QuestsListViewActivity extends BaseActivity{
 		finish();
 	}
 	
-    private class StartQuestClickListener implements View.OnClickListener {
-
-		@Override
-		public void onClick(View v) {
-			int selected_index = array_adapter.getSelectedIndex();
-			if ( selected_index < 0 )
-				return;
-			Object item = array_adapter.getItem(selected_index);
-			if ( item == null || !(item instanceof Quest)){
-				return;
-			}
-			
-			Intent intent = new Intent(QuestsListViewActivity.this, QuestPageActivity.class);
-	    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(item));
-	    	if ( existsInCache((Quest)item)) {
-	    		askStartOrResume(intent);
-	    	}else{
-				startQuestActivity(intent);
-	    	}
-		}
+    private class ShowQuestPropertiesClickListener implements OnItemClickListener {
 
 		private void askStartOrResume(final Intent i) {
 			DialogInterface.OnClickListener resume = new DialogInterface.OnClickListener() {
@@ -130,6 +112,19 @@ public class QuestsListViewActivity extends BaseActivity{
 			SimpleDialogs.getGeneralQuestionDialog(getString(R.string.lbl_resume_start_over), QuestsListViewActivity.this, 
 					msgs , listeners).show();
 		}
+
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View view, int position,
+				long id) {
+			Object item = array_adapter.getItem(position);
+			if ( item == null || !(item instanceof Quest)){
+				return;
+			}
+			
+			Intent intent = new Intent(QuestsListViewActivity.this, QuestPropertiesActivity.class);
+	    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(item));
+	    	startQuestActivity(intent);
+		}
     }
     
     private class NewQuestsPostExecuteCallback implements IPostExecuteCallback {
@@ -151,7 +146,7 @@ public class QuestsListViewActivity extends BaseActivity{
     	
     }
 	
-	private class QuestAdapter extends BaseAdapter implements AdapterView.OnItemClickListener{
+	private class QuestAdapter extends BaseAdapter{
 
 		private Quest[] _quests;
 		private int _selected;
@@ -183,15 +178,25 @@ public class QuestsListViewActivity extends BaseActivity{
 			        		.LAYOUT_INFLATER_SERVICE);
 			        convertView = vi.inflate(R.layout.list_item_view, null);
 			    }
+			   
 			   Quest q =(Quest) getItem(position);
 			   setMainTextView(convertView,q);
 //			   setSubTextView(convertView, q);
 			   setQuestProperties(convertView, q);
-			   
+			   setQuestImage(convertView, q);
 			   setBackground(convertView, position);
 			   return convertView;
 		}
 		
+		
+		private void setQuestImage(View v, Quest q) {
+			ImageView img_view = (ImageView) v.findViewById(R.id.quest_img);
+			List<String> images = q.getImages();
+			if ( images.size() == 0 ) {
+				return;
+			}
+			ImageLoader.getInstance().displayImage(images.get(0), img_view);
+		}
 		
 		private void setQuestProperties(View v, Quest q) {
 			TextView distanceView = (TextView) v.findViewById(R.id.quest_list_distance);
@@ -218,42 +223,6 @@ public class QuestsListViewActivity extends BaseActivity{
 
 			   text_view.setText(model.getTitle());
 			   text_view.setTextColor(getResources().getColor(R.color.quesity_title_color));
-		}
-		
-		private void setSubTextView(View convertView, Quest model) {
-			TextView text_view = (TextView) convertView.findViewById(android.R.id.text2);
-			String description = model.getDescription();
-			if ( description != null ) {
-				text_view.setText(description);
-			}
-		}
-		
-		@Override
-		public void onItemClick(AdapterView<?> arg0, View view, int pos,
-				long arg3) {
-			if (pos == _selected) {
-				unHighlightItem(view);
-			}else{
-				if ( _selected >= 0  ){
-					View someView = _quest_list_view.getChildAt(_selected);
-					unHighlightItem(someView);
-				}
-				highlightItem(view);
-				_selected = pos;
-			}
-			notifyDataSetChanged();
-		}
-		
-		private void unHighlightItem(View view) {
-			if ( view == null )
-				return;
-			view.setBackgroundColor(QuestsListViewActivity.this.getResources().getColor(R.color.splash_screen));
-		}
-		
-		private void highlightItem(View view) {
-			if (view == null)
-				return;
-			view.setBackgroundColor(QuestsListViewActivity.this.getResources().getColor(R.color.list_selected_color));
 		}
 
 		

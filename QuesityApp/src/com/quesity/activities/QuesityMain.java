@@ -1,5 +1,7 @@
 package com.quesity.activities;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -22,6 +24,8 @@ import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.INetworkInteraction;
 import com.quesity.network.INetworkInterface;
 import com.quesity.network.IPostExecuteCallback;
+import com.quesity.network.MultipleImagesLoader;
+import com.quesity.network.MultipleImagesLoader.ImagesLoaded;
 import com.quesity.network.NetworkInterface;
 
 public class QuesityMain extends BaseActivity implements INetworkInteraction {
@@ -179,6 +183,28 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 
 	private class NewQuestsPostExecuteCallback implements IPostExecuteCallback {
 
+		
+		private void loadImages(final Quest[] quests) {
+			String[] images = new String[quests.length];
+			for (int i = 0; i < images.length; i++) {
+				List<String> images_list = quests[i].getImages();
+				if ( images_list.size() == 0 ) {
+					images[i] ="";
+				}else {
+					images[i] = images_list.get(0);
+				}
+			}
+			ImagesLoaded listener = new ImagesLoaded() {
+				
+				@Override
+				public void done() {
+					showQuestList(quests,getString(R.string.lbl_find_quest));
+				}
+			};
+			
+			MultipleImagesLoader loader = new MultipleImagesLoader(images,listener);
+			loader.load();
+		}
 		@Override
 		public void apply(Object r) {
 			Quest[] result = (Quest[])r;
@@ -187,7 +213,8 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 				errorDialog.show();
 				return;
 			}
-			showQuestList(result,getString(R.string.lbl_find_quest));
+			loadImages(result);
+			
 		}
 
 		@Override

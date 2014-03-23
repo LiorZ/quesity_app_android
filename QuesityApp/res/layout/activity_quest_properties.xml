@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
+        xmlns:accordion="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/quest_properties_root_layout" 
+    android:background="@drawable/splash_gradient">
+    <com.quesity.fragments.QuesityPageTitleView
+   		android:id="@+id/title_quest_properties"
+   		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		quesity:page_title_text=""
+   		quesity:title_icon="@drawable/book_empty"
+    />
+    <FrameLayout android:id="@+id/quest_properties_gallery_fragment_place_holder"
+        android:layout_width="fill_parent"
+        android:layout_margin="0px"
+        android:layout_height="190dip" 
+        android:layout_below="@id/title_quest_properties"
+    />
+    <ScrollView 
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_below="@id/quest_properties_gallery_fragment_place_holder"
+                android:fillViewport="true">
+    <RelativeLayout 
+     android:id="@+id/quest_properties_scroll_layout"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"   
+     >
+    <LinearLayout
+    	android:id="@+id/quest_properties_data"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:paddingLeft="15dip"
+    	android:layout_marginBottom="15dip"
+    >
+        <LinearLayout android:id="@+id/quest_properties_rating_layout"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        	<RatingBar android:id="@+id/quest_properties_rating_bar"
+	    	   style="@style/quest_rating_bar"
+	    	   android:isIndicator="true"
+	    	   android:layout_height="wrap_content"
+	    	   android:layout_width="wrap_content"
+	    	/>
+        	<com.quesity.fragments.StyledTextView 
+        		android:id="@+id/quest_properties_rating_bar_text"
+        		android:layout_height="wrap_content"
+        		android:layout_width="wrap_content"
+        		android:text="(5.0)"
+        		android:textColor="@color/quesity_title_color"
+   			 	quesity:font_path="fonts/Roboto-Light.ttf"
+        	/>
+            
+        </LinearLayout>
+        <com.quesity.fragments.StyledTextView 
+        	android:id="@+id/quest_properties_distance_time_text"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"    
+        	quesity:font_path="fonts/Roboto-Light.ttf"
+        	android:textColor="@color/quesity_title_color"
+        	android:text="2.5h/8Km"
+        />
+        <com.quesity.fragments.StyledTextView 
+        	android:id="@+id/quest_properties_participants"
+        	android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"    
+        	quesity:font_path="fonts/Roboto-Light.ttf"
+        	android:textColor="@color/quesity_title_color"
+        	android:text="1385 Played"
+        />
+    </LinearLayout>
+    
+    <LinearLayout 
+        android:id="@+id/quest_data_collapsibles_layout"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/quest_properties_data"
+    >
+    <pl.outofmemory.roboaccordion.RoboAccordionView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/accordion"
+            android:background="@color/accordion_bg"/>
+    </LinearLayout>
+    
+    <com.quesity.fragments.QuesityButtonView 
+    	android:id="@+id/quest_properties_play_button"
+    	android:layout_width="match_parent"
+    	android:layout_marginRight="30dip"
+    	android:layout_marginLeft="30dip"
+    	android:layout_marginTop="@dimen/quest_properties_start_button_top_margin"
+    	android:layout_height="wrap_content"  
+    	quesity:button_text="@string/lbl_start_btn"
+    	quesity:button_text_size="15sp"
+    	quesity:button_padding="4dip"
+    	android:layout_below="@id/quest_data_collapsibles_layout"
+    	android:layout_centerHorizontal="true"
+    />
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

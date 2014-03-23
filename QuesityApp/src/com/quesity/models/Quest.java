@@ -12,9 +12,14 @@ public class Quest extends JSONModel{
 	private int games_played;
 	private List<QuestPage> pages;
 	private String description;
+	private List<String> images;
 	
 	public List<QuestPage> getPages() {
 		return pages;
+	}
+	
+	public List<String> getImages() {
+		return images;
 	}
 	public String getTitle() {
 		return title;

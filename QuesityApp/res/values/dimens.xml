@@ -6,8 +6,17 @@
 	<dimen name="button_border_width">3dp</dimen>
 	<dimen name="button_border_width_neg">-3dp</dimen>
 	<dimen name="icons_size">35dip</dimen>
-	<dimen name="quest_list_item_properties_margin">8dip</dimen>
-	<dimen name="quest_list_item_padding">4dip</dimen>
+	<dimen name="quest_list_item_properties_margin_top">10dip</dimen>
+	<dimen name="rating_linear_layout_margin_top">10dip</dimen>
+	<dimen name="quest_list_item_properties_margin_bottom">8dip</dimen>
+	<dimen name="quest_list_item_padding">6dip</dimen>
 	<dimen name="quest_list_text_size">16sp</dimen>
-	
+	<dimen name="quest_list_image_size">70dip</dimen>
+	<dimen name="quest_list_properties_width">250dip</dimen>
+	<dimen name="accordion_spacing">7dip</dimen>
+	<dimen name="accordion_spacing_vertical">2dip</dimen>
+	<dimen name="accordion_text_size">14sp</dimen>
+	<dimen name="quest_properties_start_button_top_margin">5dip</dimen>
+    <item name="accordion_image_scale" format="float" type="dimen">0.5</item>
+		
 </resources>

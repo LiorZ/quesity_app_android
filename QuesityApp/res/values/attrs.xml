@@ -1,7 +1,9 @@
 <resources>
     <declare-styleable name="QuesityButtonView">
         <attr name="button_text" format="string"/>
-        <attr name="button_icon" format="integer"/>
+        <attr name="button_icon" format="dimension"/>
+        <attr name="button_text_size" format="dimension"/>
+        <attr name="button_padding" format="dimension"/>
     </declare-styleable> 
     
     <declare-styleable name="QuesityPageTitleView">
@@ -11,4 +13,15 @@
 	<declare-styleable name="StyledTextView">
 	    <attr name="font_path" format="string"/>
 	</declare-styleable>
+	
+	<declare-styleable name="CircularImageView">
+        <attr name="border" format="boolean"></attr>
+        <attr name="border_width" format="integer"></attr>
+        <attr name="border_color" format="color"></attr>
+        <attr name="shadow" format="boolean"></attr>
+    </declare-styleable>
+    
+	<declare-styleable name="Theme">
+        <attr name="circularImageViewStyle" format="reference"></attr>
+    </declare-styleable>
 </resources>

@@ -1,12 +1,13 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.widget.TextView;
+
+import com.quesity.R;
 
 public class QuesityPageTitleView extends CustomFontGeneralView {
 
@@ -32,5 +33,13 @@ public class QuesityPageTitleView extends CustomFontGeneralView {
 		 addView(view_inflated);
 		 
 		 attr_set.recycle();
+	}
+	
+	public void setTitle(String title) {
+		_text = title;
+		TextView textView = (TextView) findViewById(R.id.title_main_screen);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+		textView.setText(_text);
+				
 	}
 }

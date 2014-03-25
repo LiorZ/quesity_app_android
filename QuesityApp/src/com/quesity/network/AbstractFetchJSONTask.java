@@ -6,6 +6,7 @@ import org.apache.http.conn.HttpHostConnectException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -30,10 +31,12 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	private IBackgroundCallback<Result> _background_callback;
 
 	private Class<Result> _class_to_resolve;
-	public AbstractFetchJSONTask(NetworkParameterGetter getter, Class<Result> c) {
+	private Context _context;
+	public AbstractFetchJSONTask(NetworkParameterGetter getter, Class<Result> c,Context context) {
 		_getter = getter;
 		_activity = null;
 		_class_to_resolve = c;
+		_context = context;
 	}
 	
 	public AbstractFetchJSONTask<Result> setBackgroundCallback(IBackgroundCallback<Result> c) {
@@ -131,7 +134,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 				model = _background_callback.apply(params);
 			}else {
 				String url = params[0];
-				String json = _network_interface.getStringContent(url,_getter);
+				String json = _network_interface.getStringContent(url,_getter,_context);
 				model = resolveModel(json);
 			}
 		} catch (HttpHostConnectException e) {
@@ -151,6 +154,6 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	}
 	public interface NetworkParameterGetter {
 		public HttpRequestBase getRequestObj();
-		public HttpClient getHTTPClient();
+		public HttpClient getHTTPClient(Context c);
 	}
 }

@@ -17,27 +17,27 @@ public class Dispatcher {
 
     private JSONPostRequestTypeGetter _jsonGetter;
     
-    public Dispatcher() {
-    	_jsonGetter = new JSONPostRequestTypeGetter();
+    public Dispatcher(Context c) {
+    	_jsonGetter = new JSONPostRequestTypeGetter(c);
     }
     
 	public Result sendMessage(Context context, Message message) {
 		Logger.v(TAG, "sendMessage");
 
         try {
-		    return this.sendMessage(message);
+		    return this.sendMessage(message,context);
         } finally {
 //            httpClient.close();
         }
 	}
 
-	protected Result sendMessage(Message message) {
+	protected Result sendMessage(Message message,Context c) {
         Logger.v(TAG, "sendMessage: injected");
 		
 		Result parseHttpPostResult = this.parseHttpPost(message);
 		if(parseHttpPostResult != Result.OK) return parseHttpPostResult;
 		
-		return this.tryToExecute(message);
+		return this.tryToExecute(message,c);
 	}
 	
 	private Result parseHttpPost(Message message) {
@@ -56,11 +56,11 @@ public class Dispatcher {
 		}
 	}
 
-	private Result tryToExecute(Message msg) {
+	private Result tryToExecute(Message msg,Context c) {
         Logger.v(TAG, "tryToExecute");
 		
 		try {
-			NetworkInterface.getInstance().getStringContent(msg.getUrl(), _jsonGetter);
+			NetworkInterface.getInstance().getStringContent(msg.getUrl(), _jsonGetter,c);
 			return Result.OK;
 //			return Dispatcher.getResult(response.getStatusLine().getStatusCode());
 		} 

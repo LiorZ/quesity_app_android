@@ -29,7 +29,6 @@
 	
 	<ImageButton 
 	    android:id="@+id/quest_list_bookmark_btn"
-		android:background="@drawable/book_empty"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"

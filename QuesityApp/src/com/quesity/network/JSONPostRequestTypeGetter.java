@@ -2,12 +2,14 @@ package com.quesity.network;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
+
+import android.content.Context;
 
 public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	
-	public JSONPostRequestTypeGetter() {
+	public JSONPostRequestTypeGetter(Context c) {
+		super(c);
 		setHeaders();
 	}
 	
@@ -16,8 +18,8 @@ public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	    _postObj.setHeader("Content-type", "application/json");
 	}
 	
-	public JSONPostRequestTypeGetter(String json){
-		super();
+	public JSONPostRequestTypeGetter(String json,Context c){
+		super(c);
 		try {
 			_postObj.setEntity(new StringEntity(json));
 		} catch (UnsupportedEncodingException e) {

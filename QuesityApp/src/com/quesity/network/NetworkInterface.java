@@ -9,11 +9,9 @@ import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.quesity.network.AbstractFetchJSONTask.NetworkParameterGetter;
@@ -24,10 +22,10 @@ import com.quesity.network.exceptions.Status500Exception;
 public class NetworkInterface implements INetworkInterface{
 	
 	private static INetworkInterface _instance;
-	
 	private NetworkInterface(){
 		
 	}
+	
 	public static INetworkInterface getInstance(){
 		if ( _instance == null ){
 			_instance = new NetworkInterface();
@@ -35,9 +33,9 @@ public class NetworkInterface implements INetworkInterface{
 		return _instance;
 	}
 	@Override
-	public String getStringContent(String uri, NetworkParameterGetter getter) throws Exception {
+	public String getStringContent(String uri, NetworkParameterGetter getter,Context c) throws Exception {
 
-		HttpClient client = getter.getHTTPClient();
+		HttpClient client = getter.getHTTPClient(c);
 	    try {
 	        HttpRequestBase request = getter.getRequestObj();
 	        request.setURI(new URI(uri));

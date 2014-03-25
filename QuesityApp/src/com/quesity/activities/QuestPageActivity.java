@@ -29,6 +29,7 @@ import com.quesity.fragments.MultipleChoiceFragment;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.ProgressBarHandler;
+import com.quesity.fragments.QuesityPageTitleView;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.WebViewFragment;
@@ -493,7 +494,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			game.setAccount_id(account_id);
 			game.setQuestId(_quest_id);
 			String game_json_input = ModelsFactory.getInstance().getJSONFromModel(game);
-			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input));
+			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input,QuestPageActivity.this),QuestPageActivity.this);
 			_current_game = ModelsFactory.getInstance().getModelFromJSON(game_json, Game.class);
 			
 			removeGameFromSaved(); //If we started a new game, remove the old one.
@@ -506,7 +507,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			startNewGame(urls[0]);
 			String uri = urls[1];
 			
-			String pages = _network_interface.getStringContent(uri, new GetRequestTypeGetter());
+			String pages = _network_interface.getStringContent(uri, new GetRequestTypeGetter(),QuestPageActivity.this);
 			QuestPage[] pages_model = ModelsFactory.getInstance().getModelFromJSON(pages, QuestPage[].class);
 			return pages_model;
 		}
@@ -516,7 +517,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 
 
 		public FetchAllQuestPagesTask(Class<QuestPage[]> c) {
-			super(c);
+			super(c,QuestPageActivity.this);
 			setNetworkInterface(_network_interface);
 			setPostExecuteCallback(new AfterLoadingAllQuestPages());
 			setBackgroundCallback(new GameCreationTaskBackgroundHandler());

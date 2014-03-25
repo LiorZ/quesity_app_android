@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.quesity.R;
 import com.quesity.activities.QuestPageActivity;
@@ -107,39 +108,66 @@ public class InGameMenuFragment extends Fragment {
 		public void transitToNextPage();
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
+	private void setupMenuButton(View v){
+		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
+		btn.setButtonImage(R.drawable.menu);
+		btn.setOnTouchButtonImage(R.drawable.menu_pressed);
+		btn.setButtonText(getString(R.string.ingame_btn_menu));
+		btn.setOnClickListener(new OnClickListener() {
 		
-		View v = inflater.inflate(R.layout.fragment_ingame_menu,container);
-		Button continue_button = (Button) v.findViewById(R.id.btn_continue);
-		continue_button.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				_transition.transitToNextPage();
-			}
-		});
-		
-		View btn_menu = v.findViewById(R.id.btn_menu);
-		btn_menu.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				_menu_dialog.show(getFragmentManager(), "ingame_menu");
 			}
 		});
 		
-		View btn_tactics = v.findViewById(R.id.btn_tactics);
-		btn_tactics.setOnClickListener( new OnClickListener() {
-			
+	}
+	
+	private void setupPlayButton(View v) {
+		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
+		btn.setButtonImage(R.drawable.continue_img);
+		btn.setOnTouchButtonImage(R.drawable.continue_img_pressed);
+		btn.setButtonText(getString(R.string.ingame_btn_continue));
+		
+		v.setOnClickListener(new OnClickListener() {
+		
+			@Override
+			public void onClick(View v) {
+				_transition.transitToNextPage();
+			}
+		});
+	}
+	
+	private void setupTacticsButton(View v) {
+		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
+		btn.setButtonImage(R.drawable.tactics);
+		btn.setButtonText(getString(R.string.ingame_btn_tactics));
+		btn.setOnTouchButtonImage(R.drawable.tactics_pressed);
+		v.setOnClickListener( new OnClickListener() {
+		
 			@Override
 			public void onClick(View v) {
 				_tactics_dialog.show(getFragmentManager(), "ingame_tactics_menu");
 			}
 		});
-		return v;
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View root_view = inflater.inflate(R.layout.fragment_ingame_menu, container,false);
+		
+		View menu_btn_view = root_view.findViewById(R.id.btn_menu);
+		setupMenuButton(menu_btn_view);
+		
+		View btn_play_view = root_view.findViewById(R.id.btn_continue);
+		setupPlayButton(btn_play_view);
+		
+		View btn_tactics_view = root_view.findViewById(R.id.btn_tactics);
+		setupTacticsButton(btn_tactics_view);
+		
+		return root_view;
 		
 		
 	}

@@ -105,7 +105,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 				return NetworkInterface.getInstance();
 			}
 		};
-		new FetchJSONTaskGet<Quest[]>(Quest[].class)
+		new FetchJSONTaskGet<Quest[]>(Quest[].class,this)
 				.setNetworkInteractionHandler(interactor).setActivity(this)
 				.execute(Config.SERVER_URL + "/all_quests");
 	}
@@ -146,7 +146,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 				MODE_PRIVATE);
 		prefs.edit().putString(Constants.PREF_USERNAME, null)
 				.putString(Constants.PREF_PASSWORD, null).commit();
-		new FetchJSONTaskGet<String>(String.class).setActivity(this)
+		new FetchJSONTaskGet<String>(String.class,this).setActivity(this)
 				.setNetworkInteractionHandler(this)
 				.execute(Config.SERVER_URL + "/logoff");
 	}

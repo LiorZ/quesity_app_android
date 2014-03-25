@@ -29,7 +29,7 @@ public final class Constants {
 	public static final String QUEST_LIST_ACTIVITY_TITLE = "com.quesity.quest_list_activity_title";
 	public static final String QUEST_IMAGE_ARRAY_KEY = "com.quesity.fragments.image_array_key";
 	public static final String QUEST_IMAGE_URL = "com.quesity.fragments.image_URL";
-
+	public static final String SESSION_ID_KEY = "com.quesity.session_id";
 	public static final long GPS_UPDATE_INTERVAL = 10*1000; //milliseconds
 	public static final float GPS_MIN_ACCURACY = 20; // meters
 }

@@ -68,13 +68,10 @@ public class WebViewFragment extends Fragment {
 
 	private void setUpLoading(View frag) {
 		_loadingView = (TextView) frag.findViewById(R.id.loading_lbl);
-		 Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Gorditas-Regular.ttf");
-		 _loadingView.setTypeface(tf);
 		 if ( _animation == null )
 			 _animation = AnimationUtils.loadAnimation(getActivity(), R.anim.tween);
 		 _w.setWebViewClient(new WebViewClient(){
 			 private TimerTask task;
-			@SuppressLint("NewApi")
 			@Override
 			public void onLoadResource(WebView view, String url) {
 				super.onLoadResource(view, url);

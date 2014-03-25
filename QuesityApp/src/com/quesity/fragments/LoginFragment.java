@@ -165,7 +165,7 @@ public class LoginFragment extends Fragment {
 									return activity.getNetworkInterface();
 								}
 							};
-							new FetchJSONTaskPost<Account>(new JSONPostRequestTypeGetter(json_to_send), Account.class).
+							new FetchJSONTaskPost<Account>(new JSONPostRequestTypeGetter(json_to_send,getActivity()), Account.class,getActivity()).
 							setActivity(activity).setNetworkInteractionHandler(net_handler).execute(Config.SERVER_URL+getString(R.string.register_facebook_user));
 						}
 					}

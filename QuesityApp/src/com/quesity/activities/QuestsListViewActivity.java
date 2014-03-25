@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -70,47 +71,12 @@ public class QuestsListViewActivity extends BaseActivity{
 		_quest_list_view.setAdapter(array_adapter);
 	}
 	
-	private boolean existsInCache( Quest q ) {
-		SavedGame[] saved_games = ModelsFactory.getInstance().getFromPreferenceStore(this, Constants.SAVED_GAMES, SavedGame[].class);
-		if ( saved_games == null ) 
-			return false;
-		for(int i = 0; i<saved_games.length; ++i ) {
-			if (saved_games[i].getQuest().getId().equals(q.getId())){
-				return true;
-			}
-		}
-		return false;
-	}
 	
 	private void startQuestActivity(Intent i) {
 		startActivity(i);
 	}
 	
     private class ShowQuestPropertiesClickListener implements OnItemClickListener {
-
-		private void askStartOrResume(final Intent i) {
-			DialogInterface.OnClickListener resume = new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					i.putExtra(Constants.QUEST_RESUME_KEY,true);
-					dialog.dismiss();
-					startQuestActivity(i);
-				}
-			};
-			
-			DialogInterface.OnClickListener start_over = new DialogInterface.OnClickListener() {
-				
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.dismiss();
-					startQuestActivity(i);
-				}
-			};
-			int[] msgs = {R.string.lbl_resume, R.string.lbl_start_over};
-			DialogInterface.OnClickListener[] listeners = {resume,start_over};
-			SimpleDialogs.getGeneralQuestionDialog(getString(R.string.lbl_resume_start_over), QuestsListViewActivity.this, 
-					msgs , listeners).show();
-		}
 
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View view, int position,
@@ -126,32 +92,16 @@ public class QuestsListViewActivity extends BaseActivity{
 		}
     }
     
-    private class NewQuestsPostExecuteCallback implements IPostExecuteCallback {
-
-		@Override
-		public void apply(Object r) {
-			Quest[] result = (Quest[])r;
-			if ( result == null ) {
-				AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_load_quest), QuestsListViewActivity.this);
-				errorDialog.show();
-				return;
-			}
-		}
-
-		@Override
-		public int get401ErrorMessage() {
-			return -1;
-		}
-    	
-    }
 	
 	private class QuestAdapter extends BaseAdapter{
 
 		private Quest[] _quests;
 		private int _selected;
+		private SavedGame[] _saved_quests;
 		public QuestAdapter(Quest[] quests, Activity activity) {
 			_quests = quests;
 			_selected = -1;
+			_saved_quests = ModelsFactory.getInstance().getFromPreferenceStore(QuestsListViewActivity.this, Constants.SAVED_GAMES, SavedGame[].class);
 		}
 		@Override
 		public int getCount() {
@@ -209,6 +159,14 @@ public class QuestsListViewActivity extends BaseActivity{
 			timeView.setText(q.getTime()/60 + "\n" + getString(R.string.lbl_hours));
 			distanceView.setText(q.getDistance() + "\n" + getString(R.string.lbl_distance_unit));
 			ratingTextView.setText("("+q.getRating() + ")");
+			
+			//set the bookmark button:
+			ImageButton img_btn = (ImageButton) v.findViewById(R.id.quest_list_bookmark_btn);
+			if ( SavedGame.questIsSaved(_saved_quests, q) ){
+				img_btn.setBackgroundResource(R.drawable.book_full);
+			}else {
+				img_btn.setBackgroundResource(R.drawable.book_empty);
+			}
 		}
 		
 		private void setBackground(View v,int position) {

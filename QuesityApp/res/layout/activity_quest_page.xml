@@ -3,6 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:weightSum="1"
     tools:context=".QuestPageActivity" >
 
     <fragment
@@ -10,14 +11,15 @@
         android:name="com.quesity.fragments.WebViewFragment"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.9"
+        android:layout_weight="0.87"
     />
     
       <fragment
         android:id="@+id/ingame_menu_fragment"
         android:name="com.quesity.fragments.InGameMenuFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="0.13"
         />
 
       <FrameLayout

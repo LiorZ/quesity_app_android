@@ -14,16 +14,16 @@ public class ForwardService extends RepositoryService {
 
 	public ForwardService() {
 		super(ForwardService.class.getName());
-
         Logger.v(TAG, "ForwardService()");
 
-        this.dispatcher = new Dispatcher();
 	}
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		Logger.v(TAG, "onHandleIntent");
-		
+		if ( this.dispatcher == null ){
+	        this.dispatcher = new Dispatcher(this);
+		}
 		try {					
 			Message message = this.repository.getNext();
 			while(message != null) {

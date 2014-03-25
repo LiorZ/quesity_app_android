@@ -84,7 +84,6 @@ public class QuestsListViewActivity extends BaseActivity{
 	
 	private void startQuestActivity(Intent i) {
 		startActivity(i);
-		finish();
 	}
 	
     private class ShowQuestPropertiesClickListener implements OnItemClickListener {
@@ -206,7 +205,7 @@ public class QuestsListViewActivity extends BaseActivity{
 			RatingBar ratingBar = (RatingBar) v.findViewById(R.id.quest_list_rating_bar);
 			
 			ratingBar.setRating(q.getRating());
-			playedView.setText(q.getGamesPlayed() + "\n" + getString(R.string.lbl_games_played));
+			playedView.setText(q.getGamesPlayed() + "\n" + getString(R.string.lbl_games_played_raw));
 			timeView.setText(q.getTime()/60 + "\n" + getString(R.string.lbl_hours));
 			distanceView.setText(q.getDistance() + "\n" + getString(R.string.lbl_distance_unit));
 			ratingTextView.setText("("+q.getRating() + ")");

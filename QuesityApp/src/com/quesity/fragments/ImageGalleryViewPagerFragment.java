@@ -8,7 +8,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -20,6 +22,7 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 
 	private ViewPager _image_gallery;
 	private List<String> _images_url;
+	private int _current_item;
 	
 	public static ImageGalleryViewPagerFragment newInstance(List<String> urls) {
 		ImageGalleryViewPagerFragment gallery = new ImageGalleryViewPagerFragment();
@@ -38,9 +41,18 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 		setArguments();
 		_image_gallery = (ViewPager) view.findViewById(R.id.image_gallery_pager);
 		_image_gallery.setAdapter(new ImageViewPager(getFragmentManager()));
-		
-		CirclePageIndicator indicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
-		indicator.setViewPager(_image_gallery);
+		_current_item = 0;
+		_image_gallery.setOnTouchListener(new View.OnTouchListener() {
+			
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				if ( event.getAction() == MotionEvent.ACTION_UP ){
+					_image_gallery.setCurrentItem(++_current_item % _images_url.size(),true);
+					Log.d("LIOR", "TOUCH EVENT - current item: " + _current_item);
+				}
+				return true;
+			}
+		});
 		return view;
 	}
 	
@@ -59,19 +71,30 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 	}
 	
 	private class ImageViewPager extends FragmentPagerAdapter {
+		
+		private List<Fragment> _fragments;
 
 		public ImageViewPager(FragmentManager fm) {
 			super(fm);
+			_fragments = new ArrayList<Fragment>();
+			for (String url : _images_url) {
+				_fragments.add(AsyncImageFragment.newInstance(url));
+			}
 		}
 
 		@Override
 		public Fragment getItem(int position) {
-			return AsyncImageFragment.newInstance(_images_url.get(position));
+			Log.d("LIOR", "Getting next item in gallery");
+			Fragment fragment = _fragments.get(position);
+			if ( fragment == null ) {
+				Log.d("LIOR","FRAGMENT IS NULL!!!");
+			}
+			return fragment;
 		}
 
 		@Override
 		public int getCount() {
-			return _images_url.size();
+			return _fragments.size();
 		}
 		
 	}

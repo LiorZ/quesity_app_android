@@ -63,11 +63,12 @@
 	<string name="lbl_start_over">Start Over</string>
 	<string name="lbl_about">About</string>
 	<string name="err_display_about">Error occurred while displaying about screen</string>
-	<string name="lbl_games_played">Played</string>
+	<string name="lbl_games_played">%d Played</string>
+	<string name="lbl_games_played_raw">Played</string>
 	<string name="lbl_hours">Hours</string>
 	<string name="lbl_distance_unit">Km</string>
-	
-	<string name="lbl_accordion_description">Description</string>
-	<string name="lbl_accordion_starting_point">Starting Point</string>
-	<string name="lbl_accordion_reviews">Reviews</string>
+	<string name="lbl_tab_description">Description</string>
+	<string name="lbl_tab_starting_point">Location</string>
+	<string name="lbl_tab_reviews">Reviews</string>
+	<string name="lbl_map_starting_location">Starting Location</string>
 </resources>

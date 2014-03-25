@@ -16,7 +16,10 @@
 	<dimen name="accordion_spacing">7dip</dimen>
 	<dimen name="accordion_spacing_vertical">2dip</dimen>
 	<dimen name="accordion_text_size">14sp</dimen>
+	<dimen name="tag_padding">2dip</dimen>
+	<dimen name="tag_font_size">10sp</dimen>
+	<dimen name="tag_height">24px</dimen>
 	<dimen name="quest_properties_start_button_top_margin">5dip</dimen>
     <item name="accordion_image_scale" format="float" type="dimen">0.5</item>
-		
+	<item format="string" name="tab_icon_scale" type="dimen">80%</item>	
 </resources>

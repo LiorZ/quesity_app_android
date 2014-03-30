@@ -87,10 +87,12 @@ public class CircularImageView extends ImageView {
 		BitmapDrawable bitmapDrawable = (BitmapDrawable) this.getDrawable();
 		if (bitmapDrawable != null)
 			image = bitmapDrawable.getBitmap();
-
+		
+		int height = getHeight();
+		int width = getWidth();
 		// init shader
 		if (image != null) {
-			shader = new BitmapShader(Bitmap.createScaledBitmap(image, canvas.getWidth(), canvas.getHeight(), false), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
+			shader = new BitmapShader(Bitmap.createScaledBitmap(image, width, height, false), Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
 			paint.setShader(shader);
 			int circleCenter = viewWidth / 2;
 

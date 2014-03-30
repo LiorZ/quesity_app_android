@@ -88,7 +88,7 @@ public class LocationService extends Service implements LocationUser{
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-		return builder.setSmallIcon(R.drawable.logo_temp).
+		return builder.setSmallIcon(R.drawable.ic_launcher).
 				setContentIntent(pendingIntent).
 				setContentTitle("Quesity").
 				setContentText(getString(R.string.lbl_resume_quest)).

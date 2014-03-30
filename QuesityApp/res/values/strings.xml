@@ -70,5 +70,9 @@
 	<string name="lbl_tab_description">Description</string>
 	<string name="lbl_tab_starting_point">Location</string>
 	<string name="lbl_tab_reviews">Reviews</string>
+	<string name="lbl_title_dialog_quest_over">Game Over</string>
+	<string name="lbl_hint_dialog_title">Hint</string>
 	<string name="lbl_map_starting_location">Starting Location</string>
+	<string name="title_resume_game">Resume Game?</string>
+	<string name="title_exit">Exit?</string>
 </resources>

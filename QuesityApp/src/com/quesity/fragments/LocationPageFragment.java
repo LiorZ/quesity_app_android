@@ -5,10 +5,8 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
+import android.app.Dialog;
 import android.location.Location;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -21,7 +19,6 @@ import com.quesity.controllers.ProgressableProcess;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageLocationLink;
-import com.quesity.services.location.IntervalLocationListener;
 import com.quesity.services.location.LocationService;
 
 public class LocationPageFragment extends Fragment implements OnDemandFragment, LocationUser {
@@ -98,7 +95,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				
 				@Override
 				public void run() {
-					AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_cant_find_location), getActivity());
+					Dialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_cant_find_location), getActivity());
 					errorDialog.show();
 				}
 			});
@@ -137,7 +134,7 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				}
 			}
 			Log.d("LocationFragment", location.toString());
-			AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_wrong_location), getActivity());
+			Dialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_wrong_location), getActivity());
 			stopProgressBar();
 			errorDialog.show();
 		}

@@ -19,9 +19,7 @@
         	android:layout_height="wrap_content"
         	android:layout_alignParentTop="true"
         	android:layout_centerHorizontal="true"
-        	android:scaleType="fitXY"
-        	android:scaleX="0.65"
-        	android:scaleY="0.65"        	
+        	android:layout_marginTop="10dip"
         />
         <com.quesity.fragments.StyledTextView 
         	android:id="@+id/ingame_button_text"

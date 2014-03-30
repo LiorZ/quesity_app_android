@@ -1,13 +1,5 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
-import com.quesity.activities.NextPageTransition;
-import com.quesity.activities.QuestPageActivity;
-import com.quesity.models.ModelsFactory;
-import com.quesity.models.QuestPage;
-import com.quesity.models.QuestPageLink;
-import com.quesity.models.QuestPageQuestionLink;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -15,6 +7,13 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.widget.EditText;
+
+import com.quesity.R;
+import com.quesity.activities.NextPageTransition;
+import com.quesity.activities.QuestPageActivity;
+import com.quesity.models.QuestPage;
+import com.quesity.models.QuestPageLink;
+import com.quesity.models.QuestPageQuestionLink;
 
 public class OpenQuestionFragment extends DialogFragment implements OnDemandFragment{
 
@@ -30,7 +29,7 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	            String value = input.getText().toString().trim();
 	            QuestPageLink nextPage = getNextPageByAnswer(value, page);
 	            if ( nextPage == null ) {
-	            	AlertDialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer), getActivity());
+	            	Dialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer), getActivity());
 	            	errorDialog.show();
 	            }else {
 					NextPageTransition activity = (NextPageTransition) getActivity();

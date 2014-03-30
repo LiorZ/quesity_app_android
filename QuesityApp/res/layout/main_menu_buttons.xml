@@ -17,7 +17,6 @@
 	android:name="com.quesity.fragments.ButtonFragment"	
 	quesity:button_text="@string/lbl_find_quest"
 	quesity:button_icon="@drawable/search"
-	android:onClick="findQuestAction"
     />
         
     <com.quesity.fragments.QuesityButtonView 
@@ -30,7 +29,6 @@
 	android:name="com.quesity.fragments.ButtonFragment"	
 	quesity:button_text="@string/lbl_my_quests"
 	quesity:button_icon="@drawable/favorites"
-	android:onClick="showMyQuests"
     />
     <com.quesity.fragments.QuesityButtonView 
             android:layout_height="wrap_content"
@@ -42,7 +40,6 @@
 	android:name="com.quesity.fragments.ButtonFragment"	
 	quesity:button_text="@string/lbl_about"
 	quesity:button_icon="@drawable/about"
-	android:onClick="showAbout"
     />
 
 </LinearLayout>

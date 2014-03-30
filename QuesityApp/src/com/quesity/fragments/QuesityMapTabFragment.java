@@ -2,6 +2,7 @@ package com.quesity.fragments;
 
 import android.graphics.Color;
 import android.support.v4.app.FragmentActivity;
+import android.view.LayoutInflater;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,7 +43,9 @@ public class QuesityMapTabFragment extends SupportMapFragment {
 		CameraUpdate zoom = CameraUpdateFactory.zoomTo(17);
 		map.moveCamera(cam);
 		map.animateCamera(zoom);
-		map.addMarker(new MarkerOptions().position(pos).title(startingLocation.getStreet())).showInfoWindow();
+		map.setInfoWindowAdapter(new GMapsCorrectedTitleBox(LayoutInflater.from(getActivity())));
+		MarkerOptions marker = new MarkerOptions().position(pos).title(startingLocation.getStreet());
+		map.addMarker(marker).showInfoWindow();
 		map.addCircle(new CircleOptions().center(pos).radius(startingLocation.getRadius()).
 				fillColor(Color.argb(150,97, 162, 190))
 				.strokeWidth(3)

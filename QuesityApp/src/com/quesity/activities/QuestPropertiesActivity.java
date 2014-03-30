@@ -100,7 +100,7 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 			};
 			int[] msgs = {R.string.lbl_resume, R.string.lbl_start_over};
 			DialogInterface.OnClickListener[] listeners = {resume,start_over};
-			SimpleDialogs.getGeneralQuestionDialog(getString(R.string.lbl_resume_start_over), QuestPropertiesActivity.this, 
+			SimpleDialogs.getGeneralQuestionDialog(getString(R.string.title_resume_game),getString(R.string.lbl_resume_start_over), QuestPropertiesActivity.this, 
 					msgs , listeners).show();
 		}
     }

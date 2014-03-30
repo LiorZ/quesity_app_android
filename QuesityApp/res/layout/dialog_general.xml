@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+    
+    <com.quesity.fragments.StyledTextView 
+     	android:id="@+id/dialog_title"
+     	android:background="@color/blue_btn_color"
+     	android:layout_width="fill_parent"
+     	android:layout_height="wrap_content"   
+     	quesity:font_path="fonts/Andada-Regular.ttf"
+     	android:textColor="@color/quesity_title_color"
+     	android:textSize="@dimen/dialog_title_size"
+     	android:padding="8dp"
+     	android:text="Dialog title"
+     />
+    <View 
+    	android:id="@+id/dialog_sep"
+    	android:layout_height="0.3dp"
+    	android:layout_width="fill_parent"
+    	android:background="@color/quesity_title_color"
+    />
+    <com.quesity.fragments.StyledTextView 
+    	android:id="@+id/dialog_text"
+    	android:layout_width="fill_parent"
+    	android:layout_height="fill_parent"
+    	android:padding="8dp"
+    	android:textColor="@color/quesity_title_color"
+    	quesity:font_path="fonts/Roboto-Light.ttf"    
+    	android:textSize="@dimen/dialog_msg_size"
+    	android:text="Some text..."
+    />
+    <View 
+    	android:id="@+id/dialog_sep_2"
+    	android:layout_height="0.3dp"
+    	android:layout_width="fill_parent"
+    	android:background="@color/quesity_title_color"
+    />
+    <LinearLayout 
+    	android:id="@+id/dialog_button_container"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:layout_margin="20dp"
+    >
+    </LinearLayout>
+
+</LinearLayout>

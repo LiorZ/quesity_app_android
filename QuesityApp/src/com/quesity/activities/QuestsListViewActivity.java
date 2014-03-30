@@ -6,9 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,12 +23,10 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.quesity.R;
-import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.models.SavedGame;
-import com.quesity.network.IPostExecuteCallback;
 
 public class QuestsListViewActivity extends BaseActivity{
 	private QuestAdapter array_adapter;
@@ -161,13 +157,14 @@ public class QuestsListViewActivity extends BaseActivity{
 			ratingTextView.setText("("+q.getRating() + ")");
 			
 			//set the bookmark button:
-			ImageButton img_btn = (ImageButton) v.findViewById(R.id.quest_list_bookmark_btn);
+			ImageView img_btn = (ImageView) v.findViewById(R.id.quest_list_bookmark_btn);
 			if ( SavedGame.questIsSaved(_saved_quests, q) ){
-				img_btn.setBackgroundResource(R.drawable.book_full);
+				img_btn.setBackgroundResource(R.drawable.book_full_list);
 			}else {
-				img_btn.setBackgroundResource(R.drawable.book_empty);
+				img_btn.setBackgroundResource(R.drawable.book_empty_list);
 			}
 		}
+		
 		
 		private void setBackground(View v,int position) {
 			if ( position % 2 == 1)

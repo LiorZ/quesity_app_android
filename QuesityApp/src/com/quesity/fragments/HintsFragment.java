@@ -48,7 +48,7 @@ public class HintsFragment extends DialogFragment {
 				final QuestPageHint item = (QuestPageHint) _hintsListAdapter.getItem(which);
 				
 				currentGame.setRemainingHints(currentGame.getRemainingHints()-1);
-				AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(item.getHintTxt(), getActivity(), new DialogInterface.OnClickListener() {
+				Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_hint_dialog_title),item.getHintTxt(), getActivity(), new DialogInterface.OnClickListener() {
 					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -89,7 +89,7 @@ public class HintsFragment extends DialogFragment {
 	}
 	
 	private Dialog getNoHintsDialog(int message){
-		AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(message), getActivity(),new DialogInterface.OnClickListener() {
+		Dialog okOnlyDialog = SimpleDialogs.getErrorDialog(getString(message), getActivity(),new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {

@@ -46,6 +46,8 @@ public class WebViewFragment extends Fragment {
 	}
 	
 	public void loadHTMLDataRaw(String raw_data) {
+		raw_data = raw_data.replaceFirst("<p>", "").replaceFirst("</p>", "");
+		Log.d("LIOR", raw_data);
 		_w.loadDataWithBaseURL(null, raw_data, "text/html", "utf-8", null);
 		_w.scrollTo(0, 0);
 	}
@@ -61,7 +63,6 @@ public class WebViewFragment extends Fragment {
 		 if ( _showLoading )
 			 setUpLoading(frag);
 		 _w.getSettings().setJavaScriptEnabled(false);
-		 _w.setHorizontalScrollBarEnabled(false);
 		 _w.getSettings().setSupportZoom(true);
 		 return frag;
 	}
@@ -75,7 +76,6 @@ public class WebViewFragment extends Fragment {
 			@Override
 			public void onLoadResource(WebView view, String url) {
 				super.onLoadResource(view, url);
-//				view.setVisibility(View.INVISIBLE);
 				if ( !_showLoading )
 					return;
 				

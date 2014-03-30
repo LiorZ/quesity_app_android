@@ -29,6 +29,10 @@ public abstract class CustomFontGeneralView extends FrameLayout {
 		super(context, attrs);
 	}
 	
+	public CustomFontGeneralView(Context context) {
+		super(context);
+	}
+
 	protected void setFont(TextView text, Context context) {
 		AssetManager assets = context.getAssets();
 		if ( assets == null )

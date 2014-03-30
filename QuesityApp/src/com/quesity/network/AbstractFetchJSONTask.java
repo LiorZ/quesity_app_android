@@ -5,7 +5,7 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.HttpHostConnectException;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
@@ -23,11 +23,11 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 
 	private NetworkParameterGetter _getter;
 	private Activity _activity;
-	private LoadingProgressFragment _progress;
+	protected LoadingProgressFragment _progress;
 	protected boolean _login_success;
 	private INetworkInterface _network_interface;
 	
-	private IPostExecuteCallback _post_execute;
+	protected IPostExecuteCallback _post_execute;
 	private IBackgroundCallback<Result> _background_callback;
 
 	private Class<Result> _class_to_resolve;
@@ -116,7 +116,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 				
 				@Override
 				public void run() {
-					final AlertDialog errorDialog = SimpleDialogs.getErrorDialog(_activity.getString(string_id), _activity);
+					final Dialog errorDialog = SimpleDialogs.getErrorDialog(_activity.getString(string_id), _activity);
 					errorDialog.show();
 				}
 			});

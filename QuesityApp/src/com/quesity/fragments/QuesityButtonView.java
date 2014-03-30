@@ -4,18 +4,28 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.quesity.R;
 
 
-public class QuesityButtonView extends CustomFontGeneralView {
+public class QuesityButtonView extends CustomFontGeneralView{
 
+	private View _main_view;
 	public QuesityButtonView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		build(context,attrs);
 		 
+	}
+	
+	public QuesityButtonView(Context context) {
+		super(context);
+		 _font_path = "fonts/Andada-Regular.ttf";
+		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
+		 _main_view = view_inflated;
+		 addView(view_inflated);
 	}
 	
 	private void build(Context context, AttributeSet attrs) {
@@ -26,6 +36,7 @@ public class QuesityButtonView extends CustomFontGeneralView {
 		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1);
 		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1);
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
+		 _main_view = view_inflated;
 		 _font_path = "fonts/Andada-Regular.ttf";
 		 if ( _image != 0 )
 			 setImageView(view_inflated, R.id.button_img);
@@ -45,14 +56,38 @@ public class QuesityButtonView extends CustomFontGeneralView {
 		 attr_set.recycle();
 	}
 	
-	private void setTextSize(View v, int resid, float dimen) {
+	
+	public void setButtonPadding(float padding) {
+		setPadding(this, R.id.container, padding);
+	}
+	
+	public void setButtonTextSize(float textSize) {
+		 setTextSize(this, R.id.button_text, textSize);
+	}
+	
+	public void setText(String text) {
+		_text = text;
+		setTextView(this, getContext(), R.id.button_text);
+	}
+	
+	public void setTextSize(View v, int resid, float dimen) {
 		TextView tv = (TextView) v.findViewById(resid);
 		tv.setTextSize(dimen);
 	}
-	private void setPadding(View v, int resid, float dimen) {
+	protected void setPadding(View v, int resid, float dimen) {
 		RelativeLayout layout = (RelativeLayout) v.findViewById(resid);
 		int dimenint = (int) dimen;
 		layout.setPadding(dimenint, dimenint, dimenint, dimenint);
+	}
+	
+	public void setButtonTextPadding(int left,int top,int right,int bottom) {
+		RelativeLayout layout = (RelativeLayout) this.findViewById(R.id.container);
+		layout.setPadding(left, top, right, bottom);
+	}
+	@Override
+	public void setOnClickListener(OnClickListener l) {
+		if ( _main_view != null )
+			_main_view.setOnClickListener(l);
 	}
 	
 }

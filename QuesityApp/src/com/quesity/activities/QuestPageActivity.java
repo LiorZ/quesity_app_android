@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
@@ -29,7 +29,6 @@ import com.quesity.fragments.MultipleChoiceFragment;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.ProgressBarHandler;
-import com.quesity.fragments.QuesityPageTitleView;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.WebViewFragment;
@@ -214,7 +213,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	}
 	
 	public void finishQuest(){
-		AlertDialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_quest_over), this, new DialogInterface.OnClickListener() {
+		Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_title_dialog_quest_over),getString(R.string.lbl_quest_over), this, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -475,7 +474,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			}
 		};
 		
-		SimpleDialogs.getConfirmationDialog(getString(R.string.lbl_sure_leave_quest), this, yesAnswer, noAnswer).show();
+		SimpleDialogs.getConfirmationDialog(getString(R.string.title_exit),getString(R.string.lbl_sure_leave_quest), this, yesAnswer, noAnswer).show();
 	}
 	
 	private class GameCreationTaskBackgroundHandler implements IBackgroundCallback<QuestPage[]> {

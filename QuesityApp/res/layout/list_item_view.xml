@@ -27,15 +27,12 @@
 	    android:textSize="18dp"
 	 />
 	
-	<ImageButton 
+	<ImageView 
 	    android:id="@+id/quest_list_bookmark_btn"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-		android:scaleType="fitXY"
-		android:scaleX="0.5"
-		android:scaleY="0.5"
 	/>
 	<LinearLayout 
 	    android:id="@+id/rating_linear_layout"

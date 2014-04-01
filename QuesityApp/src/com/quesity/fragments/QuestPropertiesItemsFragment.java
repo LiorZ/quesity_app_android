@@ -62,7 +62,7 @@ public class QuestPropertiesItemsFragment extends Fragment {
 	private class QuestPropertiesItems extends FragmentPagerAdapter {
 
 		private int[] TITLES = { R.string.lbl_tab_description, R.string.lbl_tab_starting_point, R.string.lbl_tab_reviews };
-		private int[] VIEWS = {R.layout.accordion_description_content,R.layout.accordion_starting_location, R.layout.accordion_description_content};
+		private int[] VIEWS = {R.layout.accordion_description_content,R.layout.accordion_starting_location, R.layout.accordion_reviews_view};
 		@Override
 		public CharSequence getPageTitle(int position) {
 			return getString(TITLES[position % TITLES.length]);

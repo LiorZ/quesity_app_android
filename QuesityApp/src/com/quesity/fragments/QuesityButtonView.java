@@ -35,21 +35,20 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 _image = attr_set.getResourceId(R.styleable.QuesityButtonView_button_icon, 0);
 		 int custom_selector = attr_set.getResourceId(R.styleable.QuesityButtonView_custom_selector, -1);
 		 
-		 if ( custom_selector > 0 ) { 
-			 this.setBackgroundResource(custom_selector);
-		 }else {
-			 this.setBackgroundResource(R.drawable.main_menu_button_selector);
-		 }
-		 
 		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1);
 		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1);
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
 		 _main_view = view_inflated;
 		 _font_path = "fonts/Andada-Regular.ttf";
+		 _text_color = attr_set.getResourceId(R.styleable.QuesityButtonView_button_text_color, -1);
+		 
 		 if ( _image != 0 )
 			 setImageView(view_inflated, R.id.button_img);
 
 		 setTextView(view_inflated, context, R.id.button_text);
+		 if ( custom_selector > 0 ) { 
+			 view_inflated.setBackgroundResource(custom_selector);
+		 }
 		 
 		 if ( dimension >= 0 ) {
 			 setTextSize(view_inflated, R.id.button_text, dimension);
@@ -57,6 +56,9 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 if ( padding_dimen >= 0 ){
 			 setPadding(view_inflated, R.id.container, padding_dimen);
 		 }
+		 
+
+		 
 		 addView(view_inflated);
 		 
 		 setClickable(true);

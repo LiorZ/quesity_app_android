@@ -25,6 +25,7 @@ public abstract class CustomFontGeneralView extends FrameLayout {
 	protected int _image;
 	protected CharSequence _text;
 	protected CharSequence _font_path;
+	protected int _text_color = -1;
 	public CustomFontGeneralView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
@@ -55,6 +56,10 @@ public abstract class CustomFontGeneralView extends FrameLayout {
 		TextView button_text_view = (TextView) mainView.findViewById(view_id);
 		setFont(button_text_view, context);
 		button_text_view.setText(_text);
+		if ( _text_color > 0 ) {
+			int color = getResources().getColor(_text_color);
+			button_text_view.setTextColor(color);
+		}
 	}
 	
 	

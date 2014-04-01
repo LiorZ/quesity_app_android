@@ -3,6 +3,7 @@
         <attr name="button_text" format="string"/>
         <attr name="button_icon" format="dimension"/>
         <attr name="button_text_size" format="dimension"/>
+        <attr name="button_text_color" format="reference"/>
         <attr name="button_padding" format="dimension"/>
         <attr name="custom_selector" format="reference"> </attr>
     </declare-styleable> 

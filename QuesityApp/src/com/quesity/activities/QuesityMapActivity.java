@@ -11,7 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.quesity.R;
+import com.quesity.app.R;
 
 public class QuesityMapActivity extends BaseActivity {
 

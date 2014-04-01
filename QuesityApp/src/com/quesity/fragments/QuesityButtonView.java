@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 
 public class QuesityButtonView extends CustomFontGeneralView{

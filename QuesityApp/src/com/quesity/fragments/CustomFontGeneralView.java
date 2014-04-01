@@ -17,7 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 
 public abstract class CustomFontGeneralView extends FrameLayout {

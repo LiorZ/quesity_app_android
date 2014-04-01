@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.QuesityMapActivity;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.general.Constants;

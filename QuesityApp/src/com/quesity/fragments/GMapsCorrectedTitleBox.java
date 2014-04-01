@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
 import com.google.android.gms.maps.model.Marker;
-import com.quesity.R;
+import com.quesity.app.R;
 
 
 /**

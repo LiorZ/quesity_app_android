@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.util.ViewAlpha;
 
 public class BackgroundImageFragment extends Fragment {

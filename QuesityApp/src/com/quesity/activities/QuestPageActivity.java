@@ -18,7 +18,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.application.IQuesityApplication;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.ContentPageFragment;

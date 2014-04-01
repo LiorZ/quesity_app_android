@@ -9,7 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 public class FlowLayout extends ViewGroup {
     public static final int HORIZONTAL = 0;

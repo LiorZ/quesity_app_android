@@ -11,7 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.fragments.LoginFragment;
 import com.quesity.general.Constants;
 

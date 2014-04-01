@@ -1,6 +1,6 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.models.ModelsFactory;

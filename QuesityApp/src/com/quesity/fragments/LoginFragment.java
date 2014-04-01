@@ -19,7 +19,7 @@ import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.BaseActivity;
 import com.quesity.activities.QuesityMain;
 import com.quesity.activities.SplashScreen;

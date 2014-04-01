@@ -20,7 +20,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.util.ViewAlpha;
 
 public class WebViewFragment extends Fragment {

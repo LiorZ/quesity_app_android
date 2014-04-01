@@ -14,7 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.general.Constants;
 import com.viewpagerindicator.CirclePageIndicator;
 

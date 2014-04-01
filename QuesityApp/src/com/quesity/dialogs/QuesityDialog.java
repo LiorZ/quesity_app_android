@@ -16,7 +16,7 @@ import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.fragments.QuesityButtonView;
 import com.quesity.network.GetRequestTypeGetter;
 

@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;

@@ -5,7 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.dialogs.QuesityDialog;
 
 public class SimpleDialogs {

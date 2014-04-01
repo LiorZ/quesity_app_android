@@ -219,7 +219,6 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 				returnToMainPage();
-				finish();
 			}
 		});
 		removeGameFromSaved();

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.quesity.R;
 import com.quesity.controllers.TagView;
 import com.quesity.fragments.QuestPropertiesItemContainerFrag.FragmentManipulator;
+import com.quesity.general.Utils;
 import com.quesity.layouts.FlowLayout;
 import com.quesity.models.Quest;
 import com.viewpagerindicator.TabPageIndicator;
@@ -131,8 +132,9 @@ public class QuestPropertiesItemsFragment extends Fragment {
 					
 					//set distance and time:
 					TextView distance_time_text = (TextView ) root.findViewById(R.id.quest_properties_distance_time_text);
-					distance_time_text.setText(_quest.getDistance() + "Km/" + _quest.getTime()/60 + "h");
-					
+					String distance = Utils.displayRoundToHalf(_quest.getDistance());
+					String time = Utils.displayRoundToHalf(_quest.getTime()/60);
+					distance_time_text.setText(distance + " Km/" + time + " h");
 					
 					//set number of games played:
 					String formatted_games_played = String.format(getString(R.string.lbl_games_played), _quest.getGamesPlayed());

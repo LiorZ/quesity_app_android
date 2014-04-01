@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
@@ -23,7 +22,9 @@ import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.quesity.R;
+import com.quesity.fragments.QuesityPageTitleView;
 import com.quesity.general.Constants;
+import com.quesity.general.Utils;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.models.SavedGame;
@@ -44,6 +45,12 @@ public class QuestsListViewActivity extends BaseActivity{
 		_start_quest_listener = new ShowQuestPropertiesClickListener();
 		_quest_list_view.setOnItemClickListener(_start_quest_listener);
 		String quests_json = getIntent().getStringExtra(Constants.LOADED_QUESTS);
+		String title = getIntent().getStringExtra(Constants.QUEST_LIST_ACTIVITY_TITLE);
+		int title_img_resource = getIntent().getIntExtra(Constants.QUEST_LIST_ACTIVITY_TITLE_IMG, 0);
+		
+		QuesityPageTitleView title_view = (QuesityPageTitleView) findViewById(R.id.title_find_quest);
+		title_view.setTitle(title);
+		title_view.setTitleImage(title_img_resource);
 		if (quests_json != null && quests_json.length() > 0 )
 			showLoadedQuests(quests_json);
 	}
@@ -152,8 +159,12 @@ public class QuestsListViewActivity extends BaseActivity{
 			
 			ratingBar.setRating(q.getRating());
 			playedView.setText(q.getGamesPlayed() + "\n" + getString(R.string.lbl_games_played_raw));
-			timeView.setText(q.getTime()/60 + "\n" + getString(R.string.lbl_hours));
-			distanceView.setText(q.getDistance() + "\n" + getString(R.string.lbl_distance_unit));
+			
+			String time = Utils.displayRoundToHalf(q.getTime()/60);
+			timeView.setText(time + "\n" + getString(R.string.lbl_hours));
+			
+			String dist = Utils.displayRoundToHalf(q.getDistance());
+			distanceView.setText(dist + "\n" + getString(R.string.lbl_distance_unit));
 			ratingTextView.setText("("+q.getRating() + ")");
 			
 			//set the bookmark button:

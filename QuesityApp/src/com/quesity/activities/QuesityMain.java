@@ -68,13 +68,11 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 
 	private void loadUserDetails() {
 		SharedPreferences p = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
-		String user_id = p.getString(Constants.FACEBOOK_ID_PREF_KEY, null);
-		String user_fullname = p.getString(Constants.FACEBOOK_FULL_NAME_KEY,
-				null);
+				.getDefaultSharedPreferences(this);
+		String user_id = p.getString(Constants.CURRENT_ACCOUNT_ID, null);
 		Log.d("QuesityMain", "user id is " + user_id);
 		final Activity thisActivity = this;
-		if (user_id == null || user_fullname == null) {
+		if (user_id == null) {
 			runOnUiThread(new Runnable() {
 
 				@Override
@@ -103,7 +101,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 		for (int i=0; i<saved_games.length; ++i) {
 			quests[i] = saved_games[i].getQuest();
 		}
-		showQuestList(quests,getString(R.string.lbl_my_quests));
+		showQuestList(quests,getString(R.string.lbl_my_quests),R.drawable.favorites);
 		
 	}
 	
@@ -144,11 +142,6 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 		startActivity(intent);
 	}
 
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-		backToHome();
-	}
 
 	@Override
 	protected void onResume() {
@@ -163,11 +156,12 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 			finish();
 		}
 	}
-	public void showQuestList(Quest[] quests, String title) {
+	public void showQuestList(Quest[] quests, String title, int img_resource) {
 		Intent i = new Intent(QuesityMain.this, QuestsListViewActivity.class);
 		String json = ModelsFactory.getInstance().getJSONFromModel(quests);
 		i.putExtra(Constants.LOADED_QUESTS, json);
 		i.putExtra(Constants.QUEST_LIST_ACTIVITY_TITLE, title);
+		i.putExtra(Constants.QUEST_LIST_ACTIVITY_TITLE_IMG,img_resource);
 		startActivity(i);
 	}
 	public void performLogout(View view) {
@@ -215,7 +209,7 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 		
 		@Override
 		public void apply(Object r) {
-			showQuestList((Quest[])r, getString(R.string.lbl_find_quest));
+			showQuestList((Quest[])r, getString(R.string.lbl_find_quest),R.drawable.search);
 		}
 
 		@Override

@@ -42,8 +42,7 @@
     	android:scrollbars="vertical"
     	android:layout_weight="1"
     >
-        <LinearLayout android:id="@+id/quest_properties_rating_layout"
-            android:orientation="horizontal"
+        <RelativeLayout android:id="@+id/quest_properties_rating_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         	<RatingBar android:id="@+id/quest_properties_rating_bar"
@@ -51,6 +50,7 @@
 	    	   android:isIndicator="true"
 	    	   android:layout_height="wrap_content"
 	    	   android:layout_width="wrap_content"
+   	    	   android:layout_centerVertical="true"
 	    	/>
         	<com.quesity.fragments.StyledTextView
         		android:id="@+id/quest_properties_rating_bar_text"
@@ -58,9 +58,9 @@
         		android:layout_width="wrap_content"
         		android:textColor="@color/quesity_title_color"
    			 	quesity:font_path="fonts/Roboto-Light.ttf"
+   			 	android:layout_toRightOf="@id/quest_properties_rating_bar"
         	/>
-            
-        </LinearLayout>
+           </RelativeLayout>
         <com.quesity.fragments.StyledTextView 
         	android:id="@+id/quest_properties_distance_time_text"
         	android:layout_width="wrap_content"

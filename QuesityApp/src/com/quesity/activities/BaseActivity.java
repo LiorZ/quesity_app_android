@@ -24,15 +24,5 @@ public abstract class BaseActivity extends FragmentActivity {
 		return _network_interface;
 	}
 	
-	public void backToHome(int... flags) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        if ( flags != null )
-        	for (int i : flags) {
-        		intent.addFlags(i);
-        	}
-        
-        startActivity(intent);
-	}
 	
 }

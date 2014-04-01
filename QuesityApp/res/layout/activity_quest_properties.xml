@@ -15,6 +15,7 @@
    		android:layout_height="wrap_content"
    		quesity:page_title_text=""
    		quesity:title_icon="@drawable/book_empty"
+   		quesity:title_text_size="15sp"
    		android:layout_weight="2"
     />
     <FrameLayout 

@@ -69,6 +69,12 @@
         </activity>
         
         <activity
+            android:name="com.quesity.activities.QuesityMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+         
+        <activity
             android:name="com.quesity.activities.SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait"

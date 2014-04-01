@@ -3,6 +3,7 @@ package com.quesity.fragments;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.quesity.R;
+import com.quesity.activities.QuesityMapActivity;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
@@ -93,6 +95,9 @@ public class InGameMenuFragment extends Fragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch(which){
+				case Constants.SHOW_MAP_MENU_ITEM_INDEX:
+					startShowMapActivity();
+					break;
 				case Constants.EXIT_MENU_ITEM_INDEX:
 					((QuestPageActivity)factivity).returnToMainPage();
 					break;
@@ -104,6 +109,11 @@ public class InGameMenuFragment extends Fragment {
 		});
 	}
 
+	private void startShowMapActivity() {
+		Intent i = new Intent(this.getActivity(), QuesityMapActivity.class);
+		startActivity(i);
+	}
+	
 	public interface TransitionFragmentInvokation {
 		public void transitToNextPage();
 	}

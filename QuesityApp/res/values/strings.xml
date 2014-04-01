@@ -75,4 +75,9 @@
 	<string name="lbl_map_starting_location">Starting Location</string>
 	<string name="title_resume_game">Resume Game?</string>
 	<string name="title_exit">Exit?</string>
+	<string name="lbl_email_login">Email</string>
+	<string name="lbl_firstname_login">First Name</string>
+	<string name="lbl_lastname_login">Last Name</string>
+	<string name="lbl_password_login">Password</string>
+	
 </resources>

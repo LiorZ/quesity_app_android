@@ -20,9 +20,8 @@ public class AboutActivity extends FragmentActivity {
 		setContentView(R.layout.activity_about);
 		WebViewFragment web_fragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.about_webview);
 		web_fragment.showLoading(false);
+		web_fragment.getWebView().setBackgroundColor(0xCCFFFFFF);
 		InputStream stream;
-		TitleFragment fragment = (TitleFragment) getSupportFragmentManager().findFragmentById(R.id.title_about);
-		fragment.setText(getString(R.string.lbl_about));
 		
 		try {
 			stream = getAssets().open("htmls/about.html");
@@ -32,7 +31,6 @@ public class AboutActivity extends FragmentActivity {
 			SimpleDialogs.getErrorDialog(getString(R.string.err_display_about), this).show();
 		}
 	}
-
 	
 	private String getHTMLFromFile(InputStream stream) {
 		try {

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
+    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/semi_transparent_white"
+    android:padding="20dp">
+   
+    <RelativeLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+    >
+          <EditText 
+          	android:id="@+id/txt_email_field"
+          	android:layout_height="wrap_content"
+          	android:layout_width="@dimen/login_txt_field_width"
+          	android:inputType="textEmailAddress"
+          	android:hint="@string/lbl_email_login"
+          	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
+          />
+          
+          <EditText 
+          	android:id="@+id/txt_firstname_field"
+          	android:layout_height="wrap_content"
+          	android:layout_width="@dimen/login_txt_field_width"
+          	android:inputType="textPersonName"
+          	android:layout_below="@id/txt_email_field"
+          	android:hint="@string/lbl_firstname_login"
+          	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
+          	
+          />
+          
+          <EditText 
+          	android:id="@+id/txt_lastname_field"
+          	android:layout_height="wrap_content"
+          	android:layout_width="@dimen/login_txt_field_width"
+          	android:inputType="textPersonName"
+          	android:layout_below="@id/txt_firstname_field"
+          	android:hint="@string/lbl_lastname_login"
+          	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
+          	
+          />
+          
+          <EditText 
+          	android:id="@+id/txt_password_field"
+          	android:layout_height="wrap_content"
+          	android:layout_width="@dimen/login_txt_field_width"
+          	android:inputType="textPassword"
+          	android:layout_below="@id/txt_lastname_field"
+          	android:hint="@string/lbl_password_login"
+          	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
+          	
+          />
+          
+        </RelativeLayout>
+
+
+</RelativeLayout>

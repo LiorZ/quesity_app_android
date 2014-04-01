@@ -5,28 +5,29 @@
     android:paddingTop="10dip"
     android:paddingBottom="10dip"
     android:background="@color/blue_btn_color">
-	<LinearLayout
-	    android:id="@+id/title_linear_layout"
-	    android:orientation="horizontal"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerHorizontal="true" 
-	>
-	    <ImageView 
+    <LinearLayout 
+    	android:id="@+id/title_container"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"   
+    	android:layout_centerInParent="true"
+    	android:orientation="horizontal"
+    >
+   <ImageView 
     	android:id="@+id/title_page_img"
     	android:layout_width="@dimen/icons_size"
     	android:layout_height="@dimen/icons_size"
     	android:layout_marginRight="4dip"
     	/>
-        <TextView
+	<TextView
         android:id="@+id/title_main_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="30sp"
         android:textColor="@color/quesity_title_color"
         android:textStyle="bold"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+        />
     </LinearLayout>
+
+
+
 </RelativeLayout>

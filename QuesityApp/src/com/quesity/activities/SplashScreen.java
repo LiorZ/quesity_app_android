@@ -5,14 +5,11 @@ import java.util.TimerTask;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
-import android.widget.TextView;
 
 import com.quesity.R;
 import com.quesity.fragments.LoginFragment;
@@ -21,18 +18,11 @@ import com.quesity.general.Constants;
 public class SplashScreen extends BaseActivity {
 	
 	public static final long SPLASH_DELAY = 1000;
-	@Override
-	public void onBackPressed() {
-		super.onBackPressed();
-        backToHome(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	}
 	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		hideFacebookLoginButton();
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(this);
-		String account_id = p.getString(Constants.CURRENT_ACCOUNT_ID,null);
+		String account_id = getAccountId();
 		if ( account_id != null ) {
 			Timer t = new Timer();
 			t.schedule(new TimerTask() {
@@ -43,9 +33,13 @@ public class SplashScreen extends BaseActivity {
 					finish();
 				}
 			}, SPLASH_DELAY);
-		}else {
-			showFacebookLoginButton();
 		}
+	}
+	
+	private String getAccountId() {
+		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(this);
+		String account_id = p.getString(Constants.CURRENT_ACCOUNT_ID,null);
+		return account_id;
 	}
 	
 	@Override
@@ -54,7 +48,10 @@ public class SplashScreen extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_splash_screen);	
-		
+		String accountId = getAccountId();
+		if ( accountId == null ) {
+			showFacebookLoginButton();
+		}
 	}
 	
 	private void startMainActivity() {
@@ -73,10 +70,10 @@ public class SplashScreen extends BaseActivity {
 	}
 	
 	private void showFacebookLoginButton() {
+		final LoginFragment loginFragment = new LoginFragment();
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
-		final LoginFragment loginFragment = new LoginFragment();
 		fragmentTransaction.setCustomAnimations(R.anim.default_fade_in,R.anim.default_fade_out);
 		fragmentTransaction.add(R.id.facebook_login_fragment_container,loginFragment,LoginFragment.TAG);
 		fragmentTransaction.commit();

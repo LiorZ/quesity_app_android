@@ -37,6 +37,7 @@ public class LoginFragment extends Fragment {
 	//	private LoadingProgressFragment _progress;
 	private UiLifecycleHelper _uiHelper;
 	private LoginButton _loginBtn;
+	private boolean _isResumed = false;
 	public static final String TAG = "com.quesity.fragment.facebook_login_fragment";
 	private LoginStateChangeListener _listener;
 	
@@ -48,8 +49,6 @@ public class LoginFragment extends Fragment {
 		        onSessionStateChange(session, state, exception);
 		    }
 	};
-
-	private boolean _isResumed = false;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -129,6 +128,7 @@ public class LoginFragment extends Fragment {
 	    if (_isResumed) {
 	    	Log.d("LoginFragmnet","isResumed is true");
 	        if (state.isOpened() && session.isOpened()) {
+	        	_loginBtn.setVisibility(View.INVISIBLE);
 	        	Log.d("LoginFragment","Session and state are open!");
 	            // If the session state is open:
 	            // Show the authenticated fragment
@@ -144,7 +144,6 @@ public class LoginFragment extends Fragment {
 						if ( response.getError() == null  ){
 							Log.d("LoginFragment", "Login Completed and was successful");
 							String json_to_send = "{\"facebook_id\":\""+user.getId()+"\", \"access_token\":\""+session.getAccessToken()+"\"}";
-							saveUserToPreferences(user);
 							final BaseActivity activity = (BaseActivity) getActivity();
 							
 							INetworkInteraction net_handler = new INetworkInteraction() {
@@ -172,14 +171,14 @@ public class LoginFragment extends Fragment {
 	        	});
 	        	newMeRequest.executeAsync();
 	        } else if (state.isClosed() || session.isClosed()) {
-	        	
+	        	_loginBtn.setVisibility(View.VISIBLE);
 	        	if (_listener != null)
 	        		_listener.stateChanged(false);
 	        	
 	        	Log.d("LoginFragment","Session and state are closed!");
 				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
 				p.edit().putString(Constants.CURRENT_ACCOUNT_ID, null).commit();
-	        	((BaseActivity) getActivity()).backToHome(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        	((BaseActivity) getActivity()).onBackPressed();
 	        }
 	        
 	    }else {
@@ -187,14 +186,10 @@ public class LoginFragment extends Fragment {
 	    }
 	}
 	
-	private void saveUserToPreferences(GraphUser user) {
-		SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-		p.edit().putString(Constants.FACEBOOK_ID_PREF_KEY,user.getId()).putString(Constants.FACEBOOK_FULL_NAME_KEY, user.getName()).commit();
-
-	}
 	private void loadMainScreen() {
     	Intent intent = new Intent(getActivity(), QuesityMain.class);
     	startActivity(intent);
+    	getActivity().finish();
 	}
 	
 	private class SendLoginToServerTask implements IPostExecuteCallback {

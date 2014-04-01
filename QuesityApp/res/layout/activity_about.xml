@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    android:background="@color/splash_screen">
-    <fragment 
-        android:id="@+id/title_about"
-        android:name="com.quesity.fragments.TitleFragment"
-        android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="center_horizontal"
+    android:background="@drawable/splash_screen"
+    android:orientation="vertical" >
+     <com.quesity.fragments.QuesityPageTitleView
+   		android:id="@+id/title_quest_properties"
+   		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		quesity:page_title_text="@string/lbl_about_quesity"
+   		quesity:title_icon="@drawable/about"
+   		quesity:title_text_size="20sp"
     />
     
     <fragment

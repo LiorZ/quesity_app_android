@@ -9,6 +9,7 @@
     <declare-styleable name="QuesityPageTitleView">
         <attr name="page_title_text" format="string"/>
         <attr name="title_icon" format="integer"/>
+        <attr name="title_text_size" format="dimension"/>
     </declare-styleable> 
 	<declare-styleable name="StyledTextView">
 	    <attr name="font_path" format="string"/>

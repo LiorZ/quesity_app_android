@@ -40,6 +40,10 @@ public class WebViewFragment extends Fragment {
 		_showLoading = s;
 	}
 	
+	public WebView getWebView() {
+		return _w;
+	}
+	
 	public void loadHTMLData(String raw_data) {
 		String data  = "<html><body style='padding:0; margin:0'>"+raw_data+"</body></html>";
 		loadHTMLDataRaw(data);

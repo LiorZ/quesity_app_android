@@ -51,7 +51,6 @@ public class WebViewFragment extends Fragment {
 	
 	public void loadHTMLDataRaw(String raw_data) {
 		raw_data = raw_data.replaceFirst("<p>", "").replaceFirst("</p>", "");
-		Log.d("LIOR", raw_data);
 		_w.loadDataWithBaseURL(null, raw_data, "text/html", "utf-8", null);
 		_w.scrollTo(0, 0);
 	}

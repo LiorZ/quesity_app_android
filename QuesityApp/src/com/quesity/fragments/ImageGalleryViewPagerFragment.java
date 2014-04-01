@@ -48,7 +48,6 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 			public boolean onTouch(View v, MotionEvent event) {
 				if ( event.getAction() == MotionEvent.ACTION_UP ){
 					_image_gallery.setCurrentItem(++_current_item % _images_url.size(),true);
-					Log.d("LIOR", "TOUCH EVENT - current item: " + _current_item);
 				}
 				return true;
 			}
@@ -84,11 +83,7 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 
 		@Override
 		public Fragment getItem(int position) {
-			Log.d("LIOR", "Getting next item in gallery");
 			Fragment fragment = _fragments.get(position);
-			if ( fragment == null ) {
-				Log.d("LIOR","FRAGMENT IS NULL!!!");
-			}
 			return fragment;
 		}
 

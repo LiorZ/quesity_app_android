@@ -40,10 +40,6 @@ public class NetworkInterface implements INetworkInterface{
 	        HttpRequestBase request = getter.getRequestObj();
 	        request.setURI(new URI(uri));
 	        HttpResponse response = client.execute(request);
-	        Header[] headers = response.getHeaders("Set-Cookie");
-	        if ( headers != null && headers.length == 1) {
-	        	Log.d("N",headers[0].getElements().toString());
-	        }
 	        checkStatusLine(response);
 	        InputStream ips  = response.getEntity().getContent();
 	        BufferedReader buf = new BufferedReader(new InputStreamReader(ips,"UTF-8"));

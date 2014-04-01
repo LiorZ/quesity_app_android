@@ -51,9 +51,28 @@
           	android:layout_below="@id/txt_lastname_field"
           	android:hint="@string/lbl_password_login"
           	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
-          	
           />
+          <com.quesity.fragments.QuesityButtonView 
+              android:id="@+id/register_yes_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              quesity:button_padding="5dp"
+              quesity:button_icon="@drawable/yes_icon"
+              android:layout_below="@id/txt_password_field"
+              android:layout_alignRight="@id/txt_password_field"
+           />
           
+          <com.quesity.fragments.QuesityButtonView 
+              android:id="@+id/register_no_btn"
+              android:background="@drawable/register_button_selector"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              quesity:button_padding="5dp"
+              quesity:button_icon="@drawable/no_icon"
+              android:layout_below="@id/txt_password_field"
+              android:layout_alignLeft="@id/txt_password_field"
+           />
+              
         </RelativeLayout>
 
 

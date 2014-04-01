@@ -10,6 +10,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.quesity.R;
 import com.quesity.fragments.LoginFragment;
@@ -50,7 +52,7 @@ public class SplashScreen extends BaseActivity {
 		setContentView(R.layout.activity_splash_screen);	
 		String accountId = getAccountId();
 		if ( accountId == null ) {
-			showFacebookLoginButton();
+			showLoginButtons();
 		}
 	}
 	
@@ -69,7 +71,7 @@ public class SplashScreen extends BaseActivity {
 		fragmentTransaction.commit();
 	}
 	
-	private void showFacebookLoginButton() {
+	private void showLoginButtons() {
 		final LoginFragment loginFragment = new LoginFragment();
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -77,6 +79,11 @@ public class SplashScreen extends BaseActivity {
 		fragmentTransaction.setCustomAnimations(R.anim.default_fade_in,R.anim.default_fade_out);
 		fragmentTransaction.add(R.id.facebook_login_fragment_container,loginFragment,LoginFragment.TAG);
 		fragmentTransaction.commit();
+		
+		View login_email_view = View.inflate(this, R.layout.fragment_login_email, null);
+		LinearLayout login_button_container = (LinearLayout) findViewById(R.id.facebook_login_fragment_container);
+		login_button_container.addView(login_email_view);
+		
 	}
 	
 

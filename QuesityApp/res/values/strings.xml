@@ -80,4 +80,7 @@
 	<string name="lbl_lastname_login">Last Name</string>
 	<string name="lbl_password_login">Password</string>
 	<string name="lbl_no_reviews">No reviews yet ...</string>
+	
+	<string name="lbl_register_email">Register with email</string>
+	<string name="lbl_login_email">Login with email</string>
 </resources>

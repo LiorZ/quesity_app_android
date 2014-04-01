@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+    <com.quesity.fragments.QuesityButtonView 
+              android:id="@+id/register_no_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              quesity:button_text="@string/lbl_register_email"
+              quesity:button_padding="5dp"
+              quesity:custom_selector="@drawable/register_button_selector"
+    />
+
+</LinearLayout>

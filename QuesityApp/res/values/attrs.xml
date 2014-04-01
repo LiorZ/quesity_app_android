@@ -4,6 +4,7 @@
         <attr name="button_icon" format="dimension"/>
         <attr name="button_text_size" format="dimension"/>
         <attr name="button_padding" format="dimension"/>
+        <attr name="custom_selector" format="reference"> </attr>
     </declare-styleable> 
     
     <declare-styleable name="QuesityPageTitleView">

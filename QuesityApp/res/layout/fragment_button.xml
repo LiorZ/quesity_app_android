@@ -4,7 +4,6 @@
     android:id="@+id/container"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/main_menu_button_selector"
     android:orientation="horizontal"
     android:padding="15dp" >
 

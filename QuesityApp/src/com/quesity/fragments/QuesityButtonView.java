@@ -38,6 +38,9 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
 		 _main_view = view_inflated;
 		 _font_path = "fonts/Andada-Regular.ttf";
+		 if ( padding_dimen >= 0 ){
+			 setPadding(view_inflated, R.id.container, padding_dimen);
+		 }
 		 if ( _image != 0 )
 			 setImageView(view_inflated, R.id.button_img);
 
@@ -45,9 +48,6 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 
 		 if ( dimension >= 0 ) {
 			 setTextSize(view_inflated, R.id.button_text, dimension);
-		 }
-		 if ( padding_dimen >= 0 ){
-			 setPadding(view_inflated, R.id.container, padding_dimen);
 		 }
 		 addView(view_inflated);
 		 

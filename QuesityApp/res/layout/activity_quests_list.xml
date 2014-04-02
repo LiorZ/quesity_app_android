@@ -12,7 +12,7 @@
    		android:layout_height="wrap_content"
    		quesity:page_title_text="@string/lbl_find_quest"
    		quesity:title_icon="@drawable/search"
-   		quesity:title_text_size="20sp"
+   		quesity:title_text_size="@dimen/find_quest_title_font_size"
     />
     
     <ListView

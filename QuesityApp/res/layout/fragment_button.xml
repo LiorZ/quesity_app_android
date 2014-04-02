@@ -5,7 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/main_menu_button_selector"
-    android:orientation="horizontal"
     android:padding="15dp" >
 
     <TextView
@@ -13,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:textColor="#103e41"
+        android:textColor="@color/quesity_title_color"
         android:textSize="30sp" />
 
     <ImageView

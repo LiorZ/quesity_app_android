@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.models.Game;
 import com.quesity.models.QuestPage;

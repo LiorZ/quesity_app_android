@@ -32,4 +32,6 @@
 	<dimen name="quest_properties_start_button_top_margin">5dip</dimen>
     <item name="accordion_image_scale" format="float" type="dimen">0.5</item>
 	<item format="string" name="tab_icon_scale" type="dimen">80%</item>	
+	<dimen name="find_quest_title_font_size">18dp</dimen>
+	
 </resources>

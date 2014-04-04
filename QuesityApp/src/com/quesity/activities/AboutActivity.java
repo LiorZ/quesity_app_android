@@ -6,9 +6,8 @@ import java.io.InputStream;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.fragments.TitleFragment;
 import com.quesity.fragments.WebViewFragment;
 import com.quesity.util.FileReader;
 

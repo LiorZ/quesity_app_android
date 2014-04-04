@@ -14,7 +14,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.controllers.LocationUser;
 import com.quesity.general.Constants;

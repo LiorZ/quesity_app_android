@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import android.content.Context;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.general.Config;
 import com.quesity.models.JSONModel;
 import com.quesity.models.QuestPage;

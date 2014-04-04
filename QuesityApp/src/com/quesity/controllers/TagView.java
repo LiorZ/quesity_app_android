@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 public class TagView extends FrameLayout {
 	

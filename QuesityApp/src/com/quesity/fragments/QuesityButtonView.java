@@ -8,7 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 
 public class QuesityButtonView extends CustomFontGeneralView{
@@ -42,6 +42,9 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 _font_path = "fonts/Andada-Regular.ttf";
 		 _text_color = attr_set.getResourceId(R.styleable.QuesityButtonView_button_text_color, -1);
 		 
+		 if ( padding_dimen >= 0 ){
+			 setPadding(view_inflated, R.id.container, padding_dimen);
+		 }
 		 if ( _image != 0 )
 			 setImageView(view_inflated, R.id.button_img);
 
@@ -53,11 +56,6 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 if ( dimension >= 0 ) {
 			 setTextSize(view_inflated, R.id.button_text, dimension);
 		 }
-		 if ( padding_dimen >= 0 ){
-			 setPadding(view_inflated, R.id.container, padding_dimen);
-		 }
-		 
-
 		 
 		 addView(view_inflated);
 		 

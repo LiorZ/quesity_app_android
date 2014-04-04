@@ -9,7 +9,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 public class QuesityIngameButtonView extends FrameLayout {
 

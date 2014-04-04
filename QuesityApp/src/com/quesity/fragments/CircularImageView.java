@@ -1,6 +1,6 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 import android.annotation.SuppressLint;
 import android.content.Context;

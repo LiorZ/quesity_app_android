@@ -5,7 +5,7 @@ import java.util.List;
 import android.app.Dialog;
 import android.content.Context;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.QuesityMain;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.Quest;

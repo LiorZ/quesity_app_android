@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.models.QuestPage;

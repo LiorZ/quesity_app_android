@@ -7,7 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.controllers.QuestProvider;
 import com.quesity.fragments.QuesityButtonView;
 import com.quesity.fragments.QuesityPageTitleView;

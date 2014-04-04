@@ -20,7 +20,7 @@ import android.webkit.WebView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.controllers.TagView;
 import com.quesity.fragments.QuestPropertiesItemContainerFrag.FragmentManipulator;
 import com.quesity.general.Utils;

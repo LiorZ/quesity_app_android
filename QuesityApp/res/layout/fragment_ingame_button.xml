@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
    <RelativeLayout 
        xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
+            xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
     	android:id="@+id/ingame_button"
     	android:layout_width="fill_parent"
     	android:layout_height="fill_parent"

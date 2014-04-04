@@ -12,7 +12,7 @@ import android.widget.ProgressBar;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.general.Constants;
 
 public class AsyncImageFragment extends Fragment{

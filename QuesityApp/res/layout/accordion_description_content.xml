@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:quesity="http://schemas.android.com/apk/res/com.quesity"
+        xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
     
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
    <FrameLayout android:id="@+id/quest_properties_gallery_fragment_place_holder"
         android:layout_width="fill_parent"
-        android:layout_margin="0px"
+        android:layout_margin="0dp"
         android:layout_height="190dip" 
     />
    <ScrollView 
@@ -18,7 +18,7 @@
        >
    <LinearLayout 
        android:id="@+id/scroll_child"
-       android:layout_width="wrap_content"
+       android:layout_width="fill_parent"
        android:layout_height="wrap_content"
        android:orientation="vertical"
        android:paddingLeft="10dip"
@@ -91,7 +91,7 @@
     </LinearLayout>
     <TextView 
         android:id="@+id/quest_description_text_view"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />
     </LinearLayout>

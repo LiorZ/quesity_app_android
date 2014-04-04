@@ -77,8 +77,8 @@ public class WebViewFragment extends Fragment {
 		 _w.setWebViewClient(new WebViewClient(){
 			 private TimerTask task;
 			@Override
-			public void onLoadResource(WebView view, String url) {
-				super.onLoadResource(view, url);
+			public void onPageStarted(WebView view, String url,Bitmap b) {
+				super.onPageStarted(view, url,b);
 				if ( !_showLoading )
 					return;
 				

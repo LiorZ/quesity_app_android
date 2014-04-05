@@ -31,7 +31,7 @@
 	quesity:button_icon="@drawable/favorites"
     />
     <com.quesity.fragments.QuesityButtonView 
-            android:layout_height="wrap_content"
+  	android:layout_height="wrap_content"
     android:layout_width="fill_parent"
     android:layout_marginBottom="20dp"
     android:layout_marginLeft="20dp"

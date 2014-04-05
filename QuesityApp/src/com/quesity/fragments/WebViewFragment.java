@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -75,16 +76,29 @@ public class WebViewFragment extends Fragment {
 		 if ( _animation == null )
 			 _animation = AnimationUtils.loadAnimation(getActivity(), R.anim.tween);
 		 _w.setWebViewClient(new WebViewClient(){
-			 private TimerTask task;
-			@Override
-			public void onPageStarted(WebView view, String url,Bitmap b) {
-				super.onPageStarted(view, url,b);
+			 @Override
+			public void onLoadResource(WebView view, String url) {
+				super.onLoadResource(view, url);
+				if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB)
+					pageLoadEvent(view);
+			}
+
+			private TimerTask task;
+			 
+			private void pageLoadEvent(WebView view) {
 				if ( !_showLoading )
 					return;
 				
 				ViewAlpha.setAlphaForView(view, 0.0f,500);
 				_loadingView.setVisibility(View.VISIBLE);
 				_loadingView.startAnimation(_animation);
+			}
+			 
+			@Override
+			public void onPageStarted(WebView view, String url,Bitmap b) {
+				super.onPageStarted(view, url,b);
+				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB)
+					pageLoadEvent(view);
 			}
 
 			@Override

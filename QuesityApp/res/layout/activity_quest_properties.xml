@@ -15,7 +15,7 @@
    		android:layout_height="wrap_content"
    		quesity:page_title_text=""
    		quesity:title_icon="@drawable/book_empty"
-   		quesity:title_text_size="10dp"
+   		quesity:title_text_size="@dimen/quest_properties_title"
    		android:layout_weight="2"
     />
     <FrameLayout 
@@ -33,7 +33,7 @@
     	android:layout_marginBottom="@dimen/quest_list_item_properties_margin_bottom"
     	android:layout_height="wrap_content"
     	quesity:button_text="@string/lbl_start_btn"
-    	quesity:button_text_size="15sp"
+    	quesity:button_text_size="@dimen/quest_properties_start_button"
     	quesity:button_padding="5dip"
     	
     />

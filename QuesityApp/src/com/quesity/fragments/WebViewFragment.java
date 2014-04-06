@@ -5,9 +5,10 @@ import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Typeface;
-import android.os.Build;
+import android.media.AudioManager;
+import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -26,6 +27,8 @@ import com.quesity.util.ViewAlpha;
 
 public class WebViewFragment extends Fragment {
 
+
+
 	private WebView _w;
 	private TextView _loadingView;
 	private Animation _animation;
@@ -35,6 +38,20 @@ public class WebViewFragment extends Fragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		_showLoading = true;
+	}
+	
+		@Override
+	public void onPause() {
+		super.onPause();
+		stopAudio();
+	}
+		
+	private void stopAudio() {
+		AudioManager systemService = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+		systemService.requestAudioFocus(new OnAudioFocusChangeListener() {
+            @Override
+            public void onAudioFocusChange(int focusChange) {}
+        }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
 	}
 	
 	public void showLoading (boolean s) {

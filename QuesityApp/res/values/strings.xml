@@ -80,4 +80,5 @@
 	<string name="lbl_lastname_login">Last Name</string>
 	<string name="lbl_password_login">Password</string>
 	<string name="lbl_no_reviews">No reviews yet ...</string>
+	<string name="lbl_no_starting_location">Could not find your location.\nYou are playing the quest in demo mode.</string>
 </resources>

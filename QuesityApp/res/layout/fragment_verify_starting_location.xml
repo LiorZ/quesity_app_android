@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/semi_transparent_white"
+ >
+    
+<com.quesity.fragments.StyledTextView 
+ 	android:id="@+id/lbl_starting_location"
+ 	android:layout_width="wrap_content"
+ 	android:layout_height="wrap_content"
+ 	android:textSize="25sp"
+ 	quesity:font_path="fonts/Roboto-Light.ttf"
+ 	android:layout_centerHorizontal="true"
+ 	android:paddingTop="30dp"
+ 	android:text="This is not the starting point ..."
+ />    
+</RelativeLayout>

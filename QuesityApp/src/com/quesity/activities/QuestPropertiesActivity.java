@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 
 import com.quesity.app.R;
@@ -13,6 +14,7 @@ import com.quesity.fragments.QuesityButtonView;
 import com.quesity.fragments.QuesityPageTitleView;
 import com.quesity.fragments.QuestPropertiesItemsFragment;
 import com.quesity.fragments.SimpleDialogs;
+import com.quesity.fragments.StartingLocationVerifier;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
@@ -71,13 +73,33 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 		@Override
 		public void onClick(View v) {
 
-			Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
-	    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
-	    	if ( existsInCache(_quest)) {
-	    		askStartOrResume(intent);
-	    	}else{
-				startQuestActivity(intent);
-	    	}
+			final StartingLocationVerifier verifier_fragment = StartingLocationVerifier.getInstance(
+					_quest.getStartingLocation(), 
+					new StartingLocationVerifier.StartingLocationListener() {
+						
+						private void startQuest(boolean in_location) {
+							Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
+					    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
+					    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_location);
+					    	boolean existsInCache = existsInCache(_quest);
+							if ( existsInCache ) {
+					    		askStartOrResume(intent);
+					    	}else {
+								startQuestActivity(intent);
+					    	}
+						}
+						
+						@Override
+						public void onStartingLocation() {
+							startQuest(true);
+						}
+						
+						@Override
+						public void notOnStartingLocation(double distance) {
+							startQuest(false);
+						}
+					});
+			getSupportFragmentManager().beginTransaction().add(verifier_fragment,"").commit();
 		}
 
 		private void askStartOrResume(final Intent i) {

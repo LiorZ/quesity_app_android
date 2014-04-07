@@ -31,6 +31,7 @@ import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StallFragment;
+import com.quesity.fragments.StartingLocationMessageFragment;
 import com.quesity.fragments.WebViewFragment;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
@@ -54,12 +55,6 @@ import com.quesity.services.location.LocationService;
 public class QuestPageActivity extends BaseActivity implements INetworkInteraction,TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
 	
-	@Override
-	public ProgressBarHandler getProgressBarHandler() {
-		
-		return new ProgressBarHandler(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading), _progress);
-	}
-	
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	public static final String TAG = "com.quesity.activities.QuestPageActivity";
 	private LoadingProgressFragment _progress;
@@ -77,6 +72,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private IPostExecuteCallback _post_callback;
 	private QuestPage[] _all_pages;
 	private Game _current_game;
+	private boolean _is_at_starting_location;
 	
 	@Override
 	protected void onPause() {
@@ -126,7 +122,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		Log.d("QuestPageActivity", "OnCreate - QuestPageActivity");
 		setContentView(R.layout.activity_quest_page);
 		String quest_json = getIntent().getStringExtra(Constants.QUEST_OBJ);
-
+		_is_at_starting_location = getIntent().getBooleanExtra(Constants.QUEST_IS_IN_STARTING_LOC, false);
 		_quest_obj = ModelsFactory.getInstance().getModelFromJSON(quest_json, Quest.class);
 		_quest_id = _quest_obj.getId();
 		
@@ -143,9 +139,18 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			startLocationService();
 			refreshQuestPage(_currentPage);
 		}else {
+			if ( !_is_at_starting_location ){
+				showNotAtStartLocation();
+			}
 			restoreSavedPage(savedInstanceState);	
 		}
 		
+	}
+	
+	private void showNotAtStartLocation() {
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.add(R.id.quest_page_container, new StartingLocationMessageFragment());
+		ft.commit();
 	}
 
 	private void startLocationService() {
@@ -305,7 +310,9 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		for (int i=0; i<_all_pages.length; ++i) {
 			if ( _all_pages[i].getId().equals(page_id) ) {
 				reportMove(link);
-				savePage(_all_pages[i]);
+				if ( _current_game.getIsAtStartingLocation() )
+					savePage(_all_pages[i]);
+				
 				refreshQuestPage(_all_pages[i]);
 				return;
 			}
@@ -491,11 +498,13 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			game.setDateStarted(new Date());
 			game.setAccount_id(account_id);
 			game.setQuestId(_quest_id);
+			game.setIsAtStartingLocation(_is_at_starting_location);
 			String game_json_input = ModelsFactory.getInstance().getJSONFromModel(game);
 			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input,QuestPageActivity.this),QuestPageActivity.this);
 			_current_game = ModelsFactory.getInstance().getModelFromJSON(game_json, Game.class);
 			
-			removeGameFromSaved(); //If we started a new game, remove the old one.
+			if (_is_at_starting_location)
+				removeGameFromSaved(); //If we started a new game, remove the old one, remove only if this is an actual quest
 			
 			Log.d(TAG, "Started Game with " + _current_game.getRemainingHints() + " available hints");
 			startLocationService();
@@ -538,6 +547,10 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	@Override
 	public IPostExecuteCallback getPostExecuteCallback() {
 		return _post_callback;
+	}
+	@Override
+	public ProgressBarHandler getProgressBarHandler() {
+		return new ProgressBarHandler(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading), _progress);
 	}
 
 }

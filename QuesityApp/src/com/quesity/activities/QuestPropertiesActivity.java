@@ -80,11 +80,12 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 						private void startQuest(boolean in_location) {
 							Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
 					    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
-					    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_location);
 					    	boolean existsInCache = existsInCache(_quest);
 							if ( existsInCache ) {
+						    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,true);
 					    		askStartOrResume(intent);
 					    	}else {
+						    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_location);
 								startQuestActivity(intent);
 					    	}
 						}

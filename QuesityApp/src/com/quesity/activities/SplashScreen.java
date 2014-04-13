@@ -14,12 +14,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.quesity.app.R;
-import com.quesity.fragments.LoginFragment;
+import com.quesity.fragments.login.EmailLoginFragment;
+import com.quesity.fragments.login.LoginFragment;
+import com.quesity.fragments.login.RegisterFragment;
+import com.quesity.fragments.login.LoginProcessor.ScreenLoader;
 import com.quesity.general.Constants;
 
 public class SplashScreen extends BaseActivity {
 	
 	public static final long SPLASH_DELAY = 1000;
+	private LoginFragment _loginFragment;
+	private EmailLoginFragment _emailLoginFragment;
 	
 	@Override
 	protected void onResume() {
@@ -72,18 +77,50 @@ public class SplashScreen extends BaseActivity {
 	}
 	
 	private void showLoginButtons() {
-		final LoginFragment loginFragment = new LoginFragment();
+		if ( _loginFragment == null )
+			_loginFragment = new LoginFragment();
+		
+		if ( _emailLoginFragment == null ){
+			_emailLoginFragment = new EmailLoginFragment();
+			_emailLoginFragment.setRegisterButtonListener(new RegisterAction());
+		}
+		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		
 		fragmentTransaction.setCustomAnimations(R.anim.default_fade_in,R.anim.default_fade_out);
-		fragmentTransaction.add(R.id.facebook_login_fragment_container,loginFragment,LoginFragment.TAG);
+		
+		fragmentTransaction.add(R.id.facebook_login_fragment_container, _emailLoginFragment);
+		fragmentTransaction.add(R.id.facebook_login_fragment_container,_loginFragment,LoginFragment.TAG);
 		fragmentTransaction.commit();
+	}
+	
+	private class RegisterAction implements View.OnClickListener {
+
+		@Override
+		public void onClick(View v) {
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+			add(R.id.layout_container, new RegisterFragment()).
+			addToBackStack(null).
+			remove(_emailLoginFragment).
+			remove(_loginFragment).
+			commit();
+		}
 		
-		View login_email_view = View.inflate(this, R.layout.fragment_login_email, null);
-		LinearLayout login_button_container = (LinearLayout) findViewById(R.id.facebook_login_fragment_container);
-		login_button_container.addView(login_email_view);
-		
+	}
+	
+	public ScreenLoader getMainScreenLoader() {
+		ScreenLoader s = new ScreenLoader() {
+			
+			@Override
+			public void loadScreen() {
+		    	Intent intent = new Intent(SplashScreen.this, QuesityMain.class);
+		    	startActivity(intent);
+		    	finish();
+			}
+		};
+		return s;
 	}
 	
 

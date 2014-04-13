@@ -5,14 +5,33 @@
     android:layout_height="wrap_content"
     android:orientation="vertical" >
     <com.quesity.fragments.QuesityButtonView 
-              android:id="@+id/register_no_btn"
-              android:layout_width="wrap_content"
+              android:id="@+id/register_email_button"
+              android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               quesity:button_text="@string/lbl_register_email"
-              quesity:button_padding="10dp"
-              quesity:button_text_size="10sp"
+              quesity:button_text_size="11sp"
               quesity:button_text_color="@color/white"
+              quesity:button_icon="@drawable/envelope"
+              quesity:button_padding="10dp"
               quesity:custom_selector="@drawable/register_button_selector"
+              android:layout_marginBottom="7dp"
+			  quesity:button_icon_width="20dp"
+              quesity:button_icon_height="20dp"
+    />
+    
+        <com.quesity.fragments.QuesityButtonView 
+              android:id="@+id/login_email_btn"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              quesity:button_text="@string/lbl_login_email"
+              quesity:button_padding="10dp"
+              quesity:button_text_size="11sp"
+              quesity:button_text_color="@color/white"
+              quesity:button_icon="@drawable/user"
+              quesity:button_icon_width="20dp"
+              quesity:button_icon_height="20dp"
+              quesity:custom_selector="@drawable/register_button_selector"
+              android:layout_marginBottom="7dp"
     />
 
 </LinearLayout>

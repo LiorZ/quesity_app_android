@@ -1,9 +1,9 @@
 package com.quesity.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.quesity.app.R;
 import com.quesity.fragments.LoadingProgressFragment;
 import com.quesity.network.INetworkInterface;
 import com.quesity.network.NetworkInterface;
@@ -22,6 +22,12 @@ public abstract class BaseActivity extends FragmentActivity {
 	
 	public INetworkInterface getNetworkInterface() {
 		return _network_interface;
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		com.facebook.AppEventsLogger.activateApp(this, getString(R.string.applicationId));
 	}
 	
 	

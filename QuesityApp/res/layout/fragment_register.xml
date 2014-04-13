@@ -8,32 +8,39 @@
     android:padding="20dp">
    
     <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+    >
+        <RelativeLayout 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
     >
-          <EditText 
+          <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
           	android:id="@+id/txt_email_field"
           	android:layout_height="wrap_content"
           	android:layout_width="@dimen/login_txt_field_width"
           	android:inputType="textEmailAddress"
+          	android:maxLines="1"
           	android:hint="@string/lbl_email_login"
           	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
           />
           
-          <EditText 
+          <com.quesity.fragments.custom_views.EditTextWithErrorDisplay  
           	android:id="@+id/txt_firstname_field"
           	android:layout_height="wrap_content"
           	android:layout_width="@dimen/login_txt_field_width"
           	android:inputType="textPersonName"
+          	android:maxLines="1"
           	android:layout_below="@id/txt_email_field"
           	android:hint="@string/lbl_firstname_login"
           	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
           	
           />
           
-          <EditText 
+          <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
           	android:id="@+id/txt_lastname_field"
+          	android:maxLines="1"
           	android:layout_height="wrap_content"
           	android:layout_width="@dimen/login_txt_field_width"
           	android:inputType="textPersonName"
@@ -43,7 +50,8 @@
           	
           />
           
-          <EditText 
+          <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
+          	android:maxLines="1"
           	android:id="@+id/txt_password_field"
           	android:layout_height="wrap_content"
           	android:layout_width="@dimen/login_txt_field_width"
@@ -64,7 +72,6 @@
           
           <com.quesity.fragments.QuesityButtonView 
               android:id="@+id/register_no_btn"
-              android:background="@drawable/register_button_selector"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               quesity:button_padding="5dp"
@@ -76,4 +83,5 @@
         </RelativeLayout>
 
 
+</RelativeLayout>
 </RelativeLayout>

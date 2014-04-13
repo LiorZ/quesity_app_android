@@ -1,23 +1,13 @@
 package com.quesity.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.content.res.TypedArray;
 import android.graphics.Typeface;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
-
-import com.quesity.app.R;
 
 
 public abstract class CustomFontGeneralView extends FrameLayout {
@@ -25,6 +15,8 @@ public abstract class CustomFontGeneralView extends FrameLayout {
 	protected int _image;
 	protected CharSequence _text;
 	protected CharSequence _font_path;
+	protected float _image_view_width = -1;
+	protected float _image_view_height = -1;
 	protected int _text_color = -1;
 	public CustomFontGeneralView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -42,11 +34,21 @@ public abstract class CustomFontGeneralView extends FrameLayout {
 		text.setTypeface(tf);
 	}
 	
+	protected void setImageViewSize(ImageView view){
+		if ( _image_view_height > 0 && _image_view_width > 0 ){
+			android.view.ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+			layoutParams.width = (int)_image_view_width;
+			layoutParams.height = (int)_image_view_height;
+			view.setLayoutParams(layoutParams);
+		}
+	}
+	
 	protected void setImageView(View mainView,int view_id) {
 		//if no button icon was defined, remove the imageview
 		ImageView button_img = (ImageView) mainView.findViewById(view_id);
 		if ( _image != 0 ){
 			button_img.setImageResource(_image);
+			setImageViewSize(button_img);
 		}else{
 			button_img.setLayoutParams(new LayoutParams(0, 0));
 		}

@@ -26,7 +26,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	protected LoadingProgressFragment _progress;
 	protected boolean _login_success;
 	private INetworkInterface _network_interface;
-	
+	private NetworkErrorHandler _handler;
 	protected IPostExecuteCallback _post_execute;
 	private IBackgroundCallback<Result> _background_callback;
 
@@ -37,6 +37,11 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		_activity = null;
 		_class_to_resolve = c;
 		_context = context;
+	}
+	
+	public AbstractFetchJSONTask<Result> setNetworkErrorHandler(NetworkErrorHandler h) {
+		_handler = h;
+		return this;
 	}
 	
 	public AbstractFetchJSONTask<Result> setBackgroundCallback(IBackgroundCallback<Result> c) {
@@ -103,6 +108,10 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	}
 	
 	protected void handle401() {
+		if (_handler != null) {
+			_handler.handle401();
+			return;
+		}
 		if ( _post_execute != null && _post_execute.get401ErrorMessage() != -1) {
 			showErrorMessage(_post_execute.get401ErrorMessage());
 			return;
@@ -150,7 +159,6 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		}
 		
 		return model;
-		
 	}
 	public interface NetworkParameterGetter {
 		public HttpRequestBase getRequestObj();

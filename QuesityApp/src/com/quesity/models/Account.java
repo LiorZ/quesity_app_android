@@ -4,6 +4,12 @@ public class Account extends JSONModel {
 	private String email;
 	private String password;
 	private Name name;
+	
+	public void setName(String first_name, String lastName) {
+		name = new Name();
+		name.first = first_name;
+		name.last = lastName;
+	}
 	public String getUsername() {
 		return email;
 	}

@@ -83,4 +83,9 @@
 	
 	<string name="lbl_register_email">Register with email</string>
 	<string name="lbl_login_email">Login with email</string>
+	
+	<string name="err_register_name">Your name should include only letters</string>
+	<string name="err_email_address">Please enter a valid email address</string>
+	<string name="err_empty_field">This field cannot be empty</string>
+	<string name="err_email_exists">A user with this email already exists</string>
 </resources>

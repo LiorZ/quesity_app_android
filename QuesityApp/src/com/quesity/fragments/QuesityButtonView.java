@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,10 +33,14 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		    
 		 _text = attr_set.getText(R.styleable.QuesityButtonView_button_text);
 		 _image = attr_set.getResourceId(R.styleable.QuesityButtonView_button_icon, 0);
+		 
 		 int custom_selector = attr_set.getResourceId(R.styleable.QuesityButtonView_custom_selector, -1);
 		 
 		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1);
 		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1);
+		 _image_view_width = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_width, getResources().getDimension(R.dimen.icons_size));
+		 _image_view_height = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_height,getResources().getDimension(R.dimen.icons_size));
+		 
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
 		 _main_view = view_inflated;
 		 _font_path = "fonts/Andada-Regular.ttf";
@@ -63,6 +67,7 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 
 		 attr_set.recycle();
 	}
+	
 	
 	
 	public void setButtonPadding(float padding) {

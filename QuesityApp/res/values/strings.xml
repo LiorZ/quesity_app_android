@@ -20,6 +20,7 @@
     <string name='lbl_loading'>Loading ...</string>
     <string name='lbl_loading_page'>Loading ...</string>
     <string name="lbl_choose_answer">Choose answer</string>
+    <string name="err_connection">Error connecting to network</string>
     <string name="lbl_err_load_quest">Error loading quests. please check your connection</string>
     <string name="lbl_err_wrong_answer">Wrong answer! :(</string>
     <string name="lbl_enter_answer">Answer: </string>
@@ -88,4 +89,5 @@
 	<string name="err_email_address">Please enter a valid email address</string>
 	<string name="err_empty_field">This field cannot be empty</string>
 	<string name="err_email_exists">A user with this email already exists</string>
+	<string name="err_wrong_username">Wrong email or password</string>
 </resources>

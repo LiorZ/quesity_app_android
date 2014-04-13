@@ -17,6 +17,7 @@ import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.ModelsFactory;
 import com.quesity.network.exceptions.Status401Exception;
+import com.quesity.network.exceptions.Status500Exception;
 
 public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, Integer, Result> implements IFetchJSONTask<Result>{
 	
@@ -119,6 +120,12 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		showErrorMessage(R.string.error_general_authentication);
 	}
 	
+	protected void handle500() {
+		if ( _handler != null ) {
+			_handler.handle500();
+		}
+	}
+	
 	protected void showErrorMessage(final int string_id) {
 		if ( _activity != null && !_activity.isFinishing() ){
 			_activity.runOnUiThread(new Runnable() {
@@ -132,6 +139,10 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		}
 	}
 	protected void handleConnectionException() {
+		if (_handler != null){
+			_handler.handleNoConnection();
+			return;
+		}
 		showErrorMessage(R.string.error_connecting);
 	}
 	
@@ -153,6 +164,10 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		catch (Status401Exception e_401) {
 			e_401.printStackTrace();
 			handle401();
+		}
+		catch(Status500Exception e_500) {
+			e_500.printStackTrace();
+			handle500();
 		}
 		catch (Exception e_general) {
 			e_general.printStackTrace();

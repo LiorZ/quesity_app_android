@@ -11,20 +11,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.quesity.app.R;
 import com.quesity.fragments.login.EmailLoginFragment;
+import com.quesity.fragments.login.EmailRegistrationLoginButtons;
 import com.quesity.fragments.login.LoginFragment;
-import com.quesity.fragments.login.RegisterFragment;
 import com.quesity.fragments.login.LoginProcessor.ScreenLoader;
+import com.quesity.fragments.login.EmailRegistrationFragment;
 import com.quesity.general.Constants;
 
 public class SplashScreen extends BaseActivity {
 	
 	public static final long SPLASH_DELAY = 1000;
 	private LoginFragment _loginFragment;
-	private EmailLoginFragment _emailLoginFragment;
+	private EmailRegistrationLoginButtons _emailLoginFragment;
 	
 	@Override
 	protected void onResume() {
@@ -81,8 +81,9 @@ public class SplashScreen extends BaseActivity {
 			_loginFragment = new LoginFragment();
 		
 		if ( _emailLoginFragment == null ){
-			_emailLoginFragment = new EmailLoginFragment();
-			_emailLoginFragment.setRegisterButtonListener(new RegisterAction());
+			_emailLoginFragment = new EmailRegistrationLoginButtons();
+			_emailLoginFragment.setRegisterButtonListener(new RegistrationScreenActivator());
+			_emailLoginFragment.setLoginButtonClickListener(new LoginScreenActivator());
 		}
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();
@@ -95,19 +96,32 @@ public class SplashScreen extends BaseActivity {
 		fragmentTransaction.commit();
 	}
 	
-	private class RegisterAction implements View.OnClickListener {
+	private class RegistrationScreenActivator implements View.OnClickListener {
 
 		@Override
 		public void onClick(View v) {
 			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
-			add(R.id.layout_container, new RegisterFragment()).
+			add(R.id.layout_container, new EmailRegistrationFragment()).
 			addToBackStack(null).
 			remove(_emailLoginFragment).
 			remove(_loginFragment).
 			commit();
 		}
 		
+	}
+	
+	private class LoginScreenActivator implements View.OnClickListener {
+		@Override
+		public void onClick(View v) {
+			FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+			ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).
+			add(R.id.layout_container, new EmailLoginFragment()).
+			addToBackStack(null).
+			remove(_emailLoginFragment).
+			remove(_loginFragment).
+			commit();
+		}
 	}
 	
 	public ScreenLoader getMainScreenLoader() {

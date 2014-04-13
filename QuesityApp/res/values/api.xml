@@ -8,4 +8,6 @@
     	<string name='new_move'>/quest/%1$s/game/%2$s/move/new</string>
     	<string name='new_location'>/quest/%1$s/game/%2$s/location/new</string>
     	<string name="email_registration">/register/action</string>
+    	<string name="email_login">/app/login/local</string>
+    		
 </resources>

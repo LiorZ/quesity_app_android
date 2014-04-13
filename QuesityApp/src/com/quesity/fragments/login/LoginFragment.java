@@ -188,12 +188,6 @@ public class LoginFragment extends Fragment {
 	    }
 	}
 	
-	private void loadMainScreen() {
-    	Intent intent = new Intent(getActivity(), QuesityMain.class);
-    	startActivity(intent);
-    	getActivity().finish();
-	}
-	
 	public void setLoginStateChangeListener(LoginStateChangeListener listener) {
 		_listener = listener;
 	}

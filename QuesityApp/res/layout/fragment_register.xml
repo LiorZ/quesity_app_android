@@ -79,6 +79,14 @@
               android:layout_below="@id/txt_password_field"
               android:layout_alignLeft="@id/txt_password_field"
            />
+          <ProgressBar 
+          	android:id="@+id/register_spinner"
+          	android:layout_width="wrap_content"
+          	android:layout_height="wrap_content"
+          	android:layout_below="@id/register_no_btn"
+          	android:layout_centerHorizontal="true"
+          	android:visibility="invisible"
+          />
               
         </RelativeLayout>
 

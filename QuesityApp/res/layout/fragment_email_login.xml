@@ -17,7 +17,7 @@
         android:layout_centerInParent="true"
     >
           <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
-          	android:id="@+id/txt_email_field"
+          	android:id="@+id/txt_login_email_field"
           	android:layout_height="wrap_content"
           	android:layout_width="@dimen/login_txt_field_width"
           	android:inputType="textEmailAddress"
@@ -26,68 +26,56 @@
           	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
           />
           
-          <com.quesity.fragments.custom_views.EditTextWithErrorDisplay  
-          	android:id="@+id/txt_firstname_field"
-          	android:layout_height="wrap_content"
-          	android:layout_width="@dimen/login_txt_field_width"
-          	android:inputType="textPersonName"
-          	android:maxLines="1"
-          	android:layout_below="@id/txt_email_field"
-          	android:hint="@string/lbl_firstname_login"
-          	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
-          	
-          />
-          
-          <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
-          	android:id="@+id/txt_lastname_field"
-          	android:maxLines="1"
-          	android:layout_height="wrap_content"
-          	android:layout_width="@dimen/login_txt_field_width"
-          	android:inputType="textPersonName"
-          	android:layout_below="@id/txt_firstname_field"
-          	android:hint="@string/lbl_lastname_login"
-          	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
-          	
-          />
-          
           <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
           	android:maxLines="1"
-          	android:id="@+id/txt_password_field"
+          	android:id="@+id/txt_login_password_field"
           	android:layout_height="wrap_content"
           	android:layout_width="@dimen/login_txt_field_width"
           	android:inputType="textPassword"
-          	android:layout_below="@id/txt_lastname_field"
+          	android:layout_below="@id/txt_login_email_field"
           	android:hint="@string/lbl_password_login"
           	android:layout_marginBottom="@dimen/login_txt_field_margin_bottom"
           />
           <com.quesity.fragments.QuesityButtonView 
-              android:id="@+id/register_yes_btn"
+              android:id="@+id/login_yes_btn"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               quesity:button_padding="5dp"
               quesity:button_icon="@drawable/yes_icon"
-              android:layout_below="@id/txt_password_field"
-              android:layout_alignRight="@id/txt_password_field"
+              android:layout_below="@id/txt_login_password_field"
+              android:layout_alignRight="@id/txt_login_password_field"
            />
           
           <com.quesity.fragments.QuesityButtonView 
-              android:id="@+id/register_no_btn"
+              android:id="@+id/login_no_btn"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               quesity:button_padding="5dp"
               quesity:button_icon="@drawable/no_icon"
-              android:layout_below="@id/txt_password_field"
-              android:layout_alignLeft="@id/txt_password_field"
+              android:layout_below="@id/txt_login_password_field"
+              android:layout_alignLeft="@id/txt_login_password_field"
            />
           <ProgressBar 
-          	android:id="@+id/register_spinner"
+          	android:id="@+id/login_spinner"
           	android:layout_width="wrap_content"
           	android:layout_height="wrap_content"
-          	android:layout_below="@id/register_no_btn"
+          	android:layout_below="@id/login_no_btn"
           	android:layout_centerHorizontal="true"
           	android:visibility="invisible"
           />
-              
+            
+          <TextView 
+          	android:id="@+id/email_login_err_msg"
+          	android:layout_width="wrap_content"
+          	android:layout_height="wrap_content"
+          	android:background="@drawable/login_err_drawable"
+          	android:textColor="@color/white"
+          	android:gravity="center_horizontal"
+          	android:layout_below="@id/login_spinner"
+          	android:layout_centerHorizontal="true"
+          	android:padding="5dp"
+          	android:visibility="invisible"
+          />
         </RelativeLayout>
 
 

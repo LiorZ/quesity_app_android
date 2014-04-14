@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,28 +33,41 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		    
 		 _text = attr_set.getText(R.styleable.QuesityButtonView_button_text);
 		 _image = attr_set.getResourceId(R.styleable.QuesityButtonView_button_icon, 0);
+		 
+		 int custom_selector = attr_set.getResourceId(R.styleable.QuesityButtonView_custom_selector, -1);
+		 
 		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1);
 		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1);
+		 _image_view_width = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_width, getResources().getDimension(R.dimen.icons_size));
+		 _image_view_height = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_height,getResources().getDimension(R.dimen.icons_size));
+		 
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
 		 _main_view = view_inflated;
 		 _font_path = "fonts/Andada-Regular.ttf";
-		 if ( padding_dimen >= 0 ){
-			 setPadding(view_inflated, R.id.container, padding_dimen);
-		 }
+		 _text_color = attr_set.getResourceId(R.styleable.QuesityButtonView_button_text_color, -1);
+
 		 if ( _image != 0 )
 			 setImageView(view_inflated, R.id.button_img);
 
 		 setTextView(view_inflated, context, R.id.button_text);
+		 if ( custom_selector > 0 ) { 
+			 view_inflated.setBackgroundResource(custom_selector);
+		 }
 		 
 		 if ( dimension >= 0 ) {
 			 setTextSize(view_inflated, R.id.button_text, dimension);
 		 }
+		 if ( padding_dimen >= 0 ){
+			 setPadding(view_inflated, R.id.container, padding_dimen);
+		 }
+		 
 		 addView(view_inflated);
 		 
 		 setClickable(true);
 		 
 		 attr_set.recycle();
 	}
+	
 	
 	
 	public void setButtonPadding(float padding) {

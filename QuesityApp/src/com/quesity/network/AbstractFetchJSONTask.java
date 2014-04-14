@@ -17,6 +17,7 @@ import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.ModelsFactory;
 import com.quesity.network.exceptions.Status401Exception;
+import com.quesity.network.exceptions.Status500Exception;
 
 public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, Integer, Result> implements IFetchJSONTask<Result>{
 	
@@ -26,7 +27,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	protected LoadingProgressFragment _progress;
 	protected boolean _login_success;
 	private INetworkInterface _network_interface;
-	
+	private NetworkErrorHandler _handler;
 	protected IPostExecuteCallback _post_execute;
 	private IBackgroundCallback<Result> _background_callback;
 
@@ -37,6 +38,11 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		_activity = null;
 		_class_to_resolve = c;
 		_context = context;
+	}
+	
+	public AbstractFetchJSONTask<Result> setNetworkErrorHandler(NetworkErrorHandler h) {
+		_handler = h;
+		return this;
 	}
 	
 	public AbstractFetchJSONTask<Result> setBackgroundCallback(IBackgroundCallback<Result> c) {
@@ -103,11 +109,21 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	}
 	
 	protected void handle401() {
+		if (_handler != null) {
+			_handler.handle401();
+			return;
+		}
 		if ( _post_execute != null && _post_execute.get401ErrorMessage() != -1) {
 			showErrorMessage(_post_execute.get401ErrorMessage());
 			return;
 		}
 		showErrorMessage(R.string.error_general_authentication);
+	}
+	
+	protected void handle500() {
+		if ( _handler != null ) {
+			_handler.handle500();
+		}
 	}
 	
 	protected void showErrorMessage(final int string_id) {
@@ -123,6 +139,10 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		}
 	}
 	protected void handleConnectionException() {
+		if (_handler != null){
+			_handler.handleNoConnection();
+			return;
+		}
 		showErrorMessage(R.string.error_connecting);
 	}
 	
@@ -145,12 +165,15 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 			e_401.printStackTrace();
 			handle401();
 		}
+		catch(Status500Exception e_500) {
+			e_500.printStackTrace();
+			handle500();
+		}
 		catch (Exception e_general) {
 			e_general.printStackTrace();
 		}
 		
 		return model;
-		
 	}
 	public interface NetworkParameterGetter {
 		public HttpRequestBase getRequestObj();

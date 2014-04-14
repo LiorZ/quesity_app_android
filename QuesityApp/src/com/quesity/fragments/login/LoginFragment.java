@@ -1,4 +1,4 @@
-package com.quesity.fragments;
+package com.quesity.fragments.login;
 
 import java.util.Arrays;
 
@@ -23,6 +23,7 @@ import com.quesity.app.R;
 import com.quesity.activities.BaseActivity;
 import com.quesity.activities.QuesityMain;
 import com.quesity.activities.SplashScreen;
+import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.Account;
@@ -156,7 +157,8 @@ public class LoginFragment extends Fragment {
 								
 								@Override
 								public IPostExecuteCallback getPostExecuteCallback() {
-									return new SendLoginToServerTask();
+									SplashScreen activity = (SplashScreen) getActivity();
+									return new LoginProcessor(activity,activity.getMainScreenLoader());
 								}
 								
 								@Override
@@ -186,33 +188,6 @@ public class LoginFragment extends Fragment {
 	    }
 	}
 	
-	private void loadMainScreen() {
-    	Intent intent = new Intent(getActivity(), QuesityMain.class);
-    	startActivity(intent);
-    	getActivity().finish();
-	}
-	
-	private class SendLoginToServerTask implements IPostExecuteCallback {
-
-		@Override
-		public void apply(Object r) {
-			Log.d(TAG, "Attempted login succeeded");
-			Account result = (Account) r;
-			if ( result != null ) {
-				SharedPreferences p = PreferenceManager.getDefaultSharedPreferences(getActivity());
-				String current_account_id = p.getString(Constants.CURRENT_ACCOUNT_ID, null);
-				p.edit().putString(Constants.CURRENT_ACCOUNT_ID, result.getId()).commit();
-				if ( current_account_id == null ) //This is a fresh login, therefore load main screen
-					loadMainScreen();	
-			}
-		}
-
-		@Override
-		public int get401ErrorMessage() {
-			return R.string.error_general_authentication;
-		}	
-	
-	}
 	public void setLoginStateChangeListener(LoginStateChangeListener listener) {
 		_listener = listener;
 	}

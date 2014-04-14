@@ -3,7 +3,7 @@
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_container"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/splash_gradient">
     
@@ -35,13 +35,14 @@
         android:src="@drawable/buildings"
         android:scaleType="fitXY" />
 
-   <FrameLayout
+   <LinearLayout
         android:id="@+id/facebook_login_fragment_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
+        android:orientation="vertical"
     />
 
     

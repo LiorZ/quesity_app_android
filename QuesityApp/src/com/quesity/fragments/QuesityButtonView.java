@@ -36,7 +36,7 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 
 		 int custom_selector = attr_set.getResourceId(R.styleable.QuesityButtonView_custom_selector, -1);
 		 
-		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1);
+		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1) / getResources().getDisplayMetrics().density;
 		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1);
 		 _image_view_width = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_width, getResources().getDimension(R.dimen.icons_size));
 		 _image_view_height = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_height,getResources().getDimension(R.dimen.icons_size));

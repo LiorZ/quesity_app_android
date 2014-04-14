@@ -34,5 +34,7 @@
 	<item format="string" name="tab_icon_scale" type="dimen">80%</item>	
 	<dimen name="find_quest_title_font_size">18dp</dimen>
 	<dimen name="quest_properties_title">25sp</dimen>
-	<dimen name="quest_properties_start_button">15sp</dimen>
+	<dimen name="quest_properties_start_button">18sp</dimen>
+	<dimen name="email_login_button_text_size">15dp</dimen>
+	
 </resources>

@@ -9,7 +9,7 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               quesity:button_text="@string/lbl_register_email"
-              quesity:button_text_size="11sp"
+              quesity:button_text_size="@dimen/email_login_button_text_size"
               quesity:button_text_color="@color/white"
               quesity:button_icon="@drawable/envelope"
               quesity:button_padding="10dp"
@@ -19,13 +19,13 @@
               quesity:button_icon_height="20dp"
     />
     
-        <com.quesity.fragments.QuesityButtonView 
+     <com.quesity.fragments.QuesityButtonView 
               android:id="@+id/login_email_btn"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               quesity:button_text="@string/lbl_login_email"
               quesity:button_padding="10dp"
-              quesity:button_text_size="11sp"
+              quesity:button_text_size="@dimen/email_login_button_text_size"
               quesity:button_text_color="@color/white"
               quesity:button_icon="@drawable/user"
               quesity:button_icon_width="20dp"

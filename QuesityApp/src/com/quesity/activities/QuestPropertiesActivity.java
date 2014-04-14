@@ -82,8 +82,7 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 					    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
 					    	boolean existsInCache = existsInCache(_quest);
 							if ( existsInCache ) {
-						    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,true);
-					    		askStartOrResume(intent);
+					    		askStartOrResume(intent,in_location);
 					    	}else {
 						    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_location);
 								startQuestActivity(intent);
@@ -103,11 +102,12 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 			getSupportFragmentManager().beginTransaction().add(verifier_fragment,"").commit();
 		}
 
-		private void askStartOrResume(final Intent i) {
+		private void askStartOrResume(final Intent i, final boolean in_loc) {
 			DialogInterface.OnClickListener resume = new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					i.putExtra(Constants.QUEST_RESUME_KEY,true);
+			    	i.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,true);
 					dialog.dismiss();
 					startQuestActivity(i);
 				}
@@ -118,6 +118,7 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
+			    	i.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_loc);
 					startQuestActivity(i);
 				}
 			};

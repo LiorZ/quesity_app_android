@@ -37,11 +37,11 @@
 	<string name="lbl_login_button">Login</string>
 	<string name="hint_username_splash">Username</string>
 	<string name="hint_password_splash">Password</string>
-	<string name="error_connecting">An error occured while connecting to server.\nPlease check your connection and try again</string>
-	<string name="error_display_facebook_data">Error occured while connecting with your facebook account. Please try to login again</string>
-	<string name="error_general_authentication">An error occured while authenticating your request</string>
+	<string name="error_connecting">An error occurred while connecting to server.\nPlease check your connection and try again</string>
+	<string name="error_display_facebook_data">Error occurred while connecting with your facebook account. Please try to login again</string>
+	<string name="error_general_authentication">An error occurred while authenticating your request</string>
 	<string name="error_username_password">Wrong username or password. Please try again</string>
-	<string name="error_starting_quest">Error occured when starting the quest.\nPlease restart it from the main menu</string>
+	<string name="error_starting_quest">Error occurred when starting the quest.\nPlease restart it from the main menu</string>
 	<string name="lbl_logging_in">Logging you in the game .. </string>
 	<string name="lbl_logging_out">Logging you out of the game .. </string>
 	<string name="lbl_logging_in_title">Login</string>
@@ -92,4 +92,7 @@
 	<string name="err_empty_field">This field cannot be empty</string>
 	<string name="err_email_exists">A user with this email already exists</string>
 	<string name="err_wrong_username">Wrong email or password</string>
+	
+	<string name="lbl_not_starting_point">You are not at the starting location</string>
+	<string name="lbl_demo_mode">The quest is played in demo mode</string>
 </resources>

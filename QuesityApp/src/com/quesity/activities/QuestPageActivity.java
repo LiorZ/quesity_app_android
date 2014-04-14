@@ -3,6 +3,8 @@ package com.quesity.activities;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -21,6 +23,7 @@ import android.view.Menu;
 import com.quesity.app.R;
 import com.quesity.application.IQuesityApplication;
 import com.quesity.controllers.ProgressableProcess;
+import com.quesity.controllers.QuestProvider;
 import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
 import com.quesity.fragments.LoadingProgressFragment;
@@ -52,7 +55,7 @@ import com.quesity.network.JSONPostRequestTypeGetter;
 import com.quesity.network.reporting.ModelReport;
 import com.quesity.services.location.LocationService;
 
-public class QuestPageActivity extends BaseActivity implements INetworkInteraction,TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
+public class QuestPageActivity extends BaseActivity implements INetworkInteraction, QuestProvider, TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
 	
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
@@ -148,9 +151,23 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	}
 	
 	private void showNotAtStartLocation() {
-		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		ft.add(R.id.quest_page_container, new StartingLocationMessageFragment());
-		ft.commit();
+		TimerTask t = new TimerTask() {
+			
+			@Override
+			public void run() {
+				FragmentManager supportFragmentManager = getSupportFragmentManager();
+				if ( supportFragmentManager == null )
+					return;
+				
+				FragmentTransaction ft = supportFragmentManager.beginTransaction();
+				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+				ft.addToBackStack(null);
+				ft.add(R.id.quest_page_container, new StartingLocationMessageFragment());
+				ft.commit();				
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(t, 3000);
 	}
 
 	private void startLocationService() {
@@ -405,6 +422,11 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		return this;
 	}
 	
+	@Override
+	public Quest getQuest() {
+		return _quest_obj;
+	}
+	
 	public OnDemandFragment getCurrentFragment() {
 		return _transitionFragment;
 	}
@@ -552,5 +574,6 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	public ProgressBarHandler getProgressBarHandler() {
 		return new ProgressBarHandler(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading), _progress);
 	}
+
 
 }

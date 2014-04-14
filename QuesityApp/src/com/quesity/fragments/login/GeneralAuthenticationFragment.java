@@ -1,11 +1,14 @@
 package com.quesity.fragments.login;
 
 import java.io.UnsupportedEncodingException;
+import java.util.regex.Pattern;
 
+import android.accounts.AccountManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -39,9 +42,33 @@ public abstract class GeneralAuthenticationFragment extends Fragment {
 		password_field.addValidator(new NotEmptyValidator(getActivity()));
 		_form.addValidates(password_field);
 	}
+
+	private void setEmailFromDevice() {
+		Pattern emailPattern = Patterns.EMAIL_ADDRESS; 
+		FragmentActivity activity = getActivity();
+		if ( activity == null )
+			return;
+		
+		android.accounts.Account[] accounts = AccountManager.get(activity).getAccounts();
+		if ( accounts == null || accounts.length == 0 )
+			return; 
+		
+		for (android.accounts.Account account : accounts) {
+			if ( account.name == null )
+				continue;
+			
+		    if (emailPattern.matcher(account.name).matches()) {
+		        String possibleEmail = account.name;
+		        _email.setText(possibleEmail);
+		    }
+		}
+	}
 	
 	protected void setEmailField(int id, View main_view) {
 		_email = (EditText) main_view.findViewById(id);
+		
+		setEmailFromDevice();
+		
 		Validate email_field = new Validate(_email);
 		email_field.addValidator(new EmailValidator(getActivity(),R.string.err_email_address));
 		email_field.addValidator(new NotEmptyValidator(getActivity()));

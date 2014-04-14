@@ -76,6 +76,11 @@ public class SplashScreen extends BaseActivity {
 		fragmentTransaction.commit();
 	}
 	
+	public void removeLoginButtons() {
+		View login_btns = findViewById(R.id.facebook_login_fragment_container);
+		login_btns.setVisibility(View.INVISIBLE);
+	}
+	
 	private void showLoginButtons() {
 		if ( _loginFragment == null )
 			_loginFragment = new LoginFragment();

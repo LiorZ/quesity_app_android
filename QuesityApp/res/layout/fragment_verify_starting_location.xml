@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/semi_transparent_white"
+    android:padding="20dp"
  >
     
 <com.quesity.fragments.StyledTextView 
@@ -11,9 +12,36 @@
  	android:layout_width="wrap_content"
  	android:layout_height="wrap_content"
  	android:textSize="25sp"
- 	quesity:font_path="fonts/Roboto-Light.ttf"
+ 	android:gravity="center_horizontal"
+ 	quesity:font_path="fonts/Andada-Regular.ttf"
  	android:layout_centerHorizontal="true"
- 	android:paddingTop="30dp"
- 	android:text="This is not the starting point ..."
+ 	android:layout_alignParentTop="true"
+ 	android:text="@string/lbl_not_starting_point"
  />    
+ 
+<FrameLayout 
+	android:id="@+id/tzvika_img"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_centerInParent="true"
+	android:layout_marginTop="15dp"    
+	android:layout_marginBottom="15dp"    
+	android:background="@drawable/just_tzvika"
+>
+    
+    
+</FrameLayout>
+
+<com.quesity.fragments.StyledTextView
+    android:id="@+id/lbl_demo_mode" 
+    android:layout_width="wrap_content"
+ 	android:layout_height="wrap_content"
+ 	android:textSize="25sp"
+ 	android:gravity="center_horizontal"
+ 	quesity:font_path="fonts/Andada-Regular.ttf"
+   	android:text="@string/lbl_demo_mode"
+   	android:layout_alignParentBottom="true"
+/>
+
+    
 </RelativeLayout>

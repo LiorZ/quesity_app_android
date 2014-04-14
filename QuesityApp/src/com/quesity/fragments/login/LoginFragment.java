@@ -129,7 +129,11 @@ public class LoginFragment extends Fragment {
 	    if (_isResumed) {
 	    	Log.d("LoginFragmnet","isResumed is true");
 	        if (state.isOpened() && session.isOpened()) {
-	        	_loginBtn.setVisibility(View.INVISIBLE);
+	        	if ( getActivity() == null )
+	        		return;
+	        	SplashScreen splash = (SplashScreen) getActivity();
+	        	splash.removeLoginButtons();
+	        	
 	        	Log.d("LoginFragment","Session and state are open!");
 	            // If the session state is open:
 	            // Show the authenticated fragment

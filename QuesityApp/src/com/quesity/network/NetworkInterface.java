@@ -38,6 +38,7 @@ public class NetworkInterface implements INetworkInterface{
 		HttpClient client = getter.getHTTPClient(c);
 	    try {
 	        HttpRequestBase request = getter.getRequestObj();
+	        
 	        request.setURI(new URI(uri));
 	        HttpResponse response = client.execute(request);
 	        checkStatusLine(response);

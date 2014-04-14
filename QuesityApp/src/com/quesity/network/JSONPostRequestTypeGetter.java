@@ -24,7 +24,7 @@ public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	public JSONPostRequestTypeGetter(String json,Context c){
 		super(c);
 		try {
-			_postObj.setEntity(new StringEntity(json));
+			setJSON(json);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -32,7 +32,8 @@ public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	}
 	
 	public void setJSON(String json) throws UnsupportedEncodingException {
-		_postObj.setEntity(new StringEntity(json));
+		StringEntity stringEntity = new StringEntity(json,"UTF-8");
+		_postObj.setEntity(stringEntity);
 	}
 	
 	public void setModel(JSONModel model) throws UnsupportedEncodingException{

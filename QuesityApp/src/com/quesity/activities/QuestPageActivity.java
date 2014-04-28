@@ -21,21 +21,22 @@ import android.util.Log;
 import android.view.Menu;
 
 import com.quesity.app.R;
-import com.quesity.application.IQuesityApplication;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.controllers.QuestProvider;
-import com.quesity.fragments.ContentPageFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
+import com.quesity.fragments.in_game.ContentPageFragment;
+import com.quesity.fragments.in_game.LocationPageFragment;
+import com.quesity.fragments.in_game.MultipleChoiceFragment;
+import com.quesity.fragments.in_game.OpenQuestionFragment;
+import com.quesity.fragments.in_game.StallFragment;
+import com.quesity.fragments.in_game.WebViewFragment;
+import com.quesity.fragments.FeedbackFragment;
+import com.quesity.fragments.InGameMenuFragment;
 import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.LocationPageFragment;
-import com.quesity.fragments.MultipleChoiceFragment;
 import com.quesity.fragments.OnDemandFragment;
-import com.quesity.fragments.OpenQuestionFragment;
 import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.fragments.StallFragment;
 import com.quesity.fragments.StartingLocationMessageFragment;
-import com.quesity.fragments.WebViewFragment;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
@@ -59,6 +60,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 
 	
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
+	public static final String ALL_QUEST_PAGES_KEY = "com.quesity.ALL_PAGES_KEY";
+	public static final String CURRENT_GAME_KEY = "com.quesity.CURRENT_GAME_KEY";
 	public static final String TAG = "com.quesity.activities.QuestPageActivity";
 	private LoadingProgressFragment _progress;
 	private WebViewFragment _webViewFragment;
@@ -76,12 +79,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private QuestPage[] _all_pages;
 	private Game _current_game;
 	private boolean _is_at_starting_location;
+	private InGameMenuFragment _in_game_panel;
 	
-	@Override
-	protected void onPause() {
-		super.onPause();
-		Log.d("QuestPageActivity","Activity Paused");
-	}
 	
 	private Bundle getInstanceState(Bundle existing) {
 		Bundle b = existing;
@@ -91,15 +90,21 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		
 		
 		String page_json = ModelsFactory.getInstance().getJSONFromModel(_currentPage);
+		String all_pages_json = ModelsFactory.getInstance().getJSONFromModel(_all_pages);
+		String game_json = ModelsFactory.getInstance().getJSONFromModel(_current_game);
+		
 		Log.d("QuestPageActivity", "Saving instance state with json");
 		b.putString(QUEST_PAGE_KEY,page_json);
+		b.putString(CURRENT_GAME_KEY, game_json);
+		b.putString(ALL_QUEST_PAGES_KEY, all_pages_json);
+		
 		return b;
 	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
 		outState = getInstanceState(outState);
+		super.onSaveInstanceState(outState);
 	}
 
 	private boolean  restoreFromPreferences() {
@@ -119,22 +124,42 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		return false;
 	}
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.d("QuestPageActivity", "OnCreate - QuestPageActivity");
-		setContentView(R.layout.activity_quest_page);
+	private void createViews() {
+		_progress = new LoadingProgressFragment();
+		_progress.setCancelable(false);
+		_in_game_panel = (InGameMenuFragment) getSupportFragmentManager().findFragmentById(R.id.ingame_menu_fragment);
+		
+		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
+		
+		
+		//Disabling the play button while loading so that players won't press play by mistake and miss the page
+		_webViewFragment.setPageLoadingListener(new WebViewFragment.PageLoadingListener() {
+			
+			@Override
+			public void pageStartedLoading() {
+				_in_game_panel.setPlayButtonEnabledState(false);
+			}
+			
+			@Override
+			public void pageFinishedLoading() {
+				_in_game_panel.setPlayButtonEnabledState(true);
+				if ( _transitionFragment != null ) {
+					int buttonDrawable = _transitionFragment.getButtonDrawable();
+					int pressedButtonDrawable = _transitionFragment.getPressedButtonDrawable();
+					int button_text_id = _transitionFragment.getButtonStringId();
+					_in_game_panel.setPlayButtonDrawable(buttonDrawable,pressedButtonDrawable);
+					_in_game_panel.setPlayButtonText(getString(button_text_id));
+				}
+				
+			}
+		});
+	}
+	
+	private void startFromScratch(Bundle savedInstanceState) {
 		String quest_json = getIntent().getStringExtra(Constants.QUEST_OBJ);
 		_is_at_starting_location = getIntent().getBooleanExtra(Constants.QUEST_IS_IN_STARTING_LOC, false);
 		_quest_obj = ModelsFactory.getInstance().getModelFromJSON(quest_json, Quest.class);
 		_quest_id = _quest_obj.getId();
-		
-		_progress = new LoadingProgressFragment();
-		_progress.setCancelable(false);
-		_webViewFragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.webview_fragment);
-		((IQuesityApplication)getApplication()).inject(this);
-		
-		constructFragmentMapper();
 		
 		boolean shouldResume = getIntent().getBooleanExtra(Constants.QUEST_RESUME_KEY, false);
 		if ( shouldResume ) {
@@ -147,7 +172,42 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			}
 			restoreSavedPage(savedInstanceState);	
 		}
+	}
+	
+	private void restoreFromInstanceState(Bundle savedInstanceState) {
+		String current_page = savedInstanceState.getString(QUEST_PAGE_KEY);
+		String all_pages = savedInstanceState.getString(ALL_QUEST_PAGES_KEY);
+		String game_json = savedInstanceState.getString(CURRENT_GAME_KEY);
 		
+		ModelsFactory instance = ModelsFactory.getInstance();
+		_current_game = instance.getModelFromJSON(game_json, Game.class);
+		_currentPage = instance.getModelFromJSON(current_page, QuestPage.class);
+		_all_pages = instance.getModelFromJSON(all_pages, QuestPage[].class);
+		
+		refreshQuestPage(_currentPage);
+	}
+	
+	public void showFeedbackFragment(){
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		ft.addToBackStack(null);
+		ft.add(R.id.quest_page_container, new FeedbackFragment());
+		ft.commit();	
+	}
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.d("QuestPageActivity", "OnCreate - QuestPageActivity");
+		setContentView(R.layout.activity_quest_page);
+		constructFragmentMapper();
+		createViews();
+		
+		if ( savedInstanceState == null ) {
+			startFromScratch(savedInstanceState);
+		}else {
+			restoreFromInstanceState(savedInstanceState);
+		}
 	}
 	
 	private void showNotAtStartLocation() {
@@ -194,13 +254,10 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		if ( savedInstanceState != null ){
 			page = savedInstanceState.getString(QUEST_PAGE_KEY);
 		}
-		Log.d("QuestPageActivity", "Restoring instance state");
 		if ( page != null ) {
 			_currentPage = ModelsFactory.getInstance().getModelFromJSON(page, QuestPage.class);
 			refreshQuestPage(_currentPage);
 		}else {
-			Log.d("QuesityPageActivity","Got a null page from the saved instance");
-			Log.d("QuestPageActivity","Current page is null, downloading the first page");
 			String game_url = Config.SERVER_URL + String.format(getString(R.string.new_game),_quest_id);
 			String quest_pages_url = Config.SERVER_URL +  String.format(getString(R.string.quest_pages),_quest_id);
 			new FetchAllQuestPagesTask(QuestPage[].class).execute(game_url,quest_pages_url);

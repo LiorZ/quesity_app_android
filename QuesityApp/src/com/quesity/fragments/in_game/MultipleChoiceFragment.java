@@ -1,8 +1,9 @@
-package com.quesity.fragments;
+package com.quesity.fragments.in_game;
 
 import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.fragments.OnDemandFragment;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.models.QuestPage;
@@ -88,5 +89,20 @@ public class MultipleChoiceFragment extends DialogFragment implements OnDemandFr
 			   return convertView;
 		}
 		
+	}
+
+	@Override
+	public int getButtonDrawable() {
+		return R.drawable.options;
+	}
+
+	@Override
+	public int getPressedButtonDrawable() {
+		return R.drawable.options_pressed;
+	}
+
+	@Override
+	public int getButtonStringId() {
+		return R.string.ingame_btn_options;
 	}
 }

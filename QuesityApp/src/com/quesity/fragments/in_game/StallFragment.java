@@ -1,4 +1,4 @@
-package com.quesity.fragments;
+package com.quesity.fragments.in_game;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,6 +15,7 @@ import android.view.KeyEvent;
 import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.fragments.OnDemandFragment;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageStall;
@@ -25,6 +26,21 @@ public class StallFragment extends DialogFragment implements OnDemandFragment {
 	public void invokeFragment(FragmentManager manager) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int getButtonDrawable() {
+		return 0;
+	}
+
+	@Override
+	public int getPressedButtonDrawable() {
+		return 0;
+	}
+
+	@Override
+	public int getButtonStringId() {
+		return 0;
 	}
 
 //	private Dialog _okOnlyDialog;

@@ -10,6 +10,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.quesity.app.R;
@@ -55,6 +56,7 @@ public class SplashScreen extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_splash_screen);	
+		ViewPager p = new ViewPager(this);
 		String accountId = getAccountId();
 		if ( accountId == null ) {
 			showLoginButtons();

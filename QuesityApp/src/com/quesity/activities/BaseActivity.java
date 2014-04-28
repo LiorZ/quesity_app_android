@@ -23,10 +23,16 @@ public abstract class BaseActivity extends FragmentActivity {
 	public INetworkInterface getNetworkInterface() {
 		return _network_interface;
 	}
+	
+	public LoadingProgressFragment getProgressFragment() {
+		return _progress;
+	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
+		
+		//facebook reporter:
 		com.facebook.AppEventsLogger.activateApp(this, getString(R.string.applicationId));
 	}
 	

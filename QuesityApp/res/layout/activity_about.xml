@@ -16,7 +16,7 @@
     
     <fragment
         android:id="@+id/about_webview"
-        android:name="com.quesity.fragments.WebViewFragment"
+        android:name="com.quesity.fragments.in_game.WebViewFragment"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
     />

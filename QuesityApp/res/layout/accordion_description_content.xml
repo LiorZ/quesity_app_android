@@ -2,19 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
     
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="100"
     android:orientation="vertical" >
    <FrameLayout android:id="@+id/quest_properties_gallery_fragment_place_holder"
         android:layout_width="fill_parent"
         android:layout_margin="0dp"
-        android:layout_height="190dip" 
+        android:layout_height="0dp"
+        android:layout_weight="50" 
     />
    <ScrollView 
        android:id="@+id/scroller"
        android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
+       android:layout_height="0dp"
        android:scrollbars="vertical"
+       android:layout_weight="50"
        >
    <LinearLayout 
        android:id="@+id/scroll_child"
@@ -31,7 +34,7 @@
    	android:orientation="horizontal"
    	android:weightSum="2"    
    	android:baselineAligned="false"
-   	android:layout_marginTop="5dip"
+   	android:layout_marginTop="10dip"
    	android:layout_marginBottom="5dip"
    >
     <LinearLayout
@@ -42,10 +45,12 @@
     	android:scrollbars="vertical"
     	android:layout_weight="1"
     >
-        <RelativeLayout android:id="@+id/quest_properties_rating_layout"
+        <RelativeLayout 
+            android:id="@+id/quest_properties_rating_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-        	<RatingBar android:id="@+id/quest_properties_rating_bar"
+        	<RatingBar 
+        	   android:id="@+id/quest_properties_rating_bar"
 	    	   style="@style/quest_rating_bar"
 	    	   android:isIndicator="true"
 	    	   android:layout_height="wrap_content"

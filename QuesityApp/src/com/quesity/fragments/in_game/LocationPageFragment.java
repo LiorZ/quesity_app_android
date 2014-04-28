@@ -1,4 +1,4 @@
-package com.quesity.fragments;
+package com.quesity.fragments.in_game;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,6 +16,8 @@ import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.controllers.LocationUser;
 import com.quesity.controllers.ProgressableProcess;
+import com.quesity.fragments.OnDemandFragment;
+import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageLocationLink;
@@ -168,5 +170,17 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 		public void lowAccuracyLocation(Location loc) {
 			// TODO Auto-generated method stub
 			
+		}
+		@Override
+		public int getButtonDrawable() {
+			return R.drawable.arrived;
+		}
+		@Override
+		public int getPressedButtonDrawable() {
+			return R.drawable.arrived_pressed;
+		}
+		@Override
+		public int getButtonStringId() {
+			return R.string.ingame_btn_arrived;
 		}
 }

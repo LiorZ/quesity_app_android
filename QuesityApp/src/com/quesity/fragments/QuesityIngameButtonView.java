@@ -18,6 +18,7 @@ public class QuesityIngameButtonView extends FrameLayout {
 	private ImageView _image;
 	private StyledTextView _text;
 	private OnClickListener _listener;
+	
 	public QuesityIngameButtonView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		final View btn = View.inflate(context, R.layout.fragment_ingame_button, null);
@@ -34,7 +35,8 @@ public class QuesityIngameButtonView extends FrameLayout {
 					_image.setImageResource(_touchUpImage);
 					_text.setTextColor(resources.getColor(R.color.quesity_title_color));
 					btn.setBackgroundColor(resources.getColor(R.color.blue_btn_color));
-					_listener.onClick(btn);
+					if ( _listener != null )
+						_listener.onClick(btn);
 				}else if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					_image.setImageResource(_touchDownImage);
 					_text.setTextColor(resources.getColor(R.color.blue_btn_color));

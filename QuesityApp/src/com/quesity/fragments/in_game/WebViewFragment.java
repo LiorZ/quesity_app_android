@@ -1,4 +1,4 @@
-package com.quesity.fragments;
+package com.quesity.fragments.in_game;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -33,6 +33,7 @@ public class WebViewFragment extends Fragment {
 	private TextView _loadingView;
 	private Animation _animation;
 	private boolean _showLoading = true;
+	private PageLoadingListener _listener;
 	
 	@Override
 	public void onAttach(Activity activity) {
@@ -93,6 +94,7 @@ public class WebViewFragment extends Fragment {
 		 if ( _animation == null )
 			 _animation = AnimationUtils.loadAnimation(getActivity(), R.anim.tween);
 		 _w.setWebViewClient(new WebViewClient(){
+			 
 			 @Override
 			public void onLoadResource(WebView view, String url) {
 				super.onLoadResource(view, url);
@@ -103,6 +105,11 @@ public class WebViewFragment extends Fragment {
 			private TimerTask task;
 			 
 			private void pageLoadEvent(WebView view) {
+				if ( _listener != null ) {
+					Log.d("LIOR","DISABLING PLAY BUTTON");
+					_listener.pageStartedLoading();
+				}
+				
 				if ( !_showLoading )
 					return;
 				
@@ -139,6 +146,10 @@ public class WebViewFragment extends Fragment {
 								_loadingView.setVisibility(View.INVISIBLE);
 //								view.setVisibility(View.VISIBLE);	
 								ViewAlpha.setAlphaForView(view, 1.0f,500);
+								if ( _listener != null ) {
+									Log.d("LIOR","ENABLING PLAY BUTTON");
+									_listener.pageFinishedLoading();
+								}
 							}
 						});
 					
@@ -153,4 +164,13 @@ public class WebViewFragment extends Fragment {
 		 });
 	}
 
+	public void setPageLoadingListener(PageLoadingListener listener) {
+		_listener = listener;
+	}
+	
+	public interface PageLoadingListener { 
+		public void pageStartedLoading();
+		public void pageFinishedLoading();
+	}
+	
 }

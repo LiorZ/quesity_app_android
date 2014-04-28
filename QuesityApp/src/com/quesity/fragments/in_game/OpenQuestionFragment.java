@@ -1,4 +1,4 @@
-package com.quesity.fragments;
+package com.quesity.fragments.in_game;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,8 @@ import android.widget.EditText;
 import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.fragments.OnDemandFragment;
+import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageQuestionLink;
@@ -61,6 +63,21 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	@Override
 	public void invokeFragment(FragmentManager manager) {
 		this.show(manager,"MultipleChoiceFragment");
+	}
+
+	@Override
+	public int getButtonDrawable() {
+		return R.drawable.enter_text;
+	}
+
+	@Override
+	public int getPressedButtonDrawable() {
+		return R.drawable.enter_text_pressed;
+	}
+
+	@Override
+	public int getButtonStringId() {
+		return R.string.ingame_btn_enter_text;
 	}
 	
 }

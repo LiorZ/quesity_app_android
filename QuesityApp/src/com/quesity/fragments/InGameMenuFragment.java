@@ -27,6 +27,8 @@ public class InGameMenuFragment extends Fragment {
 	private InGameMenuPopup _menu_dialog;
 	private InGameMenuPopup _tactics_dialog;
 	private HintsFragment _hints_fragment;
+	private QuesityIngameButtonView _btn_play_view;
+	private OnClickListener _play_button_listener;
 
 	public InGameMenuFragment() {
 		_menu_dialog = new InGameMenuPopup();
@@ -101,6 +103,9 @@ public class InGameMenuFragment extends Fragment {
 				case Constants.EXIT_MENU_ITEM_INDEX:
 					((QuestPageActivity)factivity).returnToMainPage();
 					break;
+				case Constants.SHOW_FEEDBACK_ITEM_INDEX:
+					((QuestPageActivity)factivity).showFeedbackFragment();
+					break;
 				default:
 					dialog.dismiss();
 						
@@ -133,19 +138,17 @@ public class InGameMenuFragment extends Fragment {
 		
 	}
 	
+	public void setPlayButtonText(String text) {
+		_btn_play_view.setButtonText(text);
+	}
+	
 	private void setupPlayButton(View v) {
 		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
 		btn.setButtonImage(R.drawable.continue_img);
 		btn.setOnTouchButtonImage(R.drawable.continue_img_pressed);
 		btn.setButtonText(getString(R.string.ingame_btn_continue));
-		
-		v.setOnClickListener(new OnClickListener() {
-		
-			@Override
-			public void onClick(View v) {
-				_transition.transitToNextPage();
-			}
-		});
+
+		v.setOnClickListener(_play_button_listener);
 	}
 	
 	private void setupTacticsButton(View v) {
@@ -162,20 +165,42 @@ public class InGameMenuFragment extends Fragment {
 		});
 	}
 	
+	public void setPlayButtonEnabledState(boolean enabled) {
+		if ( enabled ) {
+			_btn_play_view.setOnClickListener(_play_button_listener);
+		}else {
+			_btn_play_view.setOnClickListener(null);
+		}
+	}
+	
+	public void setPlayButtonDrawable(int drawable, int drawable_pressed) {
+		_btn_play_view.setButtonImage(drawable);
+		_btn_play_view.setOnTouchButtonImage(drawable_pressed);
+	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		View root_view = inflater.inflate(R.layout.fragment_ingame_menu, container,false);
 		
+		_play_button_listener = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				_transition.transitToNextPage();
+			}
+		};
+		
 		View menu_btn_view = root_view.findViewById(R.id.btn_menu);
 		setupMenuButton(menu_btn_view);
 		
-		View btn_play_view = root_view.findViewById(R.id.btn_continue);
-		setupPlayButton(btn_play_view);
+		_btn_play_view = (QuesityIngameButtonView) root_view.findViewById(R.id.btn_continue);
+		setupPlayButton(_btn_play_view);
 		
 		View btn_tactics_view = root_view.findViewById(R.id.btn_tactics);
 		setupTacticsButton(btn_tactics_view);
+		
 		
 		return root_view;
 		

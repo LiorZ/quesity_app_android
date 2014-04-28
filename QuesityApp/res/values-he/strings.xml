@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name='applicationId'>211673598896341</string>
+	    
+    <string name="app_name">Quesity</string>
+    <string name="app_version">v0.2</string>
+    <string name="dummy_title">Quesity</string>
+    <string name="lbl_start_quest">התחל</string>
+    <string name="lbl_find_quest">מצא קווסט</string>
+    <string name="lbl_about_quesity">אודות</string>
+    <string name="lbl_my_quests">הקווסטים שלי</string>
+    <string name="error_title">שגיאה</string>
+    <string name="lbl_loading_quests">טוען קווסטים</string>
+    <string name="ingame_btn_menu">תפריט</string>
+    <string name="ingame_btn_tactics">גלגלי הצלה</string>
+    <string name="title_activity_quest_page">Quesity</string>
+    <string name="action_settings">Settings</string>
+    <string name='lbl_loading'>טוען ...</string>
+    <string name='lbl_loading_page'>טוען ... </string>
+    <string name="lbl_choose_answer">אפשרויות</string>
+    <string name="err_connection">שגיאה בעת החיבור לרשת</string>
+    <string name="lbl_err_load_quest">שגיאה בטעינת הקווסטים. קליטת אינטרנט בעייתית</string>
+    <string name="lbl_err_wrong_answer">התשובה שגויה :(</string>
+    <string name="lbl_enter_answer">תשובה: </string>
+    <string name="lbl_wrong_location">!אינכם נמצאים במקום הנכון. נסו שוב</string>
+    <string name="lbl_location_fix_title">מאכן מיקום</string>
+    <string name="lbl_location_fix_message">המערכת מאכנת את מיקומכם ...</string>
+    <string name="lbl_cant_find_location">נראה כי אין קליטת GPS.</string>
+	<string name="lbl_quest_over">תם הקווסט</string>
+	<string name="lbl_game_menu_title">תפריט</string>
+	<string name="lbl_game_menu_tactics">גלגלי הצלה</string>
+	<string name="lbl_no_hints">אין רמזים בעמוד זה</string>
+	<string name="title_hints_dialog">רמזים</string>
+	<string name="lbl_time_delay">You are being delayed for %1$02d:%2$02d minutes</string>
+	<string name="lbl_login_button">התחבר</string>
+	<string name="hint_username_splash">שם משתמש</string>
+	<string name="hint_password_splash">סיסמא</string>
+	<string name="error_connecting">אירעה שגיאה בעת ההתחברות לשרת.\nאנא בדקו את החיבור לאינטרנט ונסו שוב</string>
+	<string name="error_display_facebook_data">.אירעה שגיאה בעת ההתחברות לחשבון הפייסבוק. אנא נסו שוב</string>
+	<string name="error_general_authentication">אירעה שגיאה בעת ההתחברות לשרת. נסה להתנתק מחשבונך ולהתחבר בשנית</string>
+	<string name="error_username_password">שם משתמש או סיסמא שגויים, אנא נסו שוב.</string>
+	<string name="error_starting_quest">.אירעה שגיאה בעת ההתחברות לחשבון הפייסבוק. אנא נסו שוב</string>
+	<string name="lbl_logging_in">מתחבר ... </string>
+	<string name="lbl_logging_out">מתנתק ... </string>
+	<string name="lbl_logging_in_title">התחבר</string>
+	<string name="lbl_welcome">ברוך הבא, </string>
+	<string name="lbl_exit_notice">לחץ על כפתור החזרה פעם נוספת כדי לצאת מהאפליקציה</string>
+	<string name="lbl_start_btn">התחל</string>
+	<string name="lbl_invite_btn">הזמן</string>
+	<string name="lbl_logout">התנתק</string>
+	<string name="title_find_quest">מצא קווסט</string>
+	<string name="lbl_resume_quest">חזור לקווסט</string>	
+	<string name="lbl_sure_leave_quest">האם אתה בטוח שברצונך לצאת מהקווסט?</string>
+	<string name="lbl_out_of_hints">השתמשתם בכל הרמזים שעומדים לרשותכם ... :(</string>
+	
+	<string name="menu_get_a_hint">השתמש ברמז (%d)</string>
+	<string name="lbl_resume_start_over">נראה כי התחלת לשחק בקווסט זה בעבר \nהאם ברצונך לשוב לאותה נקודה?</string>
+	<string name = "lbl_resume">המשך בקווסט</string>
+	<string name="lbl_start_over">התחל מחדש</string>
+	<string name="lbl_about">אודות</string>
+	<string name="err_display_about">שגיאה התרחשה בעת הצגת העמוד </string>
+	<string name="lbl_games_played">%d כבר שיחקו</string>
+	<string name="lbl_games_played_raw">שיחקו</string>
+	<string name="lbl_hours">שעות</string>
+	<string name="lbl_distance_unit">ק\"מ</string>
+	<string name="lbl_tab_description">תיאור כללי</string>
+	<string name="lbl_tab_starting_point">מיקום</string>
+	<string name="lbl_tab_reviews">ביקורות</string>
+	<string name="lbl_title_dialog_quest_over">תם הקווסט</string>
+	<string name="lbl_hint_dialog_title">רמז</string>
+	<string name="lbl_map_starting_location">מיקום התחלתי</string>
+	<string name="title_resume_game">המשך קווסט?</string>
+	<string name="title_exit">יציאה</string>
+	<string name="lbl_email_login">כתובת אימייל</string>
+	<string name="lbl_firstname_login">שם פרטי</string>
+	<string name="lbl_lastname_login">שם משפחה</string>
+	<string name="lbl_password_login">סיסמא</string>
+	<string name="lbl_no_reviews">אין ביקורות עדיין ...</string>
+	<string name="lbl_no_starting_location_title">קליטת GPS בעייתית</string>
+	<string name="lbl_no_starting_location">אין באפשרותינו למצוא את מיקומכם .\n אנא ודאו שהGPS דולק ונסו שוב.</string>
+	<string name="lbl_verifiying_starting_location">בודק מיקום ...</string>
+	
+	<string name="lbl_register_email">הרשם עם אימייל</string>
+	<string name="lbl_login_email">התחבר עם אימייל</string>
+	
+	<string name="err_register_name">עליך להשתמש רק באותיות לשדה זה</string>
+	<string name="err_email_address">אנא הכנס כתובת אימייל תקינה</string>
+	<string name="err_empty_field">שדה זה אינו יכול להשאר ריק</string>
+	<string name="err_email_exists">אימייל זה קיים כבר במערכת</string>
+	<string name="err_wrong_username">סיסמא או אימייל שגויים</string>
+	
+	<string name="lbl_not_starting_point">אינכם נמצאים בנקודת ההתחלה</string>
+	<string name="lbl_demo_mode">The quest is played in demo mode</string>
+	
+	<string name="feedback_text_hint">ספר לנו הכל...</string>
+	
+	<string name="game_menu_show_map">הצג מפה</string>
+	<string name="game_menu_feedback">משוב</string>
+	<string name="game_menu_leave_quest">צא מהקווסט</string>
+	
+	<string name="after_feedback_text">תודה רבה על המשוב!</string>
+	
+	<string name="ingame_btn_continue">המשך</string>
+	<string name="ingame_btn_arrived">הגעתי</string>
+	<string name="ingame_btn_enter_text">הקלדת טקסט</string>
+	<string name="ingame_btn_options">אפשרויות</string>
+	
+	<string name="button_font">fonts/Andada-Regular.ttf</string>
+	
+</resources>

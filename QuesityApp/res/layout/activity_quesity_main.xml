@@ -3,22 +3,17 @@
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="@drawable/splash_gradient"
     tools:context=".QuesityMain" >
-   <include 
-	android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	layout="@layout/logo_clouds"
-	android:id="@+id/logo_clouds_include"
-	/>
    
-   <include
-       android:layout_below="@id/logo_clouds_include"
-       android:layout_width="fill_parent"
-       android:layout_height="wrap_content"
-       layout="@layout/main_menu_buttons" />
+   <fragment 
+   	android:id="@+id/main_menu_buttons"
+   	android:name="com.quesity.fragments.main_menu.MainMenuButtonsFragment"
+   	android:layout_width="fill_parent"
+   	android:layout_height="fill_parent"    
+   />
 
     <!--
              <Button
@@ -54,5 +49,5 @@
             android:onClick="showAbout"
             android:text="@string/lbl_about" />
     -->
-
+       
 </RelativeLayout>

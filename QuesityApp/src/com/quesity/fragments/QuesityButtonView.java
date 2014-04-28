@@ -22,7 +22,7 @@ public class QuesityButtonView extends CustomFontGeneralView{
 	
 	public QuesityButtonView(Context context) {
 		super(context);
-		 _font_path = "fonts/Andada-Regular.ttf";
+		 _font_path = context.getString(R.string.button_font);
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
 		 _main_view = view_inflated;
 		 addView(view_inflated);
@@ -37,13 +37,13 @@ public class QuesityButtonView extends CustomFontGeneralView{
 		 int custom_selector = attr_set.getResourceId(R.styleable.QuesityButtonView_custom_selector, -1);
 		 
 		 float dimension = attr_set.getDimension(R.styleable.QuesityButtonView_button_text_size, -1) / getResources().getDisplayMetrics().density;
-		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1);
+		 float padding_dimen = attr_set.getDimension(R.styleable.QuesityButtonView_button_padding, -1) / getResources().getDisplayMetrics().density;;
 		 _image_view_width = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_width, getResources().getDimension(R.dimen.icons_size));
 		 _image_view_height = attr_set.getDimension(R.styleable.QuesityButtonView_button_icon_height,getResources().getDimension(R.dimen.icons_size));
 		 
 		 View view_inflated = View.inflate(context, R.layout.fragment_button, null);
 		 _main_view = view_inflated;
-		 _font_path = "fonts/Andada-Regular.ttf";
+		 _font_path = context.getString(R.string.button_font);
 		 _text_color = attr_set.getResourceId(R.styleable.QuesityButtonView_button_text_color, -1);
 
 		 if ( _image != 0 )

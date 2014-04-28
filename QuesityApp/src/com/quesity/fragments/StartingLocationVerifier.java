@@ -3,6 +3,8 @@ package com.quesity.fragments;
 import java.util.Date;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
@@ -22,7 +24,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
 	private LocationClient _location_client;
 	private StartingLocation _starting_location;
-	private static final int MAX_DISTANCE_FROM_CENTER = 2; //times the radius
+	private static final int MAX_DISTANCE_FROM_CENTER = 7; //times the radius
 	private static final long LOCATION_RELEVANCE_TIME = 5*60*1000; //5 minutes, in milliseconds
 	private LoadingProgressFragment _loading_progress;
 	private StartingLocationListener _location_listener;
@@ -95,7 +97,29 @@ GooglePlayServicesClient.OnConnectionFailedListener {
              * If no resolution is available, display a dialog to the
              * user with the error.
              */
-            showErrorDialog(getActivity().getString(com.quesity.app.R.string.lbl_no_starting_location));
+        	
+        	FragmentActivity activity = getActivity();
+        	if ( activity == null ) {
+        		return;
+        	}
+        	
+			Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(activity.getString(R.string.lbl_no_starting_location_title),
+        			activity.getString(com.quesity.app.R.string.lbl_no_starting_location), 
+        			activity, new DialogInterface.OnClickListener() {
+						
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							//Open GPS setting page
+							dialog.dismiss();
+							Intent gpsOptionsIntent = new Intent(  
+								    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+							
+								startActivityForResult(gpsOptionsIntent,0);
+								
+						}
+					});
+			
+			okOnlyDialog.show();
         }
 	}
 
@@ -103,7 +127,7 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 		_loading_progress = new LoadingProgressFragment();
 		FragmentActivity activity = getActivity();
 		_loading_progress.setTitle(activity.getString(R.string.lbl_loading));
-		_loading_progress.setMessage(activity.getString(R.string.lbl_verifiying_starting_location));
+		_loading_progress.setMessage(activity.getString(R.string.lbl_location_fix_message));
 		_loading_progress.show(getFragmentManager(), "STARTINGLCOATIONVERIFIER");
 		LocationRequest request = new LocationRequest();
 		request.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);

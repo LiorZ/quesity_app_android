@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentActivity;
 
 import com.quesity.app.R;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.fragments.WebViewFragment;
+import com.quesity.fragments.in_game.WebViewFragment;
 import com.quesity.util.FileReader;
 
 public class AboutActivity extends FragmentActivity {

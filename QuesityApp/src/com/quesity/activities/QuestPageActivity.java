@@ -386,8 +386,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		for (int i=0; i<_all_pages.length; ++i) {
 			if ( _all_pages[i].getId().equals(page_id) ) {
 				reportMove(link);
-				if ( _current_game.getIsAtStartingLocation() )
-					savePage(_all_pages[i]);
+				//save the page anyhow ... 
+				savePage(_all_pages[i]);
 				
 				refreshQuestPage(_all_pages[i]);
 				return;

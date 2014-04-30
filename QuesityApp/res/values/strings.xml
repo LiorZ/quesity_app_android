@@ -111,4 +111,5 @@
 	
 	
 	<string name="button_font">fonts/Andada-Regular.ttf</string>
+	<string name="webview_loading_font">fonts/Andada-Regular.ttf</string>
 </resources>

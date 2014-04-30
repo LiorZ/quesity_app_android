@@ -4,12 +4,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.regex.Pattern;
 
 import android.accounts.AccountManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
@@ -130,6 +132,12 @@ public abstract class GeneralAuthenticationFragment extends Fragment {
 			
 			@Override
 			public void onClick(View v) {
+				if ( getActivity() == null )
+					return;
+				// hide keyboard
+				InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(
+					      Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(_v_button.getWindowToken(), 0);
 				if ( _form.validate() ) {
 					action();
 				}

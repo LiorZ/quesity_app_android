@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -9,8 +10,9 @@
         android:scrollbars="none"
         android:layout_height="match_parent" />
 
-    <TextView
+    <com.quesity.fragments.StyledTextView
         android:id="@+id/loading_lbl"
+        quesity:font_path="@string/webview_loading_font"
         android:textSize="50sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

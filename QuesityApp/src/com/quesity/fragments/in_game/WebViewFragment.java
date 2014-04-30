@@ -106,7 +106,6 @@ public class WebViewFragment extends Fragment {
 			 
 			private void pageLoadEvent(WebView view) {
 				if ( _listener != null ) {
-					Log.d("LIOR","DISABLING PLAY BUTTON");
 					_listener.pageStartedLoading();
 				}
 				

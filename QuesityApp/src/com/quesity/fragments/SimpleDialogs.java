@@ -25,6 +25,16 @@ public class SimpleDialogs {
 		return getOKOnlyDialog(context.getString(R.string.error_title), message, context, click_listener);
 	}
 	
+	public static Dialog getOKOnlyDialog(String title,String message, Context context) {
+		return getOKOnlyDialog(title, message, context, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+	}
+	
 	public static Dialog getOKOnlyDialog(String title,String message, Context context, DialogInterface.OnClickListener what_to_do) {
 		QuesityDialog d = new QuesityDialog(context);
 		d.setTitle(title);

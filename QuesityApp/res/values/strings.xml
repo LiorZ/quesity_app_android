@@ -21,7 +21,8 @@
     <string name="lbl_choose_answer">Choose</string>
     <string name="err_connection">Error connecting to network</string>
     <string name="lbl_err_load_quest">Error loading quests. please check your connection</string>
-    <string name="lbl_err_wrong_answer">Wrong answer! :(</string>
+    <string name="lbl_err_wrong_answer">Wrong answer! :( try again.</string>
+    <string name="lbl_err_wrong_answer_title">Wrong answer</string>
     <string name="lbl_enter_answer">Answer: </string>
     <string name="lbl_wrong_location">You are not at the right location... Try again.</string>
     <string name="lbl_location_fix_title">Finding Location</string>

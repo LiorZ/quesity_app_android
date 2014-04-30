@@ -31,8 +31,10 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	            String value = input.getText().toString().trim();
 	            QuestPageLink nextPage = getNextPageByAnswer(value, page);
 	            if ( nextPage == null ) {
-	            	Dialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_err_wrong_answer), getActivity());
-	            	errorDialog.show();
+	            	
+	            	Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_err_wrong_answer_title), getString(R.string.lbl_err_wrong_answer), getActivity());
+	            	
+	            	okOnlyDialog.show();
 	            }else {
 					NextPageTransition activity = (NextPageTransition) getActivity();
 					activity.loadNextPage(nextPage);

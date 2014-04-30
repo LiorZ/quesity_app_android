@@ -26,6 +26,7 @@
     <string name="lbl_location_fix_title">מאכן מיקום</string>
     <string name="lbl_location_fix_message">המערכת מאכנת את מיקומכם ...</string>
     <string name="lbl_cant_find_location">נראה כי אין קליטת GPS.</string>
+    <string name="lbl_cant_find_location_title">הודעת מיקום</string>
 	<string name="lbl_quest_over">תם הקווסט</string>
 	<string name="lbl_game_menu_title">תפריט</string>
 	<string name="lbl_game_menu_tactics">גלגלי הצלה</string>

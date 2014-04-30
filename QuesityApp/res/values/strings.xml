@@ -27,6 +27,7 @@
     <string name="lbl_location_fix_title">Finding Location</string>
     <string name="lbl_location_fix_message">Getting a fix on your location</string>
     <string name="lbl_cant_find_location">No GPS Signal - Please try again.</string>
+    <string name="lbl_cant_find_location_title">Location</string>
 	<string name="lbl_quest_over">The Quest is over!</string>
 	<string name="lbl_game_menu_title">Game Menu</string>
 	<string name="lbl_game_menu_tactics">Tactics</string>

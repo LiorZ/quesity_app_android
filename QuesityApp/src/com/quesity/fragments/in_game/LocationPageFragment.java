@@ -6,6 +6,7 @@ import java.util.TimerTask;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -97,8 +98,14 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				
 				@Override
 				public void run() {
-					Dialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_cant_find_location), getActivity());
-					errorDialog.show();
+					SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_cant_find_location_title), getString(R.string.lbl_cant_find_location),
+							getActivity(),new DialogInterface.OnClickListener() {
+								
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									dialog.dismiss();
+								}
+							}).show();
 				}
 			});
 		}
@@ -136,9 +143,18 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				}
 			}
 			Log.d("LocationFragment", location.toString());
-			Dialog errorDialog = SimpleDialogs.getErrorDialog(getString(R.string.lbl_wrong_location), getActivity());
+			Dialog wrong_location_dialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_cant_find_location_title), getString(R.string.lbl_wrong_location), getActivity(), 
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+			
+			
 			stopProgressBar();
-			errorDialog.show();
+			wrong_location_dialog.show();
 		}
 		
 		@Override

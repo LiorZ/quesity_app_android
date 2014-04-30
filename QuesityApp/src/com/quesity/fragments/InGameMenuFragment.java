@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import com.quesity.app.R;
 import com.quesity.activities.QuesityMapActivity;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.fragments.in_game.HintsFragment;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
 

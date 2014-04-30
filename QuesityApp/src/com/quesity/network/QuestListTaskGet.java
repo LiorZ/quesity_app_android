@@ -17,12 +17,11 @@ public class QuestListTaskGet<Result> extends FetchJSONTaskGet<Result> {
 	
 	@Override
 	protected void onPostExecute(Result r) {
+		super.onPostExecute(r);
 		Quest[] result = (Quest[])r;
 		if ( result == null ) {
 			if ( _progress != null )
 				_progress.dismiss();
-			Dialog errorDialog = SimpleDialogs.getErrorDialog(_context.getString(R.string.lbl_err_load_quest),_context);
-			errorDialog.show();
 			return;
 		}
 		if ( result != null )
@@ -32,6 +31,7 @@ public class QuestListTaskGet<Result> extends FetchJSONTaskGet<Result> {
 	public QuestListTaskGet(Class<Result> c, Context ctx) {
 		super(c, ctx);
 		_context = ctx;
+		setNetworkErrorHandler( new SimpleNetworkErrorHandler(_context, -1, -1, R.string.err_connection) );
 	}
 
 	
@@ -59,6 +59,5 @@ public class QuestListTaskGet<Result> extends FetchJSONTaskGet<Result> {
 		loader.load();
 	}
 	
-
 
 }

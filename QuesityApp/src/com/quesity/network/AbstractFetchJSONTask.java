@@ -30,14 +30,19 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	private NetworkErrorHandler _handler;
 	protected IPostExecuteCallback _post_execute;
 	private IBackgroundCallback<Result> _background_callback;
-
+	private int _error_status_code;
 	private Class<Result> _class_to_resolve;
 	private Context _context;
+	
+	
+	private static final int ERR_NO_CONNECTION_STATUS_CODE = 1;
+	private static final int ERR_UNKNOWN = 0;
 	public AbstractFetchJSONTask(NetworkParameterGetter getter, Class<Result> c,Context context) {
 		_getter = getter;
 		_activity = null;
 		_class_to_resolve = c;
 		_context = context;
+		_error_status_code = -1;
 	}
 	
 	public AbstractFetchJSONTask<Result> setNetworkErrorHandler(NetworkErrorHandler h) {
@@ -65,6 +70,23 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		super.onPostExecute(result);
 		if ( _progress != null )
 			_progress.dismiss();
+		
+		switch (_error_status_code) {
+		case ERR_NO_CONNECTION_STATUS_CODE:
+			handleConnectionException();
+			return;
+		case ERR_UNKNOWN:
+			return;
+		case 401:
+			handle401();
+			return;
+		case 500: 
+			handle500();
+			return;
+		default:
+			break;
+		}
+		
 		if ( _post_execute != null)
 			_post_execute.apply(result);
 	}
@@ -159,17 +181,18 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 			}
 		} catch (HttpHostConnectException e) {
 			e.printStackTrace();
-			handleConnectionException();
+			_error_status_code = ERR_NO_CONNECTION_STATUS_CODE;
 		}
 		catch (Status401Exception e_401) {
 			e_401.printStackTrace();
-			handle401();
+			_error_status_code = 401;
 		}
 		catch(Status500Exception e_500) {
 			e_500.printStackTrace();
-			handle500();
+			_error_status_code = 500;
 		}
 		catch (Exception e_general) {
+			_error_status_code = ERR_UNKNOWN;
 			e_general.printStackTrace();
 		}
 		

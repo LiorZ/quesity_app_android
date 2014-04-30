@@ -8,6 +8,7 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
@@ -53,6 +54,7 @@ import com.quesity.network.IBackgroundCallback;
 import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
 import com.quesity.network.JSONPostRequestTypeGetter;
+import com.quesity.network.SimpleNetworkErrorHandler;
 import com.quesity.network.reporting.ModelReport;
 import com.quesity.services.location.LocationService;
 
@@ -512,17 +514,6 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		public void apply(Object result) {
 			_all_pages = (QuestPage[])result;
 			if ( _all_pages == null ){
-				DialogInterface.OnClickListener click_listener = new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						returnToMainPage();
-						finish();						
-					}
-				};
-				SimpleDialogs.getErrorDialog(getString(R.string.error_starting_quest), getActivity(), click_listener ).show();
-
 				return;
 			}
 			for (int i = 0; i < _all_pages.length; i++) {
@@ -607,6 +598,12 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			setNetworkInterface(_network_interface);
 			setPostExecuteCallback(new AfterLoadingAllQuestPages());
 			setBackgroundCallback(new GameCreationTaskBackgroundHandler());
+			
+			GameCreationErrorHandler game_err_handler = new GameCreationErrorHandler(QuestPageActivity.this);
+			game_err_handler.setMessageNoConnection(R.string.err_connection);
+			game_err_handler.setMessage401(R.string.error_general_authentication);
+			
+			setNetworkErrorHandler(game_err_handler);
 		}
 
 		
@@ -631,6 +628,28 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	public ProgressBarHandler getProgressBarHandler() {
 		return new ProgressBarHandler(getString(R.string.lbl_loading_page), getString(R.string.lbl_loading), _progress);
 	}
+	
+	
+	private class GameCreationErrorHandler extends SimpleNetworkErrorHandler {
 
+		public GameCreationErrorHandler(Context c) {
+			super(c);
+		}
+
+		@Override
+		protected void showMessage(int err) {
+			DialogInterface.OnClickListener click_listener = new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					dialog.dismiss();
+					returnToMainPage();
+					finish();						
+				}
+			};
+			SimpleDialogs.getErrorDialog(getString(err), getActivity(), click_listener ).show();
+		}
+		
+	}
 
 }

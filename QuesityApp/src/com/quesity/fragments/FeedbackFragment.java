@@ -21,10 +21,15 @@ import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.Feedback;
 import com.quesity.network.reporting.ModelReport;
+import com.throrinstudio.android.common.libs.validator.Form;
+import com.throrinstudio.android.common.libs.validator.Validate;
+import com.throrinstudio.android.common.libs.validator.validator.NotEmptyValidator;
 
 public class FeedbackFragment extends Fragment {
 
 	private EditText _feedback_text;
+	private Form _form;
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -32,7 +37,6 @@ public class FeedbackFragment extends Fragment {
 		_feedback_text = (EditText) main_view.findViewById(R.id.feedback_text);
 		setNoButton(main_view);
 		setYesButton(main_view);
-		
 		main_view.setOnTouchListener(new View.OnTouchListener() {
 			
 			@Override
@@ -40,8 +44,15 @@ public class FeedbackFragment extends Fragment {
 				return true;
 			}
 		});
-		
+		setValidation();
 		return main_view;
+	}
+	
+	private void setValidation() { 
+		_form = new Form();
+		Validate v = new Validate(_feedback_text);
+		v.addValidator(new NotEmptyValidator(getActivity(), R.string.feedback_text_empty));
+		_form.addValidates(v);
 	}
 	
 	private void removeMe() {
@@ -100,7 +111,9 @@ public class FeedbackFragment extends Fragment {
 				if (activity == null)
 					return;
 				
-				
+				if ( !_form.validate() ) { 
+					return;
+				}
 				setRemoveListener();
 				Feedback feedback = new Feedback();
 				

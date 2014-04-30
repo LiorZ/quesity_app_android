@@ -93,6 +93,7 @@
 	<string name="lbl_demo_mode">The quest is played in demo mode</string>
 	
 	<string name="feedback_text_hint">ספר לנו הכל...</string>
+	<string name="feedback_text_empty">שדה המשוב ריק. אנא מלא אותו לפני השליחה</string>
 	
 	<string name="game_menu_show_map">הצג מפה</string>
 	<string name="game_menu_feedback">משוב</string>

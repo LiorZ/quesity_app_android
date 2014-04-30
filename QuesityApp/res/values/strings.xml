@@ -97,6 +97,7 @@
 	<string name="lbl_demo_mode">The quest is played in demo mode</string>
 	
 	<string name="feedback_text_hint">Tell us anything...</string>
+	<string name="feedback_text_empty">Please enter a feedback before submitting</string>
 	
 	<string name="game_menu_show_map">Show Map</string>
 	<string name="game_menu_feedback">Provide Feedback</string>

@@ -9,7 +9,7 @@
     android:background="@color/white"
     android:orientation="vertical" >
     
-    <EditText 
+    <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
     	android:id="@+id/feedback_text"
     	android:inputType="textMultiLine"
     	android:gravity="top"

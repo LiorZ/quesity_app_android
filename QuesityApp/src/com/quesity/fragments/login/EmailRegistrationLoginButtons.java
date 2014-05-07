@@ -21,6 +21,7 @@ public class EmailRegistrationLoginButtons extends Fragment {
 	public void setLoginButtonClickListener( View.OnClickListener listener ) {
 		_login_listener = listener;
 	}
+	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {

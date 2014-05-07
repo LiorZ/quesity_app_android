@@ -160,11 +160,13 @@ GooglePlayServicesClient.OnConnectionFailedListener {
 	public void onConnected(Bundle connectionHint) {
 		if ( _starting_location == null ) {
 			_location_listener.notOnStartingLocation(-1);
+			return;
 		}
 		
 		Location lastLocation = _location_client.getLastLocation();
 		if ( lastLocation == null ){
 			_location_listener.notOnStartingLocation(-1);
+			return;
 		}
 		long location_time = lastLocation.getTime();
 		long curTime = new Date().getTime();

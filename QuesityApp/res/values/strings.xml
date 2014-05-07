@@ -95,8 +95,7 @@
 	<string name="err_email_exists">A user with this email already exists</string>
 	<string name="err_wrong_username">Wrong email or password</string>
 	
-	<string name="lbl_not_starting_point">You are not at the starting location</string>
-	<string name="lbl_demo_mode">The quest is played in demo mode</string>
+	<string name="lbl_not_starting_point">It looks like you are not at the starting location ...</string>
 	
 	<string name="feedback_text_hint">Tell us anything...</string>
 	<string name="feedback_text_empty">Please enter a feedback before submitting</string>
@@ -111,8 +110,22 @@
 	<string name="ingame_btn_arrived">Arrived</string>
 	<string name="ingame_btn_enter_text">Enter Text</string>
 	<string name="ingame_btn_options">Choose</string>
-	
-	
+	<string name="button_yes">Yes</string>
+	<string name="button_no">No</string>
+	<string name="button_ok">OK</string>
+	<string name="button_cancel">Cancel</string>
 	<string name="button_font">fonts/Andada-Regular.ttf</string>
 	<string name="webview_loading_font">fonts/Andada-Regular.ttf</string>
+	
+	<string name="quesity_title_font">fonts/Andada-Regular.ttf</string>
+	<string name="end_quest_font">fonts/Andada-Regular.ttf</string>
+	<string name="end_quest_font_message">fonts/Roboto-Regular.ttf</string>
+	<string name="end_quest_title">Congratulations!</string>
+	<string name="end_quest_message">You have finished</string>
+	<string name="how_was_it">How was the quest?</string>
+	<string name="how_was_it_edittext">How was it?</string>
+	<string name="end_quest_finish_button">Finish</string>
+	<string name="review_dialog_title">Review</string>
+	<string name="review_dialog_message">How was it?</string>
+	
 </resources>

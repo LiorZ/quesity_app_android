@@ -35,7 +35,7 @@ public abstract class CustomFontGeneralView extends FrameLayout {
 	}
 	
 	protected void setImageViewSize(ImageView view){
-		if ( _image_view_height > 0 && _image_view_width > 0 ){
+		if ( _image_view_height > -1 && _image_view_width > -1 ){
 			android.view.ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
 			layoutParams.width = (int)_image_view_width;
 			layoutParams.height = (int)_image_view_height;

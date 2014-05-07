@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/splash_gradient"
+    android:weightSum="100"
+    android:orientation="vertical" >
+    
+ <com.quesity.fragments.QuesityPageTitleView
+		android:id="@+id/title_quest_properties"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		quesity:page_title_text="@string/end_quest_title"
+		quesity:title_text_size="30sp"
+		quesity:title_icon="@drawable/trophy"
+ />
+ <LinearLayout android:id="@+id/end_quest_message_container"
+     android:layout_width="fill_parent"
+     android:layout_height="0dp"
+     android:layout_weight="20"    
+     android:gravity="center_vertical"
+     android:orientation="vertical">
+     
+ <com.quesity.fragments.StyledTextView
+    android:id="@+id/end_quest_message"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	quesity:font_path="@string/end_quest_font_message"
+	android:text="@string/end_quest_message"
+	android:textSize="23sp"
+	android:gravity="center_horizontal"
+/> 
+
+<com.quesity.fragments.StyledTextView
+    android:id="@+id/end_quest_name"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	quesity:font_path="@string/end_quest_font_message"
+	android:text="@string/end_quest_message"
+	android:textSize="23sp"
+	android:gravity="center_horizontal"
+/>
+ </LinearLayout>
+
+
+<RelativeLayout
+	android:id="@+id/end_quest_image_and_text_container"
+	android:layout_width="wrap_content"
+	android:layout_height="0dp"
+	android:layout_weight="50"
+	android:layout_gravity="center_horizontal|center_vertical"
+>
+        <FrameLayout
+	android:id="@+id/end_quest_image_container"
+	android:layout_width="200dp"
+	android:layout_height="200dp"
+	android:layout_centerInParent="true"
+	/>
+    <com.quesity.fragments.StyledTextView
+    	android:id="@+id/done_text"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	quesity:font_path="fonts/Old-Rubber-Stamp.ttf"    
+    	android:text="DONE"
+    	android:layout_centerInParent="true"
+    	android:textSize="40sp"
+    	android:textColor="@color/Red"
+    	android:rotation="-30"
+    />
+        
+    
+</RelativeLayout>
+<LinearLayout
+	android:id="@+id/rating_container"
+	android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="0dp"
+	android:layout_weight="30"
+	android:gravity="center_horizontal|center_vertical"
+ >
+     <View 
+ 	android:layout_height="0.3dp"
+ 	android:layout_width="fill_parent"
+ 	android:background="@color/quesity_title_color"
+ 	android:layout_marginBottom="5dp"
+ />
+
+<com.quesity.fragments.StyledTextView
+    android:id="@+id/rate_quest_msg"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	quesity:font_path="@string/end_quest_font_message"
+	android:text="@string/how_was_it"
+	android:textSize="16sp"
+	android:gravity="center_horizontal"
+/> 
+	<RatingBar android:id="@+id/quest_over_rating"
+	    	   style="@style/quest_rating_bar_big"
+	    	   android:layout_height="35sp" 
+	    	   android:layout_width="wrap_content"
+	    	   android:layout_gravity="center_horizontal"
+	    	   android:numStars="5"
+	/>
+
+ <View 
+ 	android:layout_height="0.3dp"
+ 	android:layout_width="fill_parent"
+ 	android:background="@color/quesity_title_color"
+ 	android:layout_marginTop="5dp"	
+ />
+ 
+ <com.quesity.fragments.QuesityButtonView 
+ 	android:id="@+id/end_quest_back_button"
+ 	quesity:button_text="@string/end_quest_finish_button"
+ 	quesity:button_text_color="@color/quesity_title_color"
+ 	quesity:button_padding="5dp"
+ 	quesity:button_text_size="20sp"
+ 	android:layout_height="wrap_content"
+ 	android:layout_width="fill_parent"
+ 	android:layout_marginLeft="20dp"
+ 	android:layout_marginRight="20dp"
+ 	android:layout_marginTop="10dp"
+ >
+     
+     
+ </com.quesity.fragments.QuesityButtonView>
+</LinearLayout>
+
+</LinearLayout>

@@ -1,6 +1,0 @@
-<resources>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-	<dimen name="find_quest_title_font_size">18dp</dimen>
-	<dimen name="quest_properties_title">12dp</dimen>
-</resources>

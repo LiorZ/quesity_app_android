@@ -14,9 +14,11 @@ import com.quesity.fragments.ProgressBarHandler;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
+import com.quesity.models.Account;
 import com.quesity.network.FetchJSONTaskGet;
 import com.quesity.network.INetworkInteraction;
 import com.quesity.network.IPostExecuteCallback;
+import com.quesity.network.reporting.ModelReport;
 
 public class QuesityMain extends BaseActivity implements INetworkInteraction {
 
@@ -75,6 +77,11 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 			Intent i = new Intent(this, SplashScreen.class);
 			startActivity(i);
 			finish();
+		}else {
+			//sending a login report...
+			Account ac = new Account();
+			ModelReport login_report = new ModelReport(ac, this);
+			login_report.send(Config.SERVER_URL + getString(R.string.report_login));
 		}
 	}
 	public void performLogout(View view) {

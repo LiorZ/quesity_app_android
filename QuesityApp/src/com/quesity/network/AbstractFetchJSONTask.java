@@ -30,7 +30,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 	private NetworkErrorHandler _handler;
 	protected IPostExecuteCallback _post_execute;
 	private IBackgroundCallback<Result> _background_callback;
-	private int _error_status_code;
+	protected int _error_status_code;
 	private Class<Result> _class_to_resolve;
 	private Context _context;
 	
@@ -65,12 +65,7 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 		return this;
 	}
 	
-	@Override
-	protected void onPostExecute(Result result) {
-		super.onPostExecute(result);
-		if ( _progress != null )
-			_progress.dismiss();
-		
+	protected void handleError() {
 		switch (_error_status_code) {
 		case ERR_NO_CONNECTION_STATUS_CODE:
 			handleConnectionException();
@@ -85,6 +80,18 @@ public abstract class AbstractFetchJSONTask<Result> extends AsyncTask<String, In
 			return;
 		default:
 			break;
+		}
+	}
+	
+	@Override
+	protected void onPostExecute(Result result) {
+		super.onPostExecute(result);
+		if ( _progress != null )
+			_progress.dismiss();
+		
+		if ( _error_status_code > -1 ){
+			handleError();
+			return;
 		}
 		
 		if ( _post_execute != null)

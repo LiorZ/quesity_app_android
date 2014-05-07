@@ -17,15 +17,17 @@ public class QuestListTaskGet<Result> extends FetchJSONTaskGet<Result> {
 	
 	@Override
 	protected void onPostExecute(Result r) {
-		super.onPostExecute(r);
 		Quest[] result = (Quest[])r;
 		if ( result == null ) {
 			if ( _progress != null )
 				_progress.dismiss();
+			if ( _error_status_code > -1 ) {
+				handleError();
+			}
 			return;
-		}
-		if ( result != null )
+		}else {
 			loadImages((Quest[])result);
+		}
 	}
 
 	public QuestListTaskGet(Class<Result> c, Context ctx) {

@@ -26,7 +26,7 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	    final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 	    final EditText input = new EditText(getActivity());
 	    alert.setView(input);
-	    alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	    alert.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton) {
 	            String value = input.getText().toString().trim();
 	            QuestPageLink nextPage = getNextPageByAnswer(value, page);
@@ -42,7 +42,7 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	        }
 	    });
 
-	    alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+	    alert.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton) {
 	            dialog.cancel();
 	        }

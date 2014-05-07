@@ -39,6 +39,9 @@
         <item name="android:maxHeight">14dip</item>
     </style>
 
+    <style name="quest_rating_bar_big" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/quest_rating_bar_big</item>
+    </style>
         <style name="CustomTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:textColor">@color/quesity_title_color</item>
          <item name="android:background">@drawable/custom_tab_indicator</item>

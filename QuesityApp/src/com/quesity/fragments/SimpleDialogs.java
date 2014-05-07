@@ -39,7 +39,7 @@ public class SimpleDialogs {
 		QuesityDialog d = new QuesityDialog(context);
 		d.setTitle(title);
 		d.setMessage(message);
-		d.setButton(Dialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), what_to_do);
+		d.setButton(Dialog.BUTTON_POSITIVE, context.getString(R.string.button_ok), what_to_do);
 		return d;
 	}
 	
@@ -49,7 +49,7 @@ public class SimpleDialogs {
 //		ad.setMessage(message);
 //		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.yes),yesAnswer);
 //		ad.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(android.R.string.no),noAnswer);
-		int[] answers = {android.R.string.yes,android.R.string.no};
+		int[] answers = {R.string.button_yes, R.string.button_no};
 		DialogInterface.OnClickListener[] listeners = { yesAnswer,noAnswer};
 		return getGeneralQuestionDialog(title, message, context, answers, listeners);
 	}

@@ -24,10 +24,11 @@ public class QuesityPageTitleView extends CustomFontGeneralView {
 		    
 		 _text = attr_set.getText(R.styleable.QuesityPageTitleView_page_title_text);
 		 _image = attr_set.getResourceId(R.styleable.QuesityPageTitleView_title_icon, 0);
-		 _title_text_size = attr_set.getDimension(R.styleable.QuesityPageTitleView_title_text_size, 0);
+		 _title_text_size = attr_set.getDimension(R.styleable.QuesityPageTitleView_title_text_size, 0) / getResources().getDisplayMetrics().density;
 		 View view_inflated = View.inflate(context, R.layout.fragment_title, null);
 		 
-		 _font_path = "fonts/Andada-Regular.ttf";
+		 
+		 _font_path = context.getString(R.string.quesity_title_font);
 		 if ( _image != 0 )
 			 setImageView(view_inflated, R.id.title_page_img);
 

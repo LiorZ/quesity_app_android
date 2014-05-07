@@ -24,7 +24,7 @@ public class StartingLocationMessageFragment extends Fragment {
 				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
 				ft.remove(StartingLocationMessageFragment.this);
 				ft.commit();
-				return false;
+				return true;
 				
 			}
 		});

@@ -27,7 +27,7 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 	private List<String> _images_url;
 	private int _current_item;
 	
-	private static final int PICTURE_ROTATION_DELAY = 4000;
+	private static final int PICTURE_ROTATION_DELAY = 5000;
 	private Timer _timer;
 	private TimerTask _rotation_task;
 	
@@ -107,6 +107,9 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 	
 	
 	private void nextImage() {
+		if ( _images_url == null || _images_url.size() == 0 ){
+			return;
+		}
 		_image_gallery.setCurrentItem(++_current_item % _images_url.size(),true);
 	}
 	
@@ -131,6 +134,10 @@ public class ImageGalleryViewPagerFragment extends Fragment {
 		public ImageViewPagerAdapter(FragmentManager fm) {
 			super(fm);
 			_fragments = new ArrayList<Fragment>();
+			if ( _images_url == null || _images_url.size() == 0 ) {
+				_fragments.add(AsyncImageFragment.newInstance(null));
+				return;
+			}
 			for (String url : _images_url) {
 				_fragments.add(AsyncImageFragment.newInstance(url));
 			}

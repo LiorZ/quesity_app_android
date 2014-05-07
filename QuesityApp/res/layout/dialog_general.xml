@@ -39,6 +39,14 @@
     	android:layout_width="fill_parent"
     	android:background="@color/quesity_title_color"
     />
+    
+   <FrameLayout android:id="@+id/dialog_extra_content" 
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"    
+    >
+        
+    </FrameLayout>
+    
     <LinearLayout 
     	android:id="@+id/dialog_button_container"
     	android:layout_width="fill_parent"

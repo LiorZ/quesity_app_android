@@ -3,6 +3,7 @@ package com.quesity.activities;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,6 +22,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.quesity.app.R;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.controllers.QuestProvider;
@@ -29,6 +31,7 @@ import com.quesity.fragments.in_game.ContentPageFragment;
 import com.quesity.fragments.in_game.LocationPageFragment;
 import com.quesity.fragments.in_game.MultipleChoiceFragment;
 import com.quesity.fragments.in_game.OpenQuestionFragment;
+import com.quesity.fragments.in_game.QuestOverFragment;
 import com.quesity.fragments.in_game.StallFragment;
 import com.quesity.fragments.in_game.WebViewFragment;
 import com.quesity.fragments.FeedbackFragment;
@@ -294,17 +297,18 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	}
 	
 	public void finishQuest(){
-		Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_title_dialog_quest_over),getString(R.string.lbl_quest_over), this, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				returnToMainPage();
-			}
-		});
-		removeGameFromSaved();
 		stopLocationService();
-		okOnlyDialog.show();
+		removeGameFromSaved();
+		
+		List<String> images = _quest_obj.getImages();
+		QuestOverFragment quest_over_frag = QuestOverFragment.newInstance(_quest_obj,_current_game.getId());
+		
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+		ft.addToBackStack(null);
+		ft.add(R.id.quest_page_container, quest_over_frag);
+		ft.commit();		
+		
 	}
 	
 	private void removeGameFromSaved() {

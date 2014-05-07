@@ -1,5 +1,6 @@
 package com.quesity.fragments;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -11,12 +12,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.format.Formatter;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -148,7 +147,13 @@ public class QuestPropertiesItemsFragment extends Fragment {
 					List<String> images = _quest.getImages();
 					
 					//Add gallery fragments:
-					Fragment gallery = ImageGalleryViewPagerFragment.newInstance(images.subList(1, images.size()));
+					Fragment gallery = null;
+					if ( images == null || images.size() < 2 ) {
+						gallery = ImageGalleryViewPagerFragment.newInstance(new ArrayList<String>());
+					}else {
+						gallery = ImageGalleryViewPagerFragment.newInstance(images.subList(1, images.size()));	
+					}
+					
 					FragmentTransaction trans = frag.getChildFragmentManager().beginTransaction();
 					trans.add(R.id.quest_properties_gallery_fragment_place_holder,gallery).commit();
 				}

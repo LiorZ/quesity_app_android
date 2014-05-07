@@ -70,9 +70,9 @@ public class QuesityDialog extends Dialog {
 		QuesityButtonView btn = new QuesityButtonView(getContext());
 		LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
 		btn.setLayoutParams(l);
-		float btn_text_size = resources.getDimension(R.dimen.dialog_button_text_size);
-		int padding_top_bottom = (int) resources.getDimension(R.dimen.dialog_buttons_padding_top_bottom);
-		int padding_left_right = (int) resources.getDimension(R.dimen.dialog_buttons_padding_left_right);
+		float btn_text_size = resources.getDimension(R.dimen.dialog_button_text_size) / resources.getDisplayMetrics().density;
+		int padding_top_bottom = (int) (resources.getDimension(R.dimen.dialog_buttons_padding_top_bottom) / resources.getDisplayMetrics().density);
+		int padding_left_right = (int) (resources.getDimension(R.dimen.dialog_buttons_padding_left_right) / resources.getDisplayMetrics().density);
 		btn.setButtonTextSize(btn_text_size);
 		btn.setText(text);
 		btn.setButtonTextPadding(padding_left_right, padding_top_bottom, padding_left_right, padding_top_bottom);

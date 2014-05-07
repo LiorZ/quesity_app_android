@@ -3,10 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent" 
     android:paddingTop="10dip"
-    android:paddingBottom="10dip"
     android:background="@color/blue_btn_color">
     <RelativeLayout 
     	android:id="@+id/title_container"
+    	android:layout_marginBottom="10dp"
     	android:layout_width="wrap_content"
     	android:layout_height="wrap_content"   
     	android:layout_centerInParent="true"
@@ -29,7 +29,10 @@
         android:layout_toRightOf="@id/title_page_img"
         />
     </RelativeLayout>
-
-
-
+ <View 
+ 	android:layout_height="0.3dp"
+ 	android:layout_width="fill_parent"
+ 	android:background="@color/quesity_title_color"
+ 	android:layout_below="@id/title_container"    
+ />
 </RelativeLayout>

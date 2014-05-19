@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent" >
-        <TextView
+    android:layout_height="match_parent" 
+    android:paddingTop="10dip"
+    android:background="@color/blue_btn_color">
+    <RelativeLayout 
+    	android:id="@+id/title_container"
+    	android:layout_marginBottom="10dp"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"   
+    	android:layout_centerInParent="true"
+    >
+   <ImageView 
+    	android:id="@+id/title_page_img"
+    	android:layout_width="@dimen/icons_size"
+    	android:layout_height="@dimen/icons_size"
+    	android:layout_marginRight="4dip"
+    	android:layout_centerVertical="true"
+    	/>
+	<TextView
         android:id="@+id/title_main_screen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/app_name"
-        android:textSize="50sp"
+        android:layout_centerVertical="true"
         android:textColor="@color/quesity_title_color"
         android:textStyle="bold"
-        android:fontFamily=""
-        android:layout_marginBottom="20sp"
-        android:layout_marginTop="20sp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-</LinearLayout>
+        android:layout_toRightOf="@id/title_page_img"
+        />
+    </RelativeLayout>
+ <View 
+ 	android:layout_height="0.3dp"
+ 	android:layout_width="fill_parent"
+ 	android:background="@color/quesity_title_color"
+ 	android:layout_below="@id/title_container"    
+ />
+</RelativeLayout>

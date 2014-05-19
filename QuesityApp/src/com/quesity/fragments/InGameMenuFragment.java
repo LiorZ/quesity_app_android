@@ -3,6 +3,7 @@ package com.quesity.fragments;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,9 +13,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
-import com.quesity.R;
+import com.quesity.app.R;
+import com.quesity.activities.QuesityMapActivity;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.fragments.in_game.HintsFragment;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
 
@@ -24,6 +28,8 @@ public class InGameMenuFragment extends Fragment {
 	private InGameMenuPopup _menu_dialog;
 	private InGameMenuPopup _tactics_dialog;
 	private HintsFragment _hints_fragment;
+	private QuesityIngameButtonView _btn_play_view;
+	private OnClickListener _play_button_listener;
 
 	public InGameMenuFragment() {
 		_menu_dialog = new InGameMenuPopup();
@@ -92,8 +98,14 @@ public class InGameMenuFragment extends Fragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch(which){
+				case Constants.SHOW_MAP_MENU_ITEM_INDEX:
+					startShowMapActivity();
+					break;
 				case Constants.EXIT_MENU_ITEM_INDEX:
 					((QuestPageActivity)factivity).returnToMainPage();
+					break;
+				case Constants.SHOW_FEEDBACK_ITEM_INDEX:
+					((QuestPageActivity)factivity).showFeedbackFragment();
 					break;
 				default:
 					dialog.dismiss();
@@ -103,43 +115,95 @@ public class InGameMenuFragment extends Fragment {
 		});
 	}
 
+	private void startShowMapActivity() {
+		Intent i = new Intent(this.getActivity(), QuesityMapActivity.class);
+		startActivity(i);
+	}
+	
 	public interface TransitionFragmentInvokation {
 		public void transitToNextPage();
 	}
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-
+	private void setupMenuButton(View v){
+		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
+		btn.setButtonImage(R.drawable.menu);
+		btn.setOnTouchButtonImage(R.drawable.menu_pressed);
+		btn.setButtonText(getString(R.string.ingame_btn_menu));
+		btn.setOnClickListener(new OnClickListener() {
 		
-		View v = inflater.inflate(R.layout.fragment_ingame_menu,container);
-		Button continue_button = (Button) v.findViewById(R.id.btn_continue);
-		continue_button.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				_transition.transitToNextPage();
-			}
-		});
-		
-		View btn_menu = v.findViewById(R.id.btn_menu);
-		btn_menu.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				_menu_dialog.show(getFragmentManager(), "ingame_menu");
 			}
 		});
 		
-		View btn_tactics = v.findViewById(R.id.btn_tactics);
-		btn_tactics.setOnClickListener( new OnClickListener() {
-			
+	}
+	
+	public void setPlayButtonText(String text) {
+		_btn_play_view.setButtonText(text);
+	}
+	
+	private void setupPlayButton(View v) {
+		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
+		btn.setButtonImage(R.drawable.continue_img);
+		btn.setOnTouchButtonImage(R.drawable.continue_img_pressed);
+		btn.setButtonText(getString(R.string.ingame_btn_continue));
+
+		v.setOnClickListener(_play_button_listener);
+	}
+	
+	private void setupTacticsButton(View v) {
+		QuesityIngameButtonView btn = (QuesityIngameButtonView)v;
+		btn.setButtonImage(R.drawable.tactics);
+		btn.setButtonText(getString(R.string.ingame_btn_tactics));
+		btn.setOnTouchButtonImage(R.drawable.tactics_pressed);
+		v.setOnClickListener( new OnClickListener() {
+		
 			@Override
 			public void onClick(View v) {
 				_tactics_dialog.show(getFragmentManager(), "ingame_tactics_menu");
 			}
 		});
-		return v;
+	}
+	
+	public void setPlayButtonEnabledState(boolean enabled) {
+		if ( enabled ) {
+			_btn_play_view.setOnClickListener(_play_button_listener);
+		}else {
+			_btn_play_view.setOnClickListener(null);
+		}
+	}
+	
+	public void setPlayButtonDrawable(int drawable, int drawable_pressed) {
+		_btn_play_view.setButtonImage(drawable);
+		_btn_play_view.setOnTouchButtonImage(drawable_pressed);
+	}
+	
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+
+		View root_view = inflater.inflate(R.layout.fragment_ingame_menu, container,false);
+		
+		_play_button_listener = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				_transition.transitToNextPage();
+			}
+		};
+		
+		View menu_btn_view = root_view.findViewById(R.id.btn_menu);
+		setupMenuButton(menu_btn_view);
+		
+		_btn_play_view = (QuesityIngameButtonView) root_view.findViewById(R.id.btn_continue);
+		setupPlayButton(_btn_play_view);
+		
+		View btn_tactics_view = root_view.findViewById(R.id.btn_tactics);
+		setupTacticsButton(btn_tactics_view);
+		
+		
+		return root_view;
 		
 		
 	}

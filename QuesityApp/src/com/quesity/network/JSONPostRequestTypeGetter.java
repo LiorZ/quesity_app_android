@@ -2,12 +2,17 @@ package com.quesity.network;
 
 import java.io.UnsupportedEncodingException;
 
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
+
+import com.quesity.models.JSONModel;
+import com.quesity.models.ModelsFactory;
+
+import android.content.Context;
 
 public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	
-	public JSONPostRequestTypeGetter() {
+	public JSONPostRequestTypeGetter(Context c) {
+		super(c);
 		setHeaders();
 	}
 	
@@ -16,10 +21,10 @@ public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	    _postObj.setHeader("Content-type", "application/json");
 	}
 	
-	public JSONPostRequestTypeGetter(String json){
-		super();
+	public JSONPostRequestTypeGetter(String json,Context c){
+		super(c);
 		try {
-			_postObj.setEntity(new StringEntity(json));
+			setJSON(json);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -27,6 +32,12 @@ public class JSONPostRequestTypeGetter extends SimplePostRequestTypeGetter {
 	}
 	
 	public void setJSON(String json) throws UnsupportedEncodingException {
-		_postObj.setEntity(new StringEntity(json));
+		StringEntity stringEntity = new StringEntity(json,"UTF-8");
+		_postObj.setEntity(stringEntity);
+	}
+	
+	public void setModel(JSONModel model) throws UnsupportedEncodingException{
+		String json = ModelsFactory.getInstance().getJSONFromModel(model);
+		setJSON(json);
 	}
 }

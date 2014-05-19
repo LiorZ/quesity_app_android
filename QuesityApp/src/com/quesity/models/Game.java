@@ -13,10 +13,19 @@ public class Game extends JSONModel {
 	private List<Move> moves;
 	private List<Location> locations;
 	private int remaining_hints;
-
+	private boolean is_at_starting_location;
 	public Date getDateStarted() {
 		return date_started;
 	}
+	
+	public boolean getIsAtStartingLocation() {
+		return is_at_starting_location;
+	}
+	
+	public void setIsAtStartingLocation(boolean is) {
+		is_at_starting_location = is;
+	}
+	
 	public void setDateStarted(Date date_started) {
 		this.date_started = date_started;
 	}

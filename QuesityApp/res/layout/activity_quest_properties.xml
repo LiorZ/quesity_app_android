@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+        xmlns:accordion="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/quest_properties_root_layout" 
+    android:background="@drawable/splash_gradient"
+    android:orientation="vertical"
+    android:weightSum="100">
+    <com.quesity.fragments.QuesityPageTitleView
+   		android:id="@+id/title_quest_properties"
+   		android:layout_width="match_parent"
+   		android:layout_height="wrap_content"
+   		quesity:page_title_text=""
+   		quesity:title_icon="@drawable/book_empty"
+   		quesity:title_text_size="@dimen/quest_properties_title"
+    />
+    <FrameLayout 
+    	android:id="@+id/properties_pager_fragment_container"
+    	android:layout_width="fill_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="98"
+    />
+    <com.quesity.fragments.QuesityButtonView 
+    	android:id="@+id/quest_properties_play_button"
+    	android:layout_width="match_parent"
+    	android:layout_marginRight="30dip"
+    	android:layout_marginLeft="30dip"
+    	android:layout_marginTop="@dimen/quest_properties_start_button_margin"
+    	android:layout_marginBottom="@dimen/quest_properties_start_button_margin"
+    	android:layout_height="wrap_content"
+    	quesity:button_text="@string/lbl_start_btn"
+    	quesity:button_text_size="@dimen/quest_properties_start_button"
+    	quesity:button_padding="5dip"
+    	
+    />
+</LinearLayout>

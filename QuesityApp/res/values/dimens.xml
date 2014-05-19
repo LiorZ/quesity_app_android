@@ -3,5 +3,38 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-
+	<dimen name="button_border_width">3dp</dimen>
+	<dimen name="button_border_width_neg">-3dp</dimen>
+	<dimen name="icons_size">35dp</dimen>
+	<dimen name="quest_list_item_properties_margin_top">10dip</dimen>
+	<dimen name="rating_linear_layout_margin_top">10dip</dimen>
+	<dimen name="quest_list_item_properties_margin_bottom">8dip</dimen>
+	<dimen name="quest_list_item_padding">6dip</dimen>
+	<dimen name="quest_list_text_size">16sp</dimen>
+	<dimen name="quest_list_image_size">70dip</dimen>
+	<dimen name="quest_list_properties_width">250dip</dimen>
+	<dimen name="accordion_spacing">7dip</dimen>
+	<dimen name="accordion_spacing_vertical">2dip</dimen>
+	<dimen name="accordion_text_size">14sp</dimen>
+	<dimen name="tag_padding">2dip</dimen>
+	<dimen name="tag_font_size">12sp</dimen>
+	<dimen name="tag_height">30px</dimen>
+	<dimen name="ingame_button_text_size">16sp</dimen>
+	<dimen name="dialog_title_size">20sp</dimen>
+	<dimen name="dialog_msg_size">16sp</dimen>
+	<dimen name="dialog_button_text_size">16sp</dimen>
+	<dimen name="dialog_buttons_padding_top_bottom">5dp</dimen>
+	<dimen name="dialog_buttons_padding_left_right">5dp</dimen>
+	<dimen name="dialog_buttons_margin_side">5dp</dimen>
+	<dimen name="login_txt_field_width">200dp</dimen>
+	<dimen name="login_txt_field_margin_bottom">15dp</dimen>
+	
+	<dimen name="quest_properties_start_button_margin">5dip</dimen>
+    <item name="accordion_image_scale" format="float" type="dimen">0.5</item>
+	<item format="string" name="tab_icon_scale" type="dimen">80%</item>	
+	<dimen name="find_quest_title_font_size">25dp</dimen>
+	<dimen name="quest_properties_title">22sp</dimen>
+	<dimen name="quest_properties_start_button">18sp</dimen>
+	<dimen name="email_login_button_text_size">15dp</dimen>
+	
 </resources>

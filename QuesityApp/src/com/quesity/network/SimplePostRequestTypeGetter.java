@@ -5,6 +5,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.content.Context;
+
 import com.quesity.network.AbstractFetchJSONTask.NetworkParameterGetter;
 
 public class SimplePostRequestTypeGetter implements NetworkParameterGetter {
@@ -12,9 +14,9 @@ public class SimplePostRequestTypeGetter implements NetworkParameterGetter {
 	protected HttpPost _postObj;
 	protected DefaultHttpClient _client;
 	
-	public SimplePostRequestTypeGetter(){
+	public SimplePostRequestTypeGetter(Context c){
 		_postObj = new HttpPost();
-		_client = HTTPClients.getDefaultHttpClient();
+		_client = HTTPClients.getDefaultHttpClient(c);
 	}
 	@Override
 	public HttpRequestBase getRequestObj() {
@@ -22,7 +24,7 @@ public class SimplePostRequestTypeGetter implements NetworkParameterGetter {
 	}
 
 	@Override
-	public HttpClient getHTTPClient() {
+	public HttpClient getHTTPClient(Context c) {
 		return _client;
 	}
 

@@ -1,21 +1,12 @@
 package com.quesity.activities;
 
-import javax.inject.Inject;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
-import com.quesity.application.IQuesityApplication;
+import com.quesity.app.R;
 import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.ProgressBarHandler;
-import com.quesity.models.JSONModel;
 import com.quesity.network.INetworkInterface;
-import com.quesity.network.IPostExecuteCallback;
 import com.quesity.network.NetworkInterface;
-import com.quesity.network.dagger_modules.NetworkInterfaceModule;
-
-import dagger.ObjectGraph;
 
 public abstract class BaseActivity extends FragmentActivity {
 	
@@ -33,15 +24,17 @@ public abstract class BaseActivity extends FragmentActivity {
 		return _network_interface;
 	}
 	
-	public void backToHome(int... flags) {
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        if ( flags != null )
-        	for (int i : flags) {
-        		intent.addFlags(i);
-        	}
-        
-        startActivity(intent);
+	public LoadingProgressFragment getProgressFragment() {
+		return _progress;
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		//facebook reporter:
+		com.facebook.AppEventsLogger.activateApp(this, getString(R.string.applicationId));
+	}
+	
 	
 }

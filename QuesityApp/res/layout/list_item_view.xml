@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+    
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/quest_list_item_padding"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical" >
+    
+	<com.quesity.fragments.CircularImageView
+	    android:id="@+id/quest_img"
+	    android:layout_width="@dimen/quest_list_image_size"
+	    android:layout_height="@dimen/quest_list_image_size"
+	    quesity:border="false"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginRight="5dip"
+	    android:src="@drawable/logo_temp"/>
+
+	<com.quesity.fragments.StyledTextView
+	    android:id="@+id/quest_list_title"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_toRightOf="@+id/quest_img"
+	    android:text=""
+	    quesity:font_path="fonts/Roboto-Regular.ttf"
+	    android:textSize="18dp"
+	 />
+	
+	<ImageView 
+	    android:id="@+id/quest_list_bookmark_btn"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignParentRight="true"
+		android:layout_centerVertical="true"
+	/>
+	<RelativeLayout 
+	    android:id="@+id/rating_linear_layout"
+	    android:layout_height="wrap_content"
+	    android:layout_width="wrap_content"
+	   	android:layout_below="@id/quest_list_title"
+		android:layout_marginTop="@dimen/rating_linear_layout_margin_top"
+	   	android:layout_toRightOf="@id/quest_img">
+	<RatingBar android:id="@+id/quest_list_rating_bar"
+	    		android:isIndicator="true"
+	    	   style="@style/quest_rating_bar"
+	    	   android:layout_height="wrap_content"
+	    	   android:layout_width="wrap_content"
+	    	   android:layout_centerVertical="true"
+	    />
+	<com.quesity.fragments.StyledTextView
+	    android:id="@+id/quest_list_rating_text"
+	 	android:layout_width="wrap_content"
+	 	android:layout_height="wrap_content"
+	 	quesity:font_path="fonts/Roboto-Light.ttf"
+		android:textSize="@dimen/quest_list_text_size"
+		android:layout_toRightOf="@id/quest_list_rating_bar"
+	 	android:text="(5.0)"
+	 />
+	</RelativeLayout>
+	<LinearLayout 
+	    android:layout_width="@dimen/quest_list_properties_width"
+	    android:layout_height="wrap_content"
+	 	android:orientation="horizontal"
+	 	android:layout_centerHorizontal="true"
+	 	android:weightSum="3"
+	 	android:layout_marginTop="@dimen/quest_list_item_properties_margin_top"
+	 	android:layout_marginBottom="@dimen/quest_list_item_properties_margin_bottom"
+	 	android:layout_below="@id/rating_linear_layout"
+	 	
+	 	>
+	 	
+	    <com.quesity.fragments.StyledTextView 
+	        quesity:font_path="fonts/Roboto-Light.ttf"
+	        android:id="@+id/quest_list_distance"
+		    android:layout_width="0dp"
+		    android:layout_weight="1"
+		    android:layout_height="wrap_content"
+		    android:textAlignment="center"
+		    android:gravity="center"
+		    android:textSize="@dimen/quest_list_text_size"
+		    android:text="8\nKm"
+	    />
+	    <View
+                android:layout_width="0.2dip"
+                android:layout_height="fill_parent"
+                android:id="@+id/separator_1"
+                android:visibility="visible"
+                android:background="@android:color/black"/>
+		<com.quesity.fragments.StyledTextView
+		    quesity:font_path="fonts/Roboto-Light.ttf"
+		    android:id="@+id/quest_list_time"
+		    android:layout_width="0dp"
+		    android:layout_weight="1"
+		    android:layout_height="wrap_content"
+		    android:textAlignment="center"
+		    android:gravity="center"
+		    android:textSize="@dimen/quest_list_text_size"
+		    android:text="2.5\nHours"/>
+		<View
+                android:layout_width="0.2dip"
+                android:layout_height="fill_parent"
+                android:id="@+id/separator_2"
+                android:visibility="visible"
+                android:background="@android:color/black"/>
+		<com.quesity.fragments.StyledTextView
+		    quesity:font_path="fonts/Roboto-Light.ttf"
+		    android:id="@+id/quest_list_played"
+		    android:layout_width="0dp"
+		    android:layout_weight="1"
+		    android:layout_height="wrap_content"
+		    android:textAlignment="center"
+		    android:gravity="center"
+		    android:textSize="@dimen/quest_list_text_size"
+		    android:text="1658\nPlayed"/>
+	    
+	</LinearLayout>
+</RelativeLayout>

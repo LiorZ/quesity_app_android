@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scale xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/reviews"
+    android:scaleGravity="center_vertical|center_horizontal"
+    android:scaleHeight="@dimen/tab_icon_scale"
+    android:scaleWidth="@dimen/tab_icon_scale" />

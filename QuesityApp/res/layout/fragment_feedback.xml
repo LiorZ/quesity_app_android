@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="40dp"
+    android:weightSum="100"
+    android:background="@color/white"
+    android:orientation="vertical" >
+    
+    <com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
+    	android:id="@+id/feedback_text"
+    	android:inputType="textMultiLine"
+    	android:gravity="top"
+    	android:layout_width="fill_parent"
+    	android:layout_height="0dp"
+    	android:layout_weight="90"
+    	android:hint="@string/feedback_text_hint"
+    	android:layout_marginBottom="10dp"
+    	android:singleLine="false"
+    />
+    
+    <RelativeLayout
+   		android:id="@+id/yes_no_place_holder"
+   		android:layout_width="fill_parent"
+   		android:layout_height="0dp"
+   		android:layout_weight="10"     
+    >
+            <com.quesity.fragments.QuesityButtonView
+              android:id="@+id/feedback_yes_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              quesity:button_padding="5dp"
+              quesity:button_icon="@drawable/yes_icon"
+              android:layout_alignParentLeft="true"
+           />
+          
+          <com.quesity.fragments.QuesityButtonView 
+              android:id="@+id/feedback_no_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              quesity:button_padding="5dp"
+              quesity:button_icon="@drawable/no_icon"
+              android:layout_alignParentRight="true"
+           />
+        
+    </RelativeLayout>
+
+</LinearLayout>

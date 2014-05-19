@@ -1,14 +1,51 @@
 <resources>
-
-    <!--
-         Declare custom theme attributes that allow changing which styles are
-         used for button bars depending on the API level.
-         ?android:attr/buttonBarStyle is new as of API 11 so this is
-         necessary to support previous API levels.
-    -->
-    <declare-styleable name="ButtonBarContainerTheme">
-        <attr name="buttonBarStyle" format="reference" />
-        <attr name="buttonBarButtonStyle" format="reference" />
+    <declare-styleable name="QuesityButtonView">
+        <attr name="button_text" format="string"/>
+        <attr name="button_icon" format="dimension"/>
+        <attr name="button_text_size" format="dimension"/>
+        <attr name="button_text_color" format="reference"/>
+        <attr name="button_padding" format="dimension"/>
+        <attr name="custom_selector" format="reference"> </attr>
+        <attr name="button_icon_width" format="dimension"></attr>
+        <attr name="button_icon_height" format="dimension"></attr>
+    </declare-styleable> 
+    
+    <declare-styleable name="QuesityPageTitleView">
+        <attr name="page_title_text" format="string"/>
+        <attr name="title_icon" format="integer"/>
+        <attr name="title_text_size" format="dimension"/>
+    </declare-styleable> 
+	<declare-styleable name="StyledTextView">
+	    <attr name="font_path" format="string"/>
+	</declare-styleable>
+	
+	<declare-styleable name="CircularImageView">
+        <attr name="border" format="boolean"></attr>
+        <attr name="border_width" format="integer"></attr>
+        <attr name="border_color" format="color"></attr>
+        <attr name="shadow" format="boolean"></attr>
     </declare-styleable>
-
+    
+	<declare-styleable name="Theme">
+        <attr name="circularImageViewStyle" format="reference"></attr>
+    </declare-styleable>
+    
+	<declare-styleable name="FlowLayout">
+        <attr name="horizontalSpacing" format="dimension"/>
+        <attr name="verticalSpacing" format="dimension"/>
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+        <attr name="direction" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+        </attr>
+        <attr name="debugDraw" format="boolean" />
+    </declare-styleable>
+    <declare-styleable name="FlowLayout_LayoutParams">
+        <attr name="layout_newLine" format="boolean"/>
+        <attr name="layout_horizontalSpacing" format="dimension"/>
+        <attr name="layout_verticalSpacing" format="dimension"/>
+    </declare-styleable>
 </resources>

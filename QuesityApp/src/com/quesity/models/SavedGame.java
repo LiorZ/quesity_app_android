@@ -1,9 +1,5 @@
 package com.quesity.models;
 
-import com.quesity.general.Constants;
-
-import android.content.Context;
-import android.preference.PreferenceManager;
 
 public class SavedGame extends JSONModel {
 
@@ -36,6 +32,17 @@ public class SavedGame extends JSONModel {
 	}
 	public void setQuest(Quest quest) {
 		this.quest = quest;
+	}
+	
+	public static boolean questIsSaved(SavedGame[] saved_games,Quest q) {
+		if ( saved_games == null ) 
+			return false;
+		for(int i = 0; i<saved_games.length; ++i ) {
+			if (saved_games[i].getQuest().getId().equals(q.getId())){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

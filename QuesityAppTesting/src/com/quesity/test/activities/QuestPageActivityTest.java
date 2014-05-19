@@ -12,7 +12,7 @@ import android.webkit.WebView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.quesity.R;
+import com.quesity.app.R;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.activities.QuestsListViewActivity;
 import com.quesity.fragments.MultipleChoiceFragment;

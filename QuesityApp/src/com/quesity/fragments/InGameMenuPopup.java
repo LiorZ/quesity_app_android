@@ -1,6 +1,6 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

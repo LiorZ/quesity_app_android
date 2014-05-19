@@ -1,11 +1,15 @@
 package com.quesity.fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
+import com.quesity.app.R;
+import com.quesity.dialogs.QuesityDialog;
+
 public class SimpleDialogs {
-	public static AlertDialog getErrorDialog(String message, Context context) {
+	public static Dialog getErrorDialog(String message, Context context) {
 		DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -17,30 +21,37 @@ public class SimpleDialogs {
 		return getErrorDialog(message, context, listener);
 	}
 	
-	public static AlertDialog getErrorDialog(String message, Context context, DialogInterface.OnClickListener click_listener){
-		AlertDialog ad = new AlertDialog.Builder(context).create();
-		ad.setCancelable(false); // This blocks the 'BACK' button
-		ad.setMessage(message);
-		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), click_listener); 
-		return ad;
+	public static Dialog getErrorDialog(String message, Context context, DialogInterface.OnClickListener click_listener){
+		return getOKOnlyDialog(context.getString(R.string.error_title), message, context, click_listener);
 	}
 	
-	public static AlertDialog getOKOnlyDialog(String message, Context context, DialogInterface.OnClickListener what_to_do) {
-		AlertDialog ad = new AlertDialog.Builder(context).create();
-		ad.setCancelable(false);
-		ad.setMessage(message);
-		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.ok), what_to_do);
-		return ad;
+	public static Dialog getOKOnlyDialog(String title,String message, Context context) {
+		return getOKOnlyDialog(title, message, context, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
 	}
 	
-	public static AlertDialog getConfirmationDialog(String message, Context context, DialogInterface.OnClickListener yesAnswer, DialogInterface.OnClickListener noAnswer){
-		AlertDialog ad = new AlertDialog.Builder(context).create();
-		ad.setCancelable(false);
-		ad.setMessage(message);
-		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.yes),yesAnswer);
-		ad.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(android.R.string.no),noAnswer);
-		
-		return ad;
+	public static Dialog getOKOnlyDialog(String title,String message, Context context, DialogInterface.OnClickListener what_to_do) {
+		QuesityDialog d = new QuesityDialog(context);
+		d.setTitle(title);
+		d.setMessage(message);
+		d.setButton(Dialog.BUTTON_POSITIVE, context.getString(R.string.button_ok), what_to_do);
+		return d;
+	}
+	
+	public static Dialog getConfirmationDialog(String title, String message, Context context, DialogInterface.OnClickListener yesAnswer, DialogInterface.OnClickListener noAnswer){
+//		AlertDialog ad = new AlertDialog.Builder(context).create();
+//		ad.setCancelable(false);
+//		ad.setMessage(message);
+//		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(android.R.string.yes),yesAnswer);
+//		ad.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(android.R.string.no),noAnswer);
+		int[] answers = {R.string.button_yes, R.string.button_no};
+		DialogInterface.OnClickListener[] listeners = { yesAnswer,noAnswer};
+		return getGeneralQuestionDialog(title, message, context, answers, listeners);
 	}
 	
 	/**
@@ -52,12 +63,16 @@ public class SimpleDialogs {
 	 * @param listeners
 	 * @return
 	 */
-	public static AlertDialog getGeneralQuestionDialog(String message, Context context, int[] answers, DialogInterface.OnClickListener[] listeners) {
-		AlertDialog ad = new AlertDialog.Builder(context).create();
-		ad.setCancelable(true);
-		ad.setMessage(message);
-		ad.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(answers[0]), listeners[0]);
-		ad.setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(answers[1]), listeners[1]);
-		return ad;
+	public static Dialog getGeneralQuestionDialog(String title, String message, Context context, int[] answers, DialogInterface.OnClickListener[] listeners) {
+		
+		QuesityDialog d = new QuesityDialog(context);
+		d.setTitle(title);
+		d.setMessage(message);
+		for(int i=0; i<answers.length; i++){
+			d.setButton(i, context.getString(answers[i]),listeners[i]);
+		}
+
+		return d;
+		
 	}
 }

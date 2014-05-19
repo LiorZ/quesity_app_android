@@ -3,7 +3,8 @@ package com.quesity.network;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.impl.client.DefaultHttpClient;
+
+import android.content.Context;
 
 import com.quesity.network.AbstractFetchJSONTask.NetworkParameterGetter;
 
@@ -15,8 +16,8 @@ public class GetRequestTypeGetter implements NetworkParameterGetter {
 	}
 
 	@Override
-	public HttpClient getHTTPClient() {
-		return HTTPClients.getDefaultHttpClient();
+	public HttpClient getHTTPClient(Context c) {
+		return HTTPClients.getDefaultHttpClient(c);
 	}
 	
 }

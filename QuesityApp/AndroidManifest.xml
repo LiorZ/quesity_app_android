@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.quesity"
-    android:versionCode="1"
+    package="com.quesity.app"
+    android:versionCode="10"
     android:versionName="1.0" >
-
+<uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="17" />
+    
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     
     <application
         android:allowBackup="true"
@@ -18,7 +24,12 @@
         android:theme="@style/AppTheme"
         android:name="com.quesity.application.QuesityApplication">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/applicationId"/>
-        
+        <meta-data
+			    android:name="com.google.android.gms.version"
+			    android:value="@integer/google_play_services_version" />
+        <meta-data
+    android:name="com.google.android.maps.v2.API_KEY"
+    android:value="AIzaSyCJHPvnvfZyvGJ16puTG6t7lxnLEE5fm3w"/>
 		<service android:name="com.b2msolutions.reyna.services.StoreService" />
 		<service android:name="com.quesity.services.location.LocationService" />
         <service android:name="com.b2msolutions.reyna.services.ForwardService" />
@@ -53,6 +64,18 @@
             android:theme="@android:style/Theme.Light.NoTitleBar">
         </activity>
         
+         <activity
+            android:name="com.quesity.activities.QuestPropertiesActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+        
+        <activity
+            android:name="com.quesity.activities.QuesityMapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Light.NoTitleBar">
+        </activity>
+         
         <activity
             android:name="com.quesity.activities.SplashScreen"
             android:label="@string/app_name"

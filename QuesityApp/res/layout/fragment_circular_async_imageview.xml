@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+    
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+    <RelativeLayout 
+    	android:id="@+id/circular_image_container"
+    	android:layout_height="fill_parent"
+    	android:layout_width="fill_parent"
+    	android:background="@color/transparent">
+        
+     <ProgressBar 
+      android:id="@+id/image_loading_progress"
+      android:indeterminateOnly="true"
+      android:layout_width="wrap_content"
+      android:layout_centerHorizontal="true"
+      android:layout_centerVertical="true"
+      android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <com.quesity.fragments.CircularImageView 
+	android:id="@+id/image_loading_img_white_background"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	quesity:shadow="false"
+	quesity:border="false"
+	android:scaleType="fitXY"
+    android:visibility="visible"
+	android:src="@drawable/white_background"
+	/>
+    <com.quesity.fragments.CircularImageView 
+	android:id="@+id/image_loading_img"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	quesity:shadow="true"
+	quesity:border="true"
+	android:scaleType="centerCrop"
+    android:visibility="invisible"
+	quesity:border_width="1"
+	android:alpha="0.4"
+	quesity:border_color="@color/quesity_title_color"
+	android:src="@drawable/logo_temp"
+/>
+    
+</RelativeLayout>

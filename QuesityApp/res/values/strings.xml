@@ -1,45 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<string name='applicationId'>211673598896341</string>
-    
+	    
     <string name="app_name">Quesity</string>
     <string name="app_version">v0.2</string>
     <string name="dummy_title">Quesity</string>
     <string name="lbl_start_quest">Start Quest</string>
     <string name="lbl_find_quest">Find Quest</string>
+    <string name="lbl_about_quesity">About Quesity</string>
     <string name="lbl_my_quests">My Quests</string>
     <string name="error_title">Error</string>
     <string name="lbl_loading_quests">Loading Quests</string>
     <string name="ingame_btn_menu">Menu</string>
-    <string name="ingame_btn_continue">Continue</string>
     <string name="ingame_btn_tactics">Tactics</string>
     <string name="title_activity_quest_page">Quesity</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name='lbl_loading'>Loading ...</string>
     <string name='lbl_loading_page'>Loading ...</string>
-    <string name="lbl_choose_answer">Choose answer</string>
+    <string name="lbl_choose_answer">Choose</string>
+    <string name="err_connection">Error connecting to network</string>
     <string name="lbl_err_load_quest">Error loading quests. please check your connection</string>
-    <string name="lbl_err_wrong_answer">Wrong answer! :(</string>
+    <string name="lbl_err_wrong_answer">Wrong answer! :( try again.</string>
+    <string name="lbl_err_wrong_answer_title">Wrong answer</string>
     <string name="lbl_enter_answer">Answer: </string>
     <string name="lbl_wrong_location">You are not at the right location... Try again.</string>
     <string name="lbl_location_fix_title">Finding Location</string>
     <string name="lbl_location_fix_message">Getting a fix on your location</string>
     <string name="lbl_cant_find_location">No GPS Signal - Please try again.</string>
+    <string name="lbl_cant_find_location_title">Location</string>
 	<string name="lbl_quest_over">The Quest is over!</string>
 	<string name="lbl_game_menu_title">Game Menu</string>
 	<string name="lbl_game_menu_tactics">Tactics</string>
 	<string name="lbl_no_hints">There are no available hints for this page</string>
-	<string name="title_hints_dialog">Available hints for this page</string>
+	<string name="title_hints_dialog">Hints</string>
 	<string name="lbl_time_delay">You are being delayed for %1$02d:%2$02d minutes</string>
 	<string name="lbl_login_button">Login</string>
 	<string name="hint_username_splash">Username</string>
 	<string name="hint_password_splash">Password</string>
-	<string name="error_connecting">An error occured while connecting to server.\nPlease check your connection and try again</string>
-	<string name="error_display_facebook_data">Error occured while connecting with your facebook account. Please try to login again</string>
-	<string name="error_general_authentication">An error occured while authenticating your request</string>
+	<string name="error_connecting">An error occurred while connecting to server.\nPlease check your connection and try again</string>
+	<string name="error_display_facebook_data">Error occurred while connecting with your facebook account. Please try to login again</string>
+	<string name="error_general_authentication">There was an error authenticating your account. Try to logoff and login again from the main menu</string>
 	<string name="error_username_password">Wrong username or password. Please try again</string>
-	<string name="error_starting_quest">Error occured when starting the quest.\nPlease restart it from the main menu</string>
+	<string name="error_starting_quest">Error occurred when starting the quest.\nPlease restart it from the main menu</string>
 	<string name="lbl_logging_in">Logging you in the game .. </string>
 	<string name="lbl_logging_out">Logging you out of the game .. </string>
 	<string name="lbl_logging_in_title">Login</string>
@@ -62,5 +65,67 @@
 	<string name="lbl_start_over">Start Over</string>
 	<string name="lbl_about">About</string>
 	<string name="err_display_about">Error occurred while displaying about screen</string>
+	<string name="lbl_games_played">%d Played</string>
+	<string name="lbl_games_played_raw">Played</string>
+	<string name="lbl_hours">Hours</string>
+	<string name="lbl_distance_unit">Km</string>
+	<string name="lbl_tab_description">Description</string>
+	<string name="lbl_tab_starting_point">Location</string>
+	<string name="lbl_tab_reviews">Reviews</string>
+	<string name="lbl_title_dialog_quest_over">Game Over</string>
+	<string name="lbl_hint_dialog_title">Hint</string>
+	<string name="lbl_map_starting_location">Starting Location</string>
+	<string name="title_resume_game">Resume Game?</string>
+	<string name="title_exit">Exit?</string>
+	<string name="lbl_email_login">Email</string>
+	<string name="lbl_firstname_login">First Name</string>
+	<string name="lbl_lastname_login">Last Name</string>
+	<string name="lbl_password_login">Password</string>
+	<string name="lbl_no_reviews">No reviews yet ...</string>
+	<string name="lbl_no_starting_location_title">No GPS</string>
+	<string name="lbl_no_starting_location">Could not find your location.\nPlease turn on your GPS</string>
+	<string name="lbl_verifiying_starting_location">Verifying you are located at the starting location ...</string>
+	
+	<string name="lbl_register_email">Register with email</string>
+	<string name="lbl_login_email">Login with email</string>
+	
+	<string name="err_register_name">Your name should include only letters</string>
+	<string name="err_email_address">Please enter a valid email address</string>
+	<string name="err_empty_field">This field cannot be empty</string>
+	<string name="err_email_exists">A user with this email already exists</string>
+	<string name="err_wrong_username">Wrong email or password</string>
+	
+	<string name="lbl_not_starting_point">It looks like you are not at the starting location ...</string>
+	
+	<string name="feedback_text_hint">Tell us anything...</string>
+	<string name="feedback_text_empty">Please enter a feedback before submitting</string>
+	
+	<string name="game_menu_show_map">Show Map</string>
+	<string name="game_menu_feedback">Provide Feedback</string>
+	<string name="game_menu_leave_quest">Leave Quest</string>
+	
+	<string name="after_feedback_text">Thanks a lot for your feedback!</string>
+	
+	<string name="ingame_btn_continue">Continue</string>
+	<string name="ingame_btn_arrived">Arrived</string>
+	<string name="ingame_btn_enter_text">Enter Text</string>
+	<string name="ingame_btn_options">Choose</string>
+	<string name="button_yes">Yes</string>
+	<string name="button_no">No</string>
+	<string name="button_ok">OK</string>
+	<string name="button_cancel">Cancel</string>
+	<string name="button_font">fonts/Andada-Regular.ttf</string>
+	<string name="webview_loading_font">fonts/Andada-Regular.ttf</string>
+	
+	<string name="quesity_title_font">fonts/Andada-Regular.ttf</string>
+	<string name="end_quest_font">fonts/Andada-Regular.ttf</string>
+	<string name="end_quest_font_message">fonts/Roboto-Regular.ttf</string>
+	<string name="end_quest_title">Congratulations!</string>
+	<string name="end_quest_message">You have finished</string>
+	<string name="how_was_it">How was the quest?</string>
+	<string name="how_was_it_edittext">How was it?</string>
+	<string name="end_quest_finish_button">Finish</string>
+	<string name="review_dialog_title">Review</string>
+	<string name="review_dialog_message">How was it?</string>
 	
 </resources>

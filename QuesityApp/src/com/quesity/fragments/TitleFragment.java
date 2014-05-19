@@ -1,7 +1,8 @@
 package com.quesity.fragments;
 
-import com.quesity.R;
+import com.quesity.app.R;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,7 +20,7 @@ public class TitleFragment extends Fragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_title, container,false);
-		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Gorditas-Regular.ttf");
+		Typeface tf = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Andada-Regular.ttf");
 		
 		_titleView = (TextView) view.findViewById(R.id.title_main_screen);
 		_titleView.setTypeface(tf);

@@ -9,9 +9,8 @@ public final class Constants {
 	
 	public static final int HINTS_MENU_ITEM_INDEX = 0;
 	
-	public static final int EXIT_MENU_ITEM_INDEX = 2;
-	public static final int SHOW_MAP_MENU_ITEM_INDEX = 0;
-	public static final int SHOW_FEEDBACK_ITEM_INDEX = 1;
+	public static final int EXIT_MENU_ITEM_INDEX = 1;
+	public static final int SHOW_FEEDBACK_ITEM_INDEX = 0;
 	
 	public static final String PREFS_NAME = "com.quesity.preferences";
 	public static final String PREF_USERNAME = "username";

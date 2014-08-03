@@ -17,7 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebStorage.QuotaUpdater;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -27,21 +29,18 @@ import com.quesity.util.ViewAlpha;
 
 public class WebViewFragment extends Fragment {
 
-
-
 	private WebView _w;
 	private TextView _loadingView;
 	private Animation _animation;
-	private boolean _showLoading = true;
-	private PageLoadingListener _listener;
-	
+	private PageLoadingListener _page_change_listener;
+	private boolean _showProgress = true;
+	private static final int CACHE_INITIAL_SIZE = 8*1024*1024;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		_showLoading = true;
 	}
 	
-		@Override
+	@Override
 	public void onPause() {
 		super.onPause();
 		stopAudio();
@@ -55,15 +54,12 @@ public class WebViewFragment extends Fragment {
         }, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
 	}
 	
-	public void showLoading (boolean s) {
-		_showLoading = s;
-	}
-	
 	public WebView getWebView() {
 		return _w;
 	}
 	
-	public void loadHTMLData(String raw_data) {
+	public void loadHTMLData(final String raw_data) {
+
 		String data  = "<html><body style='padding:0; margin:0'>"+raw_data+"</body></html>";
 		loadHTMLDataRaw(data);
 	}
@@ -82,94 +78,99 @@ public class WebViewFragment extends Fragment {
 		Log.d("Quesity","Creating View...");
 		 View frag = inflater.inflate(R.layout.fragment_webview, container);
 		 _w = (WebView) frag.findViewById(R.id.webView);
-		 if ( _showLoading )
-			 setUpLoading(frag);
-		 _w.getSettings().setJavaScriptEnabled(false);
-		 _w.getSettings().setSupportZoom(true);
+		 WebSettings settings = _w.getSettings();
+		 
+		 settings.setJavaScriptEnabled(false);
+		 settings.setDomStorageEnabled(true);
+		 settings.setAppCacheMaxSize(CACHE_INITIAL_SIZE);
+		 settings.setSupportZoom(true);
+		 String appCachePath = getActivity().getApplicationContext().getCacheDir().getAbsolutePath();
+		 settings.setAppCachePath(appCachePath);
+		 settings.setAllowFileAccess(true);
+		 settings.setAppCacheEnabled(true);
+		 settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+		 
 		 return frag;
 	}
 
-	private void setUpLoading(View frag) {
-		_loadingView = (TextView) frag.findViewById(R.id.loading_lbl);
-		 if ( _animation == null )
-			 _animation = AnimationUtils.loadAnimation(getActivity(), R.anim.tween);
-		 _w.setWebViewClient(new WebViewClient(){
-			 
-			 @Override
-			public void onLoadResource(WebView view, String url) {
-				super.onLoadResource(view, url);
-				if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB)
-					pageLoadEvent(view);
+	public void setup(String data, final PageLoadingListener load_finished_listener, final PageLoadingListener page_changed_listener) {
+		_loadingView = (TextView) getView().findViewById(R.id.loading_lbl);
+		_page_change_listener = page_changed_listener;
+		 _w.setWebChromeClient( new WebChromeClient() {
+
+			@Override
+			public void onReachedMaxAppCacheSize(long requiredStorage,
+					long quota, QuotaUpdater quotaUpdater) {
+				quotaUpdater.updateQuota(requiredStorage * 2);
+				super.onReachedMaxAppCacheSize(requiredStorage, quota, quotaUpdater);
 			}
 
-			private TimerTask task;
-			 
-			private void pageLoadEvent(WebView view) {
-				if ( _listener != null ) {
-					_listener.pageStartedLoading();
+			@Override
+			public void onProgressChanged(WebView view, int newProgress) {
+				if (!_showProgress){
+					Log.d("WEBVIEW" ,"Not Showing Progress");
+					return;
+				}
+				if ( newProgress >= 100 ) {
+					Log.d("WEBVIEW" ,"Completed prefetching");
+					_showProgress = false;
+					_loadingView.setVisibility(View.INVISIBLE);
+					_w.setWebViewClient(new PageChangeWebClient());
+					_w.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+					load_finished_listener.pageFinishedLoading();
+				}else {
+					Log.d("WEBVIEW" ,"Progress: " + newProgress);
+					_loadingView.setVisibility(View.VISIBLE);
+					_loadingView.setText(newProgress + "%");
 				}
 				
-				if ( !_showLoading )
-					return;
-				
-				ViewAlpha.setAlphaForView(view, 0.0f,500);
-				_loadingView.setVisibility(View.VISIBLE);
-				_loadingView.startAnimation(_animation);
-			}
-			 
-			@Override
-			public void onPageStarted(WebView view, String url,Bitmap b) {
-				super.onPageStarted(view, url,b);
-				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB)
-					pageLoadEvent(view);
-			}
-
-			@Override
-			public void onPageFinished(final WebView view, String url) {
-				super.onPageFinished(view, url);
-				if ( !_showLoading )
-					return;
-				task = new TimerTask() {
-					
-					@Override
-					public void run() {
-						FragmentActivity activity = getActivity();
-						if ( activity == null ) 
-							return;
-						
-						activity.runOnUiThread(new Runnable() {
-							
-							@Override
-							public void run() {
-								_loadingView.clearAnimation();
-								_loadingView.setVisibility(View.INVISIBLE);
-//								view.setVisibility(View.VISIBLE);	
-								ViewAlpha.setAlphaForView(view, 1.0f,500);
-								if ( _listener != null ) {
-									Log.d("LIOR","ENABLING PLAY BUTTON");
-									_listener.pageFinishedLoading();
-								}
-							}
-						});
-					
-					}
-				};
-				
-				Timer t = new Timer();
-				t.schedule(task, 2000);
-
+				super.onProgressChanged(view, newProgress);
 			}
 			 
 		 });
+		 
+		 loadHTMLData(data);
 	}
 
 	public void setPageLoadingListener(PageLoadingListener listener) {
-		_listener = listener;
+		_page_change_listener = listener;
 	}
 	
 	public interface PageLoadingListener { 
 		public void pageStartedLoading();
 		public void pageFinishedLoading();
 	}
+	
+	private class PageChangeWebClient extends WebViewClient {
+		
+		@Override
+		public void onLoadResource(WebView view, String url) {
+			super.onLoadResource(view, url);
+			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB)
+				pageLoadEvent(view);
+		}
+
+		 
+		private void pageLoadEvent(WebView view) {
+			if ( _page_change_listener != null ) {
+				_page_change_listener.pageStartedLoading();
+			}
+		}
+		 
+		@Override
+		public void onPageStarted(WebView view, String url,Bitmap b) {
+			super.onPageStarted(view, url,b);
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.HONEYCOMB)
+				pageLoadEvent(view);
+		}
+
+		@Override
+		public void onPageFinished(final WebView view, String url) {
+			super.onPageFinished(view, url);
+			if ( _page_change_listener != null )
+				_page_change_listener.pageFinishedLoading();
+		}
+	}
+	
 	
 }

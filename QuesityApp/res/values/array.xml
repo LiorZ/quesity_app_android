@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="game_menu_items">
-        <item name="item_show_map">@string/game_menu_show_map</item>
         <item name="item_feedback">@string/game_menu_feedback</item>
         <item name="item_exit">@string/game_menu_leave_quest</item>
     </string-array>

@@ -3,12 +3,8 @@ package com.quesity.activities;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,11 +18,16 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 
-import com.google.android.gms.maps.SupportMapFragment;
 import com.quesity.app.R;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.controllers.QuestProvider;
+import com.quesity.fragments.FeedbackFragment;
+import com.quesity.fragments.InGameMenuFragment;
 import com.quesity.fragments.InGameMenuFragment.TransitionFragmentInvokation;
+import com.quesity.fragments.LoadingProgressFragment;
+import com.quesity.fragments.OnDemandFragment;
+import com.quesity.fragments.ProgressBarHandler;
+import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.in_game.ContentPageFragment;
 import com.quesity.fragments.in_game.LocationPageFragment;
 import com.quesity.fragments.in_game.MultipleChoiceFragment;
@@ -34,13 +35,7 @@ import com.quesity.fragments.in_game.OpenQuestionFragment;
 import com.quesity.fragments.in_game.QuestOverFragment;
 import com.quesity.fragments.in_game.StallFragment;
 import com.quesity.fragments.in_game.WebViewFragment;
-import com.quesity.fragments.FeedbackFragment;
-import com.quesity.fragments.InGameMenuFragment;
-import com.quesity.fragments.LoadingProgressFragment;
-import com.quesity.fragments.OnDemandFragment;
-import com.quesity.fragments.ProgressBarHandler;
-import com.quesity.fragments.SimpleDialogs;
-import com.quesity.fragments.StartingLocationMessageFragment;
+import com.quesity.fragments.in_game.WebViewFragment.PageLoadingListener;
 import com.quesity.general.Config;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
@@ -83,9 +78,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private IPostExecuteCallback _post_callback;
 	private QuestPage[] _all_pages;
 	private Game _current_game;
-	private boolean _is_at_starting_location;
 	private InGameMenuFragment _in_game_panel;
-	
+	private String _images_to_cache;
 	
 	private Bundle getInstanceState(Bundle existing) {
 		Bundle b = existing;
@@ -138,31 +132,10 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		
 		
 		//Disabling the play button while loading so that players won't press play by mistake and miss the page
-		_webViewFragment.setPageLoadingListener(new WebViewFragment.PageLoadingListener() {
-			
-			@Override
-			public void pageStartedLoading() {
-				_in_game_panel.setPlayButtonEnabledState(false);
-			}
-			
-			@Override
-			public void pageFinishedLoading() {
-				_in_game_panel.setPlayButtonEnabledState(true);
-				if ( _transitionFragment != null ) {
-					int buttonDrawable = _transitionFragment.getButtonDrawable();
-					int pressedButtonDrawable = _transitionFragment.getPressedButtonDrawable();
-					int button_text_id = _transitionFragment.getButtonStringId();
-					_in_game_panel.setPlayButtonDrawable(buttonDrawable,pressedButtonDrawable);
-					_in_game_panel.setPlayButtonText(getString(button_text_id));
-				}
-				
-			}
-		});
 	}
 	
 	private void startFromScratch(Bundle savedInstanceState) {
 		String quest_json = getIntent().getStringExtra(Constants.QUEST_OBJ);
-		_is_at_starting_location = getIntent().getBooleanExtra(Constants.QUEST_IS_IN_STARTING_LOC, false);
 		_quest_obj = ModelsFactory.getInstance().getModelFromJSON(quest_json, Quest.class);
 		_quest_id = _quest_obj.getId();
 		
@@ -172,9 +145,9 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			startLocationService();
 			refreshQuestPage(_currentPage);
 		}else {
-			if ( !_is_at_starting_location ){
-				showNotAtStartLocation();
-			}
+//			if ( !_is_at_starting_location ){
+//				showNotAtStartLocation(); // Not relevant anymore
+//			}
 			restoreSavedPage(savedInstanceState);	
 		}
 	}
@@ -215,25 +188,25 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		}
 	}
 	
-	private void showNotAtStartLocation() {
-		TimerTask t = new TimerTask() {
-			
-			@Override
-			public void run() {
-				FragmentManager supportFragmentManager = getSupportFragmentManager();
-				if ( supportFragmentManager == null )
-					return;
-				
-				FragmentTransaction ft = supportFragmentManager.beginTransaction();
-				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-				ft.addToBackStack(null);
-				ft.add(R.id.quest_page_container, new StartingLocationMessageFragment());
-				ft.commit();				
-			}
-		};
-		Timer timer = new Timer();
-		timer.schedule(t, 3000);
-	}
+//	private void showNotAtStartLocation() {
+//		TimerTask t = new TimerTask() {
+//			
+//			@Override
+//			public void run() {
+//				FragmentManager supportFragmentManager = getSupportFragmentManager();
+//				if ( supportFragmentManager == null )
+//					return;
+//				
+//				FragmentTransaction ft = supportFragmentManager.beginTransaction();
+//				ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+//				ft.addToBackStack(null);
+//				ft.add(R.id.quest_page_container, new StartingLocationMessageFragment());
+//				ft.commit();				
+//			}
+//		};
+//		Timer timer = new Timer();
+//		timer.schedule(t, 3000);
+//	}
 
 	private void startLocationService() {
 		Intent i = new Intent(this,LocationService.class);
@@ -300,7 +273,6 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		stopLocationService();
 		removeGameFromSaved();
 		
-		List<String> images = _quest_obj.getImages();
 		QuestOverFragment quest_over_frag = QuestOverFragment.newInstance(_quest_obj,_current_game.getId());
 		
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -507,8 +479,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
 		getSupportFragmentManager().executePendingTransactions();
-		_webViewFragment.loadHTMLData(page.getPageContent());
-		
+		String page_data = page.getPageContent();
+		_webViewFragment.loadHTMLData(page_data);
 	}
 	
 	
@@ -520,15 +492,60 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			if ( _all_pages == null ){
 				return;
 			}
-			for (int i = 0; i < _all_pages.length; i++) {
-				if ( _all_pages[i].getIsFirst() ){
-					refreshQuestPage(_all_pages[i]);
-					return;
-				}
-			}
 			
+			extractCacheData();
+			_webViewFragment.setup(_images_to_cache, new PageLoadingListener() { // a listener that is invoked when preload is completed
+				
+				@Override
+				public void pageStartedLoading() {
+					_in_game_panel.setPlayButtonEnabledState(false);
+				}
+				
+				@Override
+				public void pageFinishedLoading() {
+					for (int i = 0; i < _all_pages.length; i++) {
+						if ( _all_pages[i].getIsFirst() ){
+							_in_game_panel.setPlayButtonEnabledState(true);
+							refreshQuestPage(_all_pages[i]);
+							return;
+						}
+					}
+				}
+			},
+			
+			new WebViewFragment.PageLoadingListener() { //A listener that invoked when a page is changed ... 
+				
+				@Override
+				public void pageStartedLoading() {
+					_in_game_panel.setPlayButtonEnabledState(false);
+				}
+				
+				@Override
+				public void pageFinishedLoading() {
+					_in_game_panel.setPlayButtonEnabledState(true);
+					if ( _transitionFragment != null ) {
+						int buttonDrawable = _transitionFragment.getButtonDrawable();
+						int pressedButtonDrawable = _transitionFragment.getPressedButtonDrawable();
+						int button_text_id = _transitionFragment.getButtonStringId();
+						_in_game_panel.setPlayButtonDrawable(buttonDrawable,pressedButtonDrawable);
+						_in_game_panel.setPlayButtonText(getString(button_text_id));
+					}
+					
+				}
+			}		
+					
+			);
 		}
 
+		
+		private void extractCacheData() {
+			_images_to_cache = "<div style='display:none;'>";
+			for (QuestPage page : _all_pages) {
+				_images_to_cache+= page.getPageContent();
+			}
+			_images_to_cache += "</div>";
+		}
+		
 		@Override
 		public int get401ErrorMessage() {
 			return -1;
@@ -572,17 +589,16 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			game.setDateStarted(new Date());
 			game.setAccount_id(account_id);
 			game.setQuestId(_quest_id);
-			game.setIsAtStartingLocation(_is_at_starting_location);
 			String game_json_input = ModelsFactory.getInstance().getJSONFromModel(game);
 			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input,QuestPageActivity.this),QuestPageActivity.this);
 			_current_game = ModelsFactory.getInstance().getModelFromJSON(game_json, Game.class);
 			
-			if (_is_at_starting_location)
-				removeGameFromSaved(); //If we started a new game, remove the old one, remove only if this is an actual quest
+			removeGameFromSaved(); //If we started a new game, remove the old one
 			
 			Log.d(TAG, "Started Game with " + _current_game.getRemainingHints() + " available hints");
 			startLocationService();
 		}
+		
 		@Override
 		public QuestPage[] apply(String... urls) throws Exception {
 			startNewGame(urls[0]);

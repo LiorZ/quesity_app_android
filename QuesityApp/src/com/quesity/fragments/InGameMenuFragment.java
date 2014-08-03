@@ -98,9 +98,6 @@ public class InGameMenuFragment extends Fragment {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch(which){
-				case Constants.SHOW_MAP_MENU_ITEM_INDEX:
-					startShowMapActivity();
-					break;
 				case Constants.EXIT_MENU_ITEM_INDEX:
 					((QuestPageActivity)factivity).returnToMainPage();
 					break;
@@ -109,7 +106,6 @@ public class InGameMenuFragment extends Fragment {
 					break;
 				default:
 					dialog.dismiss();
-						
 				}	
 			}
 		});

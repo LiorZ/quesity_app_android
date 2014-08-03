@@ -18,7 +18,6 @@ public class AboutActivity extends FragmentActivity {
 		super.onCreate(arg0);
 		setContentView(R.layout.activity_about);
 		WebViewFragment web_fragment = (WebViewFragment) getSupportFragmentManager().findFragmentById(R.id.about_webview);
-		web_fragment.showLoading(false);
 		web_fragment.getWebView().setBackgroundColor(0xCCFFFFFF);
 		InputStream stream;
 		

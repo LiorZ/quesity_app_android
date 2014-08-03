@@ -72,42 +72,21 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 
 		@Override
 		public void onClick(View v) {
-
-			final StartingLocationVerifier verifier_fragment = StartingLocationVerifier.getInstance(
-					_quest.getStartingLocation(), 
-					new StartingLocationVerifier.StartingLocationListener() {
-						
-						private void startQuest(boolean in_location) {
-							Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
-					    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
-					    	boolean existsInCache = existsInCache(_quest);
-							if ( existsInCache ) {
-					    		askStartOrResume(intent,in_location);
-					    	}else {
-						    	intent.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_location);
-								startQuestActivity(intent);
-					    	}
-						}
-						
-						@Override
-						public void onStartingLocation() {
-							startQuest(true);
-						}
-						
-						@Override
-						public void notOnStartingLocation(double distance) {
-							startQuest(false);
-						}
-					});
-			getSupportFragmentManager().beginTransaction().add(verifier_fragment,"").commit();
+			Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
+	    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
+	    	boolean existsInCache = existsInCache(_quest);
+			if ( existsInCache ) {
+	    		askStartOrResume(intent);
+	    	}else {
+				startQuestActivity(intent);
+	    	}
 		}
 
-		private void askStartOrResume(final Intent i, final boolean in_loc) {
+		private void askStartOrResume(final Intent i) {
 			DialogInterface.OnClickListener resume = new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					i.putExtra(Constants.QUEST_RESUME_KEY,true);
-			    	i.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,true);
 					dialog.dismiss();
 					startQuestActivity(i);
 				}
@@ -118,7 +97,6 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					dialog.dismiss();
-			    	i.putExtra(Constants.QUEST_IS_IN_STARTING_LOC,in_loc);
 					startQuestActivity(i);
 				}
 			};

@@ -19,12 +19,15 @@ import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.quesity.app.R;
 
 public class AsyncImageFragment extends Fragment{
-	
+
 	private String _image_src;
 	private ImageView _image;
 	private ProgressBar _progress;
 	private int _layout_res;
 	
+	
+	private static final String LAYOUT_RES_KEY = "LAYOUT_RES_KEY";
+	private static final String IMAGE_SRC_KEY = "IMAGE_SRC_KEY";
 	public static Fragment newInstance(String src){
 		return newInstance(src,R.layout.async_image_view);
 	}
@@ -34,6 +37,24 @@ public class AsyncImageFragment extends Fragment{
 		img.setLayoutRes(layout_res);
 		img.setImageSrc(src);
 		return img;
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if ( savedInstanceState != null ) {
+			_image_src = savedInstanceState.getString(IMAGE_SRC_KEY);
+			_layout_res = savedInstanceState.getInt(LAYOUT_RES_KEY);
+		}
+	}
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if ( outState != null ) {
+			outState.putInt(LAYOUT_RES_KEY,_layout_res);
+			outState.putString(IMAGE_SRC_KEY, _image_src);
+		}
 	}
 	
 	public void setLayoutRes(int res) {

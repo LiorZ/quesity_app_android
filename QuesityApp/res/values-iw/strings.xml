@@ -6,7 +6,7 @@
     <string name="app_version">v0.2</string>
     <string name="dummy_title">Quesity</string>
     <string name="lbl_start_quest">התחל</string>
-    <string name="lbl_find_quest">מצא קווסט</string>
+    <string name="lbl_find_quest">בחר קווסט</string>
     <string name="lbl_about_quesity">אודות</string>
     <string name="lbl_my_quests">הקווסטים שלי</string>
     <string name="error_title">שגיאה</string>

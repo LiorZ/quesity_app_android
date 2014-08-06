@@ -37,52 +37,6 @@
    	android:layout_marginTop="10dip"
    	android:layout_marginBottom="5dip"
    >
-    <LinearLayout
-    	android:id="@+id/quest_properties_data"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical"
-    	android:scrollbars="vertical"
-    	android:layout_weight="1"
-    >
-        <RelativeLayout 
-            android:id="@+id/quest_properties_rating_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        	<RatingBar 
-        	   android:id="@+id/quest_properties_rating_bar"
-	    	   style="@style/quest_rating_bar"
-	    	   android:isIndicator="true"
-	    	   android:layout_height="wrap_content"
-	    	   android:layout_width="wrap_content"
-   	    	   android:layout_centerVertical="true"
-	    	/>
-        	<com.quesity.fragments.StyledTextView
-        		android:id="@+id/quest_properties_rating_bar_text"
-        		android:layout_height="wrap_content"
-        		android:layout_width="wrap_content"
-        		android:textColor="@color/quesity_title_color"
-   			 	quesity:font_path="fonts/Roboto-Light.ttf"
-   			 	android:layout_toRightOf="@id/quest_properties_rating_bar"
-        	/>
-           </RelativeLayout>
-        <com.quesity.fragments.StyledTextView 
-        	android:id="@+id/quest_properties_distance_time_text"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"    
-        	quesity:font_path="fonts/Roboto-Light.ttf"
-        	android:textColor="@color/quesity_title_color"
-        	android:text="2.5h/8Km"
-        />
-        <com.quesity.fragments.StyledTextView 
-        	android:id="@+id/quest_properties_participants"
-        	android:layout_width="wrap_content"
-        	android:layout_height="wrap_content"    
-        	quesity:font_path="fonts/Roboto-Light.ttf"
-        	android:textColor="@color/quesity_title_color"
-        	android:text="1385 Played"
-        />
-    </LinearLayout>
     <com.quesity.layouts.FlowLayout
         android:id="@+id/tag_container"
         android:layout_width="fill_parent"

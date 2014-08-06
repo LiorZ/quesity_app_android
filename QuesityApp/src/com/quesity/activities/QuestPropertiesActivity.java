@@ -12,6 +12,7 @@ import com.quesity.app.R;
 import com.quesity.controllers.QuestProvider;
 import com.quesity.fragments.QuesityButtonView;
 import com.quesity.fragments.QuesityPageTitleView;
+import com.quesity.fragments.QuestPropertiesFragment;
 import com.quesity.fragments.QuestPropertiesItemsFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.fragments.StartingLocationVerifier;
@@ -24,6 +25,7 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 
 	private Quest _quest;
 	private QuesityButtonView _start_button;
+	private static final String PROPERTY_FRAGMENT_TAG = "PROPERTY_FRAGMENT";
 	
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -33,8 +35,17 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 		_quest = ModelsFactory.getInstance().getModelFromJSON(quest_str, Quest.class);
 		_start_button = (QuesityButtonView) findViewById(R.id.quest_properties_play_button);
 		_start_button.setOnClickListener(new StartQuestClickListener());
-		addFragments();
+//		addFragments(); // Removed because we don't need the other fragments ... just one description page, that's all
+		Fragment property_frag = getSupportFragmentManager().findFragmentByTag(PROPERTY_FRAGMENT_TAG);
+		if ( property_frag == null )
+			addPropertiesFragment();
 		setTitleView();
+	}
+	
+	private void addPropertiesFragment() {
+		QuestPropertiesFragment frag = QuestPropertiesFragment.newInstance(_quest);
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.add(R.id.properties_pager_fragment_container, frag,PROPERTY_FRAGMENT_TAG).commit();
 	}
 	
 	private void addFragments() {
@@ -50,7 +61,6 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 	private void setTitleView() {
 		QuesityPageTitleView title_view = (QuesityPageTitleView) findViewById(R.id.title_quest_properties);
 		title_view.setTitle(_quest.getTitle());
-		
 	}
 
 	@Override

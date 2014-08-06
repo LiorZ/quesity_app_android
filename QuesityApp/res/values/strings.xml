@@ -6,7 +6,7 @@
     <string name="app_version">v0.2</string>
     <string name="dummy_title">Quesity</string>
     <string name="lbl_start_quest">Start Quest</string>
-    <string name="lbl_find_quest">Find Quest</string>
+    <string name="lbl_find_quest">Select Quest</string>
     <string name="lbl_about_quesity">About Quesity</string>
     <string name="lbl_my_quests">My Quests</string>
     <string name="error_title">Error</string>

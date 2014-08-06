@@ -124,22 +124,6 @@ public class QuestPropertiesItemsFragment extends Fragment {
 				}
 
 				private void setQuestData(View root) {
-					//Set rating:
-					RatingBar rating_view = (RatingBar) root.findViewById(R.id.quest_properties_rating_bar);
-					rating_view.setRating(_quest.getRating());
-					TextView rating_text = (TextView) root.findViewById(R.id.quest_properties_rating_bar_text);
-					rating_text.setText("(" + _quest.getRating() + ")");
-					
-					//set distance and time:
-					TextView distance_time_text = (TextView ) root.findViewById(R.id.quest_properties_distance_time_text);
-					String distance = Utils.displayRoundToHalf(_quest.getDistance());
-					String time = Utils.displayRoundToHalf(_quest.getTime()/60);
-					distance_time_text.setText(distance + " Km / " + time + " h");
-					
-					//set number of games played:
-					String formatted_games_played = String.format(getString(R.string.lbl_games_played), _quest.getGamesPlayed());
-					TextView games_played = (TextView) root.findViewById(R.id.quest_properties_participants);
-					games_played.setText(formatted_games_played);
 				}
 				
 				@Override

@@ -30,18 +30,14 @@ public class SplashScreen extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		String account_id = getAccountId();
-		if ( account_id != null ) {
-			Timer t = new Timer();
-			t.schedule(new TimerTask() {
-				
-				@Override
-				public void run() {
-					startMainActivity();
-					finish();
-				}
-			}, SPLASH_DELAY);
-		}
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				startMainActivity();
+				finish();
+			}
+		}, SPLASH_DELAY);
 	}
 	
 	private String getAccountId() {
@@ -56,51 +52,17 @@ public class SplashScreen extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		
 		setContentView(R.layout.activity_splash_screen);	
-		ViewPager p = new ViewPager(this);
-		String accountId = getAccountId();
-		if ( accountId == null ) {
-			showLoginButtons();
-		}
 	}
 	
 	private void startMainActivity() {
-		Intent i = new Intent(this,QuesityMain.class);
+		Intent i = new Intent(this,QuestsListViewActivity.class);
 		startActivity(i);
 	}
 	
-	private void hideFacebookLoginButton() {
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		Fragment login_fragment = getSupportFragmentManager().findFragmentByTag(LoginFragment.TAG);
-		if ( login_fragment == null )
-			return;
-		fragmentTransaction.remove(login_fragment);
-		fragmentTransaction.commit();
-	}
 	
 	public void removeLoginButtons() {
 		View login_btns = findViewById(R.id.facebook_login_fragment_container);
 		login_btns.setVisibility(View.INVISIBLE);
-	}
-	
-	private void showLoginButtons() {
-		if ( _loginFragment == null )
-			_loginFragment = new LoginFragment();
-		
-		if ( _emailLoginFragment == null ){
-			_emailLoginFragment = new EmailRegistrationLoginButtons();
-			_emailLoginFragment.setRegisterButtonListener(new RegistrationScreenActivator());
-			_emailLoginFragment.setLoginButtonClickListener(new LoginScreenActivator());
-		}
-		
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		
-		fragmentTransaction.setCustomAnimations(R.anim.default_fade_in,R.anim.default_fade_out);
-		
-		fragmentTransaction.add(R.id.facebook_login_fragment_container, _emailLoginFragment);
-		fragmentTransaction.add(R.id.facebook_login_fragment_container,_loginFragment,LoginFragment.TAG);
-		fragmentTransaction.commit();
 	}
 	
 	private class RegistrationScreenActivator implements View.OnClickListener {

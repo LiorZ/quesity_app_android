@@ -68,6 +68,7 @@
 	<string name="lbl_games_played">%d Played</string>
 	<string name="lbl_games_played_raw">Played</string>
 	<string name="lbl_hours">Hours</string>
+	<string name="lbl_minutes">Minutes</string>
 	<string name="lbl_distance_unit">Km</string>
 	<string name="lbl_tab_description">Description</string>
 	<string name="lbl_tab_starting_point">Location</string>

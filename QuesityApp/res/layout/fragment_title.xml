@@ -26,7 +26,6 @@
         android:layout_centerVertical="true"
         android:textColor="@color/quesity_title_color"
         android:textStyle="bold"
-        android:layout_toRightOf="@id/title_page_img"
         />
     </RelativeLayout>
  <View 

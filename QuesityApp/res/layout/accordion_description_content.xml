@@ -19,40 +19,98 @@
        android:scrollbars="vertical"
        android:layout_weight="48"
        >
+       <RelativeLayout android:id="@+id/quest_data_container"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" >
+     <RelativeLayout 
+        
+       android:id="@+id/quest_list_item_location"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"    
+       android:layout_marginTop="5dp"
+       android:layout_alignParentRight="true"
+    >
+    
+       <ImageView 
+           android:id="@+id/quest_list_item_location_icon"         
+           android:layout_height="wrap_content"
+           android:layout_width="wrap_content"
+           android:layout_marginRight="3dp"
+           android:layout_marginLeft="3dp"
+           android:src="@drawable/marker"
+           android:layout_centerVertical="true"
+           android:layout_alignParentRight="true"
+       />
+     <com.quesity.fragments.StyledTextView
+        android:id="@+id/quest_list_item_location_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="מוזיאון הגוגונים, ראשלצ"
+        quesity:font_path="fonts/Roboto-Regular.ttf"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:textColor="@color/quesity_title_color"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/quest_list_item_location_icon"
+     />
+    </RelativeLayout>
+    <RelativeLayout 
+       android:id="@+id/quest_list_item_time"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_marginTop="5dp"
+       android:layout_alignParentRight="true"
+       android:layout_below="@id/quest_list_item_location"
+    >
+       <ImageView 
+            android:id="@+id/quest_list_item_time_icon"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/clock"
+            android:layout_marginRight="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            
+           android:layout_marginLeft="3dp"
+        />
+             
+        <com.quesity.fragments.StyledTextView
+        android:id="@+id/quest_list_item_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="שעה וחצי"
+        quesity:font_path="fonts/Roboto-Regular.ttf"
+        android:textSize="16sp"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/quest_list_item_time_icon"
+        android:textColor="@color/quesity_title_color"
+        android:textStyle="italic"
+     />
+       
+
+    </RelativeLayout>
    <LinearLayout 
        android:id="@+id/scroll_child"
        android:layout_width="fill_parent"
        android:layout_height="wrap_content"
        android:orientation="vertical"
+       android:layout_below="@id/quest_list_item_time"
        android:paddingLeft="10dip"
        android:paddingRight="10dip"
+       android:layout_marginTop="5dp"
+       
     >
-   <LinearLayout 
-   	android:id="@+id/quest_properties_and_tags"
-   	android:layout_width="fill_parent"
-   	android:layout_height="wrap_content"
-   	android:orientation="horizontal"
-   	android:weightSum="2"    
-   	android:baselineAligned="false"
-   	android:layout_marginTop="10dip"
-   	android:layout_marginBottom="5dip"
-   >
-    <com.quesity.layouts.FlowLayout
-        android:id="@+id/tag_container"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        quesity:orientation="horizontal"
-        quesity:horizontalSpacing="2dip"
-        quesity:verticalSpacing="4dip"
-        quesity:direction="right"
-        ></com.quesity.layouts.FlowLayout>     
-    </LinearLayout>
     <TextView 
         android:id="@+id/quest_description_text_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/quesity_title_color"
     />
-    </LinearLayout>
+    </LinearLayout>      
+           
+       </RelativeLayout>
+       
+   
     </ScrollView>
 </LinearLayout>

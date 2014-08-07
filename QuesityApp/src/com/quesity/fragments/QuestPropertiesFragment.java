@@ -20,6 +20,7 @@ import com.quesity.general.Utils;
 import com.quesity.layouts.FlowLayout;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
+import com.quesity.models.StartingLocation;
 
 
 /**
@@ -81,8 +82,8 @@ public class QuestPropertiesFragment extends Fragment {
 	
 	public void setMainView(View root) {
 		setDescriptionText(root);
-		setQuestData(root);
-		addTags(root);
+		setQuestProperties(root,_quest);
+//		addTags(root);
 	}
 	
 	private void setDescriptionText(View root) {
@@ -92,16 +93,25 @@ public class QuestPropertiesFragment extends Fragment {
 	}
 	
 	private void addTags(View root) {
-		FlowLayout tag_container_view = (FlowLayout) root.findViewById(R.id.tag_container);
+		/*FlowLayout tag_container_view = (FlowLayout) root.findViewById(R.id.tag_container);
 		List<String> tag_list = _quest.getTags();
 		for (String tag_text : tag_list) {
 			TagView tag_view = new TagView(getActivity());
 			tag_view.setTagText(tag_text);
 			tag_container_view.addView(tag_view);
-		}
+		}*/
 	}
 
-	private void setQuestData(View root) {
+	private void setQuestProperties(View v, Quest q) {
+		TextView location_textView = (TextView) v.findViewById(R.id.quest_list_item_location_text);
+		TextView time_textView = (TextView) v.findViewById(R.id.quest_list_item_time_text);
+		
+		StartingLocation startingLocation = q.getStartingLocation();
+		String street = startingLocation.getStreet();
+		int quest_time = (int) q.getTime();
+		time_textView.setText(quest_time + " " + getString(R.string.lbl_minutes));
+		
+		location_textView.setText(street);
 	}
 	
 	private void setGallery() {

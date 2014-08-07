@@ -63,6 +63,7 @@
 	<string name="lbl_games_played">%d כבר שיחקו</string>
 	<string name="lbl_games_played_raw">שיחקו</string>
 	<string name="lbl_hours">שעות</string>
+	<string name="lbl_minutes">דק\'</string>
 	<string name="lbl_distance_unit">ק\"מ</string>
 	<string name="lbl_tab_description">תיאור כללי</string>
 	<string name="lbl_tab_starting_point">מיקום</string>

@@ -149,12 +149,10 @@ public class QuestListFragment extends Fragment {
 			
 			StartingLocation startingLocation = q.getStartingLocation();
 			String street = startingLocation.getStreet();
-			float quest_time = q.getTime();
-			String time = Utils.displayRoundToHalf(quest_time/60);
-			time_textView.setText(time + " " + getString(R.string.lbl_hours));
+			int quest_time = (int) q.getTime();
+			time_textView.setText(quest_time + " " + getString(R.string.lbl_minutes));
 			
 			location_textView.setText(street);
-			
 		}
 		
 		

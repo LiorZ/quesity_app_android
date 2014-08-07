@@ -3,9 +3,10 @@ package com.quesity.fragments;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.quesity.app.R;
@@ -45,6 +46,16 @@ public class QuesityPageTitleView extends CustomFontGeneralView {
 		if ( _title_text_size > 0 ) {
 			TextView t = (TextView) mainView.findViewById(R.id.title_main_screen);
 			t.setTextSize(_title_text_size);
+			RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) t.getLayoutParams();
+			
+			//If there's no image present in the title, center the text in the placeholder.
+			//If there IS an image, put the text to the right of the image.
+			if ( _image == 0 ) {
+				params.addRule(RelativeLayout.CENTER_IN_PARENT,RelativeLayout.TRUE);
+			}else {
+				params.addRule(RelativeLayout.RIGHT_OF,R.id.title_page_img);
+			}
+			t.setLayoutParams(params);
 		}
 			
 	}

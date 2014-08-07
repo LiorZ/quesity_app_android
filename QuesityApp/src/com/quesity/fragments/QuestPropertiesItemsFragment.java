@@ -104,7 +104,7 @@ public class QuestPropertiesItemsFragment extends Fragment {
 				public void manipulateView(View root) {
 					setDescriptionText(root);
 					setQuestData(root);
-					addTags(root);
+//					addTags(root);
 				}
 				
 				private void setDescriptionText(View root) {
@@ -114,13 +114,13 @@ public class QuestPropertiesItemsFragment extends Fragment {
 				}
 				
 				private void addTags(View root) {
-					FlowLayout tag_container_view = (FlowLayout) root.findViewById(R.id.tag_container);
+					/*FlowLayout tag_container_view = (FlowLayout) root.findViewById(R.id.tag_container);
 					List<String> tag_list = _quest.getTags();
 					for (String tag_text : tag_list) {
 						TagView tag_view = new TagView(getActivity());
 						tag_view.setTagText(tag_text);
 						tag_container_view.addView(tag_view);
-					}
+					}*/
 				}
 
 				private void setQuestData(View root) {

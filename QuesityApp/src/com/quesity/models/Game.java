@@ -14,8 +14,18 @@ public class Game extends JSONModel {
 	private List<Location> locations;
 	private int remaining_hints;
 	private boolean is_at_starting_location;
+	private int pages_passed = 0;
+	
 	public Date getDateStarted() {
 		return date_started;
+	}
+	
+	public int getPagesPassed() {
+		return pages_passed;
+	}
+	
+	public void setPagesPassed(int passed) {
+		pages_passed = passed;
 	}
 	
 	public boolean getIsAtStartingLocation() {
@@ -67,4 +77,5 @@ public class Game extends JSONModel {
 	public int getRemainingHints() {
 		return remaining_hints;
 	}
+	
 }

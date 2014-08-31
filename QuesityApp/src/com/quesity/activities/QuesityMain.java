@@ -24,6 +24,12 @@ public class QuesityMain extends BaseActivity implements INetworkInteraction {
 
 
 	@Override
+	protected String getScreenViewPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.app_name);

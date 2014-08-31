@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+     <EditText 
+        android:id="@+id/open_question_answer"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:singleLine="true"
+ />
+     <ProgressBar 
+        android:id="@+id/open_question_loading_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/open_question_answer"
+        android:layout_centerHorizontal="true"
+        style="?android:attr/android:progressBarStyleSmall"
+        android:visibility="gone"   
+     />
+     
+     <TextView 
+        android:id="@+id/open_question_verifying_answer"
+        android:layout_width="wrap_content"     
+        android:layout_height="wrap_content"
+        android:layout_below="@id/open_question_loading_progress"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/DarkRed"
+        android:text="@string/lbl_verifying_answer"
+        android:visibility="gone"   
+     />
+     
+</RelativeLayout>

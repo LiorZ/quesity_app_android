@@ -15,6 +15,14 @@ import com.quesity.app.R;
 
 public class QuesityMapActivity extends BaseActivity {
 
+	
+	
+	@Override
+	protected String getScreenViewPath() {
+		// TODO Auto-generated method stub
+		return "Quesity Map";
+	}
+
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);

@@ -18,7 +18,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.Menu;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.quesity.app.R;
+import com.quesity.application.QuesityApplication;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.controllers.QuestProvider;
 import com.quesity.fragments.FeedbackFragment;
@@ -44,6 +47,7 @@ import com.quesity.models.ModelsFactory;
 import com.quesity.models.Move;
 import com.quesity.models.Quest;
 import com.quesity.models.QuestPage;
+import com.quesity.models.QuestPageHint;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.SavedGame;
 import com.quesity.network.FetchJSONTaskGet;
@@ -58,10 +62,10 @@ import com.quesity.services.location.LocationService;
 
 public class QuestPageActivity extends BaseActivity implements INetworkInteraction, QuestProvider, TransitionFragmentInvokation, NextPageTransition, ProgressableProcess {
 
-	
 	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
 	public static final String ALL_QUEST_PAGES_KEY = "com.quesity.ALL_PAGES_KEY";
 	public static final String CURRENT_GAME_KEY = "com.quesity.CURRENT_GAME_KEY";
+	public static final String ACCOUNT_ID="com.quesity.ACCOUNT_ID";
 	public static final String TAG = "com.quesity.activities.QuestPageActivity";
 	private LoadingProgressFragment _progress;
 	private WebViewFragment _webViewFragment;
@@ -80,6 +84,9 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private Game _current_game;
 	private InGameMenuFragment _in_game_panel;
 	private String _images_to_cache;
+	private String _account_id;
+	
+	private boolean _resumed_game;
 	
 	private Bundle getInstanceState(Bundle existing) {
 		Bundle b = existing;
@@ -96,6 +103,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		b.putString(QUEST_PAGE_KEY,page_json);
 		b.putString(CURRENT_GAME_KEY, game_json);
 		b.putString(ALL_QUEST_PAGES_KEY, all_pages_json);
+		b.putString(ACCOUNT_ID,_account_id);
 		
 		return b;
 	}
@@ -106,6 +114,14 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		super.onSaveInstanceState(outState);
 	}
 
+	
+	@Override
+	protected String getScreenViewPath() {
+		String title = _quest_obj.getTitle();
+		return "Quest Page View " + title;
+	}
+
+	
 	private boolean  restoreFromPreferences() {
 		SavedGame[] saved_games = ModelsFactory.getInstance().getFromPreferenceStore(this, Constants.SAVED_GAMES, SavedGame[].class);
 		
@@ -139,8 +155,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		_quest_obj = ModelsFactory.getInstance().getModelFromJSON(quest_json, Quest.class);
 		_quest_id = _quest_obj.getId();
 		
-		boolean shouldResume = getIntent().getBooleanExtra(Constants.QUEST_RESUME_KEY, false);
-		if ( shouldResume ) {
+		_resumed_game = getIntent().getBooleanExtra(Constants.QUEST_RESUME_KEY, false);
+		if ( _resumed_game ) {
 			restoreFromPreferences();
 			startLocationService();
 			refreshQuestPage(_currentPage);
@@ -156,6 +172,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		String current_page = savedInstanceState.getString(QUEST_PAGE_KEY);
 		String all_pages = savedInstanceState.getString(ALL_QUEST_PAGES_KEY);
 		String game_json = savedInstanceState.getString(CURRENT_GAME_KEY);
+		_account_id = savedInstanceState.getString(ACCOUNT_ID);
 		
 		ModelsFactory instance = ModelsFactory.getInstance();
 		_current_game = instance.getModelFromJSON(game_json, Game.class);
@@ -163,6 +180,18 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		_all_pages = instance.getModelFromJSON(all_pages, QuestPage[].class);
 		
 		refreshQuestPage(_currentPage);
+	}
+	
+	private void analyticsReport(QuestPage p) {
+        Tracker t = ((QuesityApplication) getActivity().getApplication()).getTracker();
+        t.setScreenName("Quest_"+_quest_obj.getTitle());
+        t.set("&uid", _account_id);
+        String pageName = p.getPageName();
+		t.send(new HitBuilders.AppViewBuilder()
+        .setCustomDimension(Constants.ANALYTICS_QUEST_PAGE_USER, pageName)
+        .setCustomDimension(Constants.ANALYTICS_QUEST_PAGES_PASSED, Integer.toString(_current_game.getPagesPassed()))
+        .setCustomDimension(Constants.ANALYTICS_QUEST_PAGES_HIT, pageName)
+        .build());
 	}
 	
 	public void showFeedbackFragment(){
@@ -177,8 +206,12 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d("QuestPageActivity", "OnCreate - QuestPageActivity");
+		
 		setContentView(R.layout.activity_quest_page);
 		constructFragmentMapper();
+		
+		_account_id = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.CURRENT_ACCOUNT_ID, null);
+
 		createViews();
 		
 		if ( savedInstanceState == null ) {
@@ -186,6 +219,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		}else {
 			restoreFromInstanceState(savedInstanceState);
 		}
+		if ( _resumed_game )
+			refreshInGameButtons();
 	}
 	
 //	private void showNotAtStartLocation() {
@@ -263,7 +298,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	
 	public void returnToMainPage() {
     	stopLocationService();
-    	Intent intent = new Intent(QuestPageActivity.this, QuesityMain.class);
+    	Intent intent = new Intent(QuestPageActivity.this, QuestsListViewActivity.class);
     	intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);	
     	startActivity(intent);
     	finish();
@@ -359,12 +394,12 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	@Override
 	public void loadNextPage(QuestPageLink link) {
 		String page_id = link.getLinksToPage();
+		Log.d("QuestPageActivity","TRYING TO LOAD NEXT PAGE");
 		for (int i=0; i<_all_pages.length; ++i) {
 			if ( _all_pages[i].getId().equals(page_id) ) {
-				reportMove(link);
-				//save the page anyhow ... 
+				_current_game.setPagesPassed(_current_game.getPagesPassed()+1);
+				reportMove(link,_all_pages[i]);
 				savePage(_all_pages[i]);
-				
 				refreshQuestPage(_all_pages[i]);
 				return;
 			}
@@ -428,9 +463,11 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		game.setQuest(_quest_obj);
 	}
 	
-	private void reportMove(QuestPageLink l){ 
+	private void reportMove(QuestPageLink l, QuestPage page){ 
+
 		final Move m = new Move();
 		m.setDate(new Date());
+		
 		m.setLinkId(l.getId());
 		
 		final ModelReport report = new ModelReport(m, this);
@@ -451,6 +488,8 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 		loc.setLng(lastKnownLocation.getLongitude());
 		m.setLocation(loc);
 		report.send(report_url);
+
+		
 	}
 	
 	public Activity getActivity() {
@@ -476,13 +515,31 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	public void refreshQuestPage(QuestPage page) {
 		setTitle(page.getPageName());
 		_currentPage = page;
+		analyticsReport(page);
 		Fragment fragment = _fragmentMapper.get(page.getPageType());
 		_transitionFragment = (OnDemandFragment)fragment;
 		getSupportFragmentManager().executePendingTransactions();
 		String page_data = page.getPageContent();
-		_webViewFragment.loadHTMLData(page_data);
+		if ( page.getIsFirst() || _resumed_game ) {
+			_webViewFragment.loadHTMLData(page_data, false);	
+		}else {
+			_webViewFragment.loadHTMLData(page_data, true);
+		}
 	}
 	
+	private void refreshInGameButtons() {
+		int buttonDrawable = _transitionFragment.getButtonDrawable();
+		int pressedButtonDrawable = _transitionFragment.getPressedButtonDrawable();
+		int button_text_id = _transitionFragment.getButtonStringId();
+		_in_game_panel.setPlayButtonDrawable(buttonDrawable,pressedButtonDrawable);
+		_in_game_panel.setPlayButtonText(getString(button_text_id));
+		QuestPageHint[] hints = _currentPage.getHints();
+		if ( _current_game.getRemainingHints() > 0 && hints != null && hints.length > 0 ) {
+			_in_game_panel.setHintButtonEnabled(true);
+		}else {
+			_in_game_panel.setHintButtonEnabled(false);
+		}
+	}
 	
 	private class AfterLoadingAllQuestPages implements IPostExecuteCallback {
 
@@ -498,14 +555,14 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 				
 				@Override
 				public void pageStartedLoading() {
-					_in_game_panel.setPlayButtonEnabledState(false);
+					_in_game_panel.setGameButtonsEnabledState(false);
 				}
 				
 				@Override
 				public void pageFinishedLoading() {
 					for (int i = 0; i < _all_pages.length; i++) {
 						if ( _all_pages[i].getIsFirst() ){
-							_in_game_panel.setPlayButtonEnabledState(true);
+							_in_game_panel.setGameButtonsEnabledState(true);
 							refreshQuestPage(_all_pages[i]);
 							return;
 						}
@@ -517,18 +574,14 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 				
 				@Override
 				public void pageStartedLoading() {
-					_in_game_panel.setPlayButtonEnabledState(false);
+					_in_game_panel.setGameButtonsEnabledState(false);
 				}
 				
 				@Override
 				public void pageFinishedLoading() {
-					_in_game_panel.setPlayButtonEnabledState(true);
+					_in_game_panel.setGameButtonsEnabledState(true);
 					if ( _transitionFragment != null ) {
-						int buttonDrawable = _transitionFragment.getButtonDrawable();
-						int pressedButtonDrawable = _transitionFragment.getPressedButtonDrawable();
-						int button_text_id = _transitionFragment.getButtonStringId();
-						_in_game_panel.setPlayButtonDrawable(buttonDrawable,pressedButtonDrawable);
-						_in_game_panel.setPlayButtonText(getString(button_text_id));
+						refreshInGameButtons();
 					}
 					
 				}
@@ -577,8 +630,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 	private class GameCreationTaskBackgroundHandler implements IBackgroundCallback<QuestPage[]> {
 
 		private void startNewGame(String uri) throws Exception{
-			String account_id = PreferenceManager.getDefaultSharedPreferences(QuestPageActivity.this).getString(Constants.CURRENT_ACCOUNT_ID, null);
-			if ( account_id == null ) {
+			if ( _account_id == null ) {
 				throw new Exception("No account id");
 			}
 			if ( _quest_id == null ){
@@ -587,7 +639,7 @@ public class QuestPageActivity extends BaseActivity implements INetworkInteracti
 			
 			Game game = new Game();
 			game.setDateStarted(new Date());
-			game.setAccount_id(account_id);
+			game.setAccount_id(_account_id);
 			game.setQuestId(_quest_id);
 			String game_json_input = ModelsFactory.getInstance().getJSONFromModel(game);
 			String game_json = _network_interface.getStringContent(uri, new JSONPostRequestTypeGetter(game_json_input,QuestPageActivity.this),QuestPageActivity.this);

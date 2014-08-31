@@ -61,21 +61,24 @@ public class QuesityDialog extends Dialog {
 			}
 			is_first = false;
 			_button_container.addView(btn);
-			
 		}
 	}
 	
+	
+	public void setButtonDontDismiss(final int button,String text,final DialogInterface.OnClickListener listener) {
+		QuesityButtonView btn = setButtonData(text);
+		btn.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				listener.onClick(QuesityDialog.this, button);
+			}
+		});
+		_buttons.put(button, btn);
+	}
+	
 	public void setButton(final int button,String text,final DialogInterface.OnClickListener listener) {
-		Resources resources = getContext().getResources();
-		QuesityButtonView btn = new QuesityButtonView(getContext());
-		LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
-		btn.setLayoutParams(l);
-		float btn_text_size = resources.getDimension(R.dimen.dialog_button_text_size) / resources.getDisplayMetrics().density;
-		int padding_top_bottom = (int) (resources.getDimension(R.dimen.dialog_buttons_padding_top_bottom) / resources.getDisplayMetrics().density);
-		int padding_left_right = (int) (resources.getDimension(R.dimen.dialog_buttons_padding_left_right) / resources.getDisplayMetrics().density);
-		btn.setButtonTextSize(btn_text_size);
-		btn.setText(text);
-		btn.setButtonTextPadding(padding_left_right, padding_top_bottom, padding_left_right, padding_top_bottom);
+		QuesityButtonView btn = setButtonData(text);
 		btn.setOnClickListener(new View.OnClickListener() {
 			
 			@Override
@@ -87,6 +90,20 @@ public class QuesityDialog extends Dialog {
 			}
 		});
 		_buttons.put(button, btn);
+	}
+
+	private QuesityButtonView setButtonData(String text) {
+		Resources resources = getContext().getResources();
+		QuesityButtonView btn = new QuesityButtonView(getContext());
+		LinearLayout.LayoutParams l = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT);
+		btn.setLayoutParams(l);
+		float btn_text_size = resources.getDimension(R.dimen.dialog_button_text_size) / resources.getDisplayMetrics().density;
+		int padding_top_bottom = (int) (resources.getDimension(R.dimen.dialog_buttons_padding_top_bottom) / resources.getDisplayMetrics().density);
+		int padding_left_right = (int) (resources.getDimension(R.dimen.dialog_buttons_padding_left_right) / resources.getDisplayMetrics().density);
+		btn.setButtonTextSize(btn_text_size);
+		btn.setText(text);
+		btn.setButtonTextPadding(padding_left_right, padding_top_bottom, padding_left_right, padding_top_bottom);
+		return btn;
 	}
 	
 	@Override

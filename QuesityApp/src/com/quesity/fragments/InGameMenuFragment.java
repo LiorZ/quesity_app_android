@@ -1,6 +1,8 @@
 package com.quesity.fragments;
 
 
+import java.util.Map;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,15 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
-import com.quesity.app.R;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.quesity.activities.QuesityMapActivity;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.app.R;
+import com.quesity.application.QuesityApplication;
 import com.quesity.fragments.in_game.HintsFragment;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
+import com.quesity.models.Quest;
+import com.quesity.models.QuestPage;
 
 public class InGameMenuFragment extends Fragment {
 	
@@ -29,12 +34,13 @@ public class InGameMenuFragment extends Fragment {
 	private InGameMenuPopup _tactics_dialog;
 	private HintsFragment _hints_fragment;
 	private QuesityIngameButtonView _btn_play_view;
+	private QuesityIngameButtonView _btn_tactics_view;
 	private OnClickListener _play_button_listener;
+	private OnClickListener _tactics_button_listener;
 
 	public InGameMenuFragment() {
 		_menu_dialog = new InGameMenuPopup();
 		_hints_fragment = new HintsFragment();
-
 	}
 	
 	/**
@@ -76,6 +82,7 @@ public class InGameMenuFragment extends Fragment {
 			}
 		});
 		
+		
 		final FragmentActivity factivity = (FragmentActivity) activity;
 		final FragmentManager fragmentManager = factivity.getSupportFragmentManager();
 		_transition = (TransitionFragmentInvokation) activity;
@@ -110,7 +117,7 @@ public class InGameMenuFragment extends Fragment {
 			}
 		});
 	}
-
+	
 	private void startShowMapActivity() {
 		Intent i = new Intent(this.getActivity(), QuesityMapActivity.class);
 		startActivity(i);
@@ -126,10 +133,10 @@ public class InGameMenuFragment extends Fragment {
 		btn.setOnTouchButtonImage(R.drawable.menu_pressed);
 		btn.setButtonText(getString(R.string.ingame_btn_menu));
 		btn.setOnClickListener(new OnClickListener() {
-		
+			
 			@Override
 			public void onClick(View v) {
-				_menu_dialog.show(getFragmentManager(), "ingame_menu");
+				_menu_dialog.show(getFragmentManager(), "MenuFragment");
 			}
 		});
 		
@@ -153,26 +160,27 @@ public class InGameMenuFragment extends Fragment {
 		btn.setButtonImage(R.drawable.tactics);
 		btn.setButtonText(getString(R.string.ingame_btn_tactics));
 		btn.setOnTouchButtonImage(R.drawable.tactics_pressed);
-		v.setOnClickListener( new OnClickListener() {
-		
-			@Override
-			public void onClick(View v) {
-				_tactics_dialog.show(getFragmentManager(), "ingame_tactics_menu");
-			}
-		});
+		btn.setBackgroundColor(getResources().getColor(R.color.blue_btn_color));
+		btn.setDisabledImage(R.drawable.tactics_disabled);
 	}
 	
-	public void setPlayButtonEnabledState(boolean enabled) {
+	public void setGameButtonsEnabledState(boolean enabled) {
 		if ( enabled ) {
 			_btn_play_view.setOnClickListener(_play_button_listener);
+			_btn_tactics_view.setOnClickListener(_tactics_button_listener);
 		}else {
 			_btn_play_view.setOnClickListener(null);
+			_btn_tactics_view.setOnClickListener(null);
 		}
 	}
 	
 	public void setPlayButtonDrawable(int drawable, int drawable_pressed) {
 		_btn_play_view.setButtonImage(drawable);
 		_btn_play_view.setOnTouchButtonImage(drawable_pressed);
+	}
+		
+	public void setHintButtonEnabled(boolean enabled) {
+		_btn_tactics_view.setEnabled(enabled);
 	}
 	
 	@Override
@@ -189,14 +197,23 @@ public class InGameMenuFragment extends Fragment {
 			}
 		};
 		
+		_tactics_button_listener = new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				_hints_fragment.show(getFragmentManager(), "hints");
+			}
+		};
+		
 		View menu_btn_view = root_view.findViewById(R.id.btn_menu);
 		setupMenuButton(menu_btn_view);
 		
 		_btn_play_view = (QuesityIngameButtonView) root_view.findViewById(R.id.btn_continue);
+		
 		setupPlayButton(_btn_play_view);
 		
-		View btn_tactics_view = root_view.findViewById(R.id.btn_tactics);
-		setupTacticsButton(btn_tactics_view);
+		_btn_tactics_view = (QuesityIngameButtonView)root_view.findViewById(R.id.btn_tactics);
+		setupTacticsButton(_btn_tactics_view);
 		
 		
 		return root_view;

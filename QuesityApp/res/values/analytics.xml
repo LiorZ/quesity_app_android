@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="analytics_hint_taken_action">Hint Taken</string>
+    <string name="analytics_hint_no_hints">Hint Taken but no hints in page</string>
+    <string name="analytics_hint_wasted_all_hints">Hint Taken but used all</string>
+    <string name="analytics_quest_event">Quest Event</string>
+</resources>

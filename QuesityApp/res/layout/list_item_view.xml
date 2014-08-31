@@ -51,10 +51,9 @@
         android:id="@+id/quest_list_item_location_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="מוזיאון הגוגונים, ראשלצ"
+        android:text=""
         quesity:font_path="fonts/Roboto-Regular.ttf"
         android:textSize="16sp"
-        android:textStyle="italic"
         android:textColor="@color/quesity_title_color"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/quest_list_item_location_icon"
@@ -84,13 +83,12 @@
         android:id="@+id/quest_list_item_time_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="שעה וחצי"
+        android:text=""
         quesity:font_path="fonts/Roboto-Regular.ttf"
         android:textSize="16sp"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/quest_list_item_time_icon"
         android:textColor="@color/quesity_title_color"
-        android:textStyle="italic"
      />
        
 

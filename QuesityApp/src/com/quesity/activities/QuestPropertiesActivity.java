@@ -48,6 +48,12 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 		ft.add(R.id.properties_pager_fragment_container, frag,PROPERTY_FRAGMENT_TAG).commit();
 	}
 	
+	@Override
+	protected String getScreenViewPath() {
+		String title = _quest.getTitle();
+		return "Quest Properties " + title;
+	}
+	
 	private void addFragments() {
 		FragmentTransaction trans = getSupportFragmentManager().beginTransaction();
 		

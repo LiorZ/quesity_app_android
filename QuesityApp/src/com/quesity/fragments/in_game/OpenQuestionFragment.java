@@ -1,16 +1,19 @@
 package com.quesity.fragments.in_game;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.widget.EditText;
+import android.util.Log;
+import android.view.View;
 
-import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
+import com.quesity.app.R;
+import com.quesity.dialogs.OpenQuestionDialog;
+import com.quesity.dialogs.QuesityDialog;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.SimpleDialogs;
 import com.quesity.models.QuestPage;
@@ -19,38 +22,57 @@ import com.quesity.models.QuestPageQuestionLink;
 
 public class OpenQuestionFragment extends DialogFragment implements OnDemandFragment{
 
+	private static final long VERIFYING_ANSWER_DELAY = 2500;
+	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		
 		final QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
-	    final AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
-	    final EditText input = new EditText(getActivity());
-	    alert.setView(input);
-	    alert.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
+		final OpenQuestionDialog alert = new OpenQuestionDialog(getActivity());
+		
+		alert.setTitle(getString(R.string.lbl_open_question_title));
+		alert.setMessage(getString(R.string.lbl_open_question_message));
+    	final String wrong_answer_title = getString(R.string.lbl_err_wrong_answer_title);
+		final String wrong_answer_text = getString(R.string.lbl_err_wrong_answer);
+	    alert.setButtonDontDismiss(Dialog.BUTTON_POSITIVE,getString(R.string.button_ok), new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton) {
-	            String value = input.getText().toString().trim();
-	            QuestPageLink nextPage = getNextPageByAnswer(value, page);
-	            if ( nextPage == null ) {
-	            	
-	            	Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_err_wrong_answer_title), getString(R.string.lbl_err_wrong_answer), getActivity());
-	            	
-	            	okOnlyDialog.show();
-	            }else {
-					NextPageTransition activity = (NextPageTransition) getActivity();
-					activity.loadNextPage(nextPage);
-	            }
+	        	alert.setProgressVisibility(View.VISIBLE);
+	        	Handler handler = new Handler();
+	        	Runnable task  = new Runnable() {
+					
+					@Override
+					public void run() {
+						if ( getActivity() == null ) {
+							return;
+						}
+						String value = alert.getAnswer().trim();
+			            QuestPageLink nextPage = getNextPageByAnswer(value, page);
+			            if ( nextPage == null ) {
+							Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(wrong_answer_title, wrong_answer_text, getActivity());
+			            	okOnlyDialog.show();
+			            }else {
+							NextPageTransition activity = (NextPageTransition) getActivity();
+							activity.loadNextPage(nextPage);
+			            }
+			            alert.dismiss();
+					}
+				};
+				handler.postDelayed(task, VERIFYING_ANSWER_DELAY);
+				
+				
 	        }
 	    });
 
-	    alert.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+	    alert.setButton(Dialog.BUTTON_NEGATIVE,getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton) {
-	            dialog.cancel();
+	            dialog.dismiss();
 	        }
 	    });
 	    
-	    return alert.create();
+	    return alert;
 	}
-
+	
+	
 	private QuestPageLink getNextPageByAnswer(String answer, QuestPage page) {
 		QuestPageLink[] links = page.getLinks();
 		for (int i = 0; i < links.length; i++) {

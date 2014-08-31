@@ -25,7 +25,6 @@ import com.quesity.network.NetworkInterface;
 import com.quesity.network.QuestListTaskGet;
 
 public class QuestsListViewActivity extends BaseActivity{
-
 	public static final String QUEST_ID = "com.quesity.QUEST_ID";
 	private static final String PROGRESS_FRAGMENT_TAG = "PROGRESS_TAG";
 	private static final String LIST_FRAGMENT_TAG = "LIST_FRAGMENT_TAG";
@@ -50,7 +49,12 @@ public class QuestsListViewActivity extends BaseActivity{
 			fetchQuests();
 	}
 	
-	
+
+	@Override
+	protected String getScreenViewPath() {
+		return "Quests List Screen";
+	}
+
 	private void fetchQuests() {
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 		ft.add(R.id.quest_list_loading_progress_container, new SimpleProgressFragment(),PROGRESS_FRAGMENT_TAG);

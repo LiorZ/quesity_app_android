@@ -12,11 +12,15 @@ import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebStorage.QuotaUpdater;
@@ -35,9 +39,21 @@ public class WebViewFragment extends Fragment {
 	private PageLoadingListener _page_change_listener;
 	private boolean _showProgress = true;
 	private static final int CACHE_INITIAL_SIZE = 8*1024*1024;
+	private Animation _slide_left_end;
+	private Animation _slide_left_begin;
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
+	}
+	
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		_slide_left_begin = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_left_to_right);
+		
+		_slide_left_end = AnimationUtils.loadAnimation(getActivity(), R.anim.slide_right_to_left);
+		_slide_left_end.setFillAfter(true);
+
 	}
 	
 	@Override
@@ -58,16 +74,60 @@ public class WebViewFragment extends Fragment {
 		return _w;
 	}
 	
-	public void loadHTMLData(final String raw_data) {
+	public void loadHTMLData(final String raw_data, boolean with_animation) {
 
 		String data  = "<html><body style='padding:0; margin:0'>"+raw_data+"</body></html>";
+		if ( with_animation ){
+			loadHTMLDataRawWithAnimation(data);
+			return;
+		}
 		loadHTMLDataRaw(data);
 	}
 	
-	public void loadHTMLDataRaw(String raw_data) {
-		raw_data = raw_data.replaceFirst("<p>", "").replaceFirst("</p>", "");
-		_w.loadDataWithBaseURL(null, raw_data, "text/html", "utf-8", null);
+	public void loadHTMLDataRaw(String raw_data){
+		String raw_data_replaced = raw_data.replaceFirst("<p>", "").replaceFirst("</p>", "");
+		Log.d("WebViewFragment",raw_data_replaced);
+		_w.loadDataWithBaseURL(null, raw_data_replaced, "text/html", "utf-8", null);
 		_w.scrollTo(0, 0);
+	}
+	
+	public void loadHTMLDataRawWithAnimation(final String raw_data) {
+		Log.d("WebViewFragment","Setting Animation");
+		Log.d("WebViewFragment",raw_data);
+		_slide_left_end.setAnimationListener(new AnimationListener() {
+			
+			@Override
+			public void onAnimationStart(Animation animation) {
+				Log.d("WebViewFragment","Starting Animation");
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+				
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				loadHTMLDataRaw(raw_data);
+			}
+		});
+		_w.startAnimation(_slide_left_end);
+//		Timer t = new Timer();
+//		t.schedule(new TimerTask() {
+//			
+//			@Override
+//			public void run() {
+//				getActivity().runOnUiThread(new Runnable() {
+//					
+//					@Override
+//					public void run() {
+//						
+//					}
+//				});
+//				
+//			}
+//		}, 1000);
+		
 	}
 
 	
@@ -115,9 +175,9 @@ public class WebViewFragment extends Fragment {
 					Log.d("WEBVIEW" ,"Completed prefetching");
 					_showProgress = false;
 					_loadingView.setVisibility(View.INVISIBLE);
-					_w.setWebViewClient(new PageChangeWebClient());
-					_w.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ONLY);
+					_w.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 					load_finished_listener.pageFinishedLoading();
+					_w.setWebViewClient(new PageChangeWebClient());
 				}else {
 					Log.d("WEBVIEW" ,"Progress: " + newProgress);
 					_loadingView.setVisibility(View.VISIBLE);
@@ -128,8 +188,7 @@ public class WebViewFragment extends Fragment {
 			}
 			 
 		 });
-		 
-		 loadHTMLData(data);
+		 loadHTMLData(data,false);
 	}
 
 	public void setPageLoadingListener(PageLoadingListener listener) {
@@ -143,13 +202,14 @@ public class WebViewFragment extends Fragment {
 	
 	private class PageChangeWebClient extends WebViewClient {
 		
+		private boolean _is_first_page = true;
+		
 		@Override
 		public void onLoadResource(WebView view, String url) {
 			super.onLoadResource(view, url);
 			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.HONEYCOMB)
 				pageLoadEvent(view);
 		}
-
 		 
 		private void pageLoadEvent(WebView view) {
 			if ( _page_change_listener != null ) {
@@ -167,8 +227,35 @@ public class WebViewFragment extends Fragment {
 		@Override
 		public void onPageFinished(final WebView view, String url) {
 			super.onPageFinished(view, url);
-			if ( _page_change_listener != null )
-				_page_change_listener.pageFinishedLoading();
+			Log.d("WebViewFragment","pagefinished animation going to start");
+			if ( !_is_first_page ) {
+				_slide_left_begin.setStartOffset(800);
+				
+				_slide_left_begin.setAnimationListener(new AnimationListener() {
+					
+					@Override
+					public void onAnimationStart(Animation animation) {
+						
+					}
+					
+					@Override
+					public void onAnimationRepeat(Animation animation) {
+						
+					}
+					
+					@Override
+					public void onAnimationEnd(Animation animation) {
+						if ( _page_change_listener != null )
+							_page_change_listener.pageFinishedLoading();
+					}
+				});
+				
+				_w.startAnimation(_slide_left_begin);
+			}else {
+				if ( _page_change_listener != null )
+					_page_change_listener.pageFinishedLoading();
+				_is_first_page = false;
+			}
 		}
 	}
 	

@@ -2,7 +2,6 @@ package com.quesity.fragments;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,27 +10,34 @@ import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.quesity.activities.QuestPropertiesActivity;
-import com.quesity.activities.QuestsListViewActivity;
 import com.quesity.app.R;
 import com.quesity.general.Constants;
-import com.quesity.general.Utils;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
-import com.quesity.models.SavedGame;
 import com.quesity.models.StartingLocation;
 
 public class QuestListFragment extends Fragment {
 
+
+
+	private static final String QUESTS_KEY = "Quests_List";
+	private Quest[] _quests;
+	private OnItemClickListener _listener;
+	private ListView _list;
+	private DisplayImageOptions _display_options;
+	private static final int DISPLAY_FADE_IN_DURATION = 500;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,6 +48,12 @@ public class QuestListFragment extends Fragment {
 				_quests = ModelsFactory.getInstance().getModelFromJSON(string, Quest[].class);
 		}
 		
+		
+		_display_options = new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(DISPLAY_FADE_IN_DURATION, true, true, false)).
+															 showImageOnLoading(R.drawable.no_image).
+															 cacheInMemory(true).
+															 cacheOnDisc(true).
+															 build();
 		_listener = new ShowQuestPropertiesClickListener();
 	}
 
@@ -53,13 +65,6 @@ public class QuestListFragment extends Fragment {
 			outState.putString(QUESTS_KEY, jsonFromModel);
 		}
 	}
-
-
-	private static final String QUESTS_KEY = "Quests_List";
-	private Quest[] _quests;
-	private OnItemClickListener _listener;
-	private ListView _list;
-
 	
 	private void setQuests(Quest[] qs) {
 		this._quests = qs;
@@ -92,11 +97,8 @@ public class QuestListFragment extends Fragment {
 	private class QuestAdapter extends BaseAdapter{
 
 		private int _selected;
-		private SavedGame[] _saved_quests;
 		public QuestAdapter() {
-			FragmentActivity activity = getActivity();
 			_selected = -1;
-			_saved_quests = ModelsFactory.getInstance().getFromPreferenceStore(activity, Constants.SAVED_GAMES, SavedGame[].class);
 		}
 		@Override
 		public int getCount() {
@@ -117,42 +119,52 @@ public class QuestListFragment extends Fragment {
 		}
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
+			   ViewHolder holder;
 			   if(convertView == null) {
 			        LayoutInflater vi = (LayoutInflater)getActivity().getSystemService(Context
 			        		.LAYOUT_INFLATER_SERVICE);
 			        convertView = vi.inflate(R.layout.list_item_view, null);
+			        holder = new ViewHolder();
+			        setHolder(holder, convertView);
+			        convertView.setTag(holder);
+			    }else {
+			    	holder = (ViewHolder) convertView.getTag();
 			    }
 			   
 			   Quest q =(Quest) getItem(position);
-			   setMainTextView(convertView,q);
+			   setMainTextView(holder,q);
 //			   setSubTextView(convertView, q);
-			   setQuestProperties(convertView, q);
-			   setQuestImage(convertView, q);
+			   setQuestProperties(holder, q);
+			   setQuestImage(holder, q);
 			   setBackground(convertView, position);
+			   
 			   return convertView;
 		}
 		
+		private void setHolder(ViewHolder h, View v){
+			h.image_view = (ImageView) v.findViewById(R.id.quest_img);
+			h.main_text = (TextView) v.findViewById(R.id.quest_list_title);
+			h.location_text = (TextView) v.findViewById(R.id.quest_list_item_location_text);
+			h.time_text = (TextView) v.findViewById(R.id.quest_list_item_time_text); 
+		}
 		
-		private void setQuestImage(View v, Quest q) {
-			ImageView img_view = (ImageView) v.findViewById(R.id.quest_img);
+		private void setQuestImage(ViewHolder h, Quest q) {
 			List<String> images = q.getImages();
 			if ( images.size() == 0 ) {
 				return;
 			}
-			ImageLoader.getInstance().displayImage(images.get(0), img_view);
+			ImageLoader.getInstance().displayImage(images.get(0), h.image_view,_display_options);
 		}
 		
 		
-		private void setQuestProperties(View v, Quest q) {
-			TextView location_textView = (TextView) v.findViewById(R.id.quest_list_item_location_text);
-			TextView time_textView = (TextView) v.findViewById(R.id.quest_list_item_time_text);
+		private void setQuestProperties(ViewHolder h, Quest q) {
 			
 			StartingLocation startingLocation = q.getStartingLocation();
 			String street = startingLocation.getStreet();
 			int quest_time = (int) q.getTime();
-			time_textView.setText(quest_time + " " + getString(R.string.lbl_minutes));
+			h.time_text.setText(quest_time + " " + getString(R.string.lbl_minutes));
 			
-			location_textView.setText(street);
+			h.location_text.setText(street);
 		}
 		
 		
@@ -162,14 +174,11 @@ public class QuestListFragment extends Fragment {
 			else
 				v.setBackgroundResource(R.color.list_color_even);
 		}
-		private void setMainTextView(View convertView, Quest model) {
-			   TextView text_view = (TextView) convertView.findViewById(R.id.quest_list_title);
-
-			   text_view.setText(model.getTitle());
-			   text_view.setTextColor(getResources().getColor(R.color.quesity_title_color));
+		private void setMainTextView(ViewHolder h, Quest model) {
+			h.main_text.setText(model.getTitle());
+			h.main_text.setTextColor(getResources().getColor(R.color.quesity_title_color));
 		}
 
-		
 	}
 	
     private class ShowQuestPropertiesClickListener implements OnItemClickListener {
@@ -189,6 +198,11 @@ public class QuestListFragment extends Fragment {
 	    	activity.startActivity(intent);
 		}
     }
-
+	static class ViewHolder {
+		public TextView main_text;
+		public TextView location_text;
+		public TextView time_text;
+		public ImageView image_view;
+	}
 
 }

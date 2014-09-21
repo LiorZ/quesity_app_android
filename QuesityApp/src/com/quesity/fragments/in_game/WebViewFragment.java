@@ -1,3 +1,4 @@
+
 package com.quesity.fragments.in_game;
 
 import java.util.Timer;
@@ -176,7 +177,8 @@ public class WebViewFragment extends Fragment {
 					_showProgress = false;
 					_loadingView.setVisibility(View.INVISIBLE);
 					_w.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-					load_finished_listener.pageFinishedLoading();
+					if (load_finished_listener != null )
+						load_finished_listener.pageFinishedLoading();
 					_w.setWebViewClient(new PageChangeWebClient());
 				}else {
 					Log.d("WEBVIEW" ,"Progress: " + newProgress);
@@ -188,7 +190,11 @@ public class WebViewFragment extends Fragment {
 			}
 			 
 		 });
-		 loadHTMLData(data,false);
+		 if ( data != null ) {
+			 loadHTMLData(data,false);
+		 }else {
+			_w.setWebViewClient(new PageChangeWebClient());
+		 }
 	}
 
 	public void setPageLoadingListener(PageLoadingListener listener) {
@@ -229,7 +235,7 @@ public class WebViewFragment extends Fragment {
 			super.onPageFinished(view, url);
 			Log.d("WebViewFragment","pagefinished animation going to start");
 			if ( !_is_first_page ) {
-				_slide_left_begin.setStartOffset(800);
+				_slide_left_begin.setStartOffset(100);
 				
 				_slide_left_begin.setAnimationListener(new AnimationListener() {
 					

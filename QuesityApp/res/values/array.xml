@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="game_menu_items">
+        <item name="item_feedback">@string/lbl_back_to_prev_page</item>
         <item name="item_feedback">@string/game_menu_feedback</item>
         <item name="item_exit">@string/game_menu_leave_quest</item>
     </string-array>
+	
+    <string-array name="game_menu_items_no_back">
+        <item name="item_feedback">@string/game_menu_feedback</item>
+        <item name="item_exit">@string/game_menu_leave_quest</item>
+    </string-array>
+    
+
     
 </resources>

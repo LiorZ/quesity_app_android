@@ -1,8 +1,6 @@
 package com.quesity.fragments;
 
 
-import java.util.Map;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,22 +8,18 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.quesity.activities.QuesityMapActivity;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.app.R;
-import com.quesity.application.QuesityApplication;
 import com.quesity.fragments.in_game.HintsFragment;
 import com.quesity.general.Constants;
 import com.quesity.models.Game;
-import com.quesity.models.Quest;
-import com.quesity.models.QuestPage;
 
 public class InGameMenuFragment extends Fragment {
 	
@@ -37,10 +31,49 @@ public class InGameMenuFragment extends Fragment {
 	private QuesityIngameButtonView _btn_tactics_view;
 	private OnClickListener _play_button_listener;
 	private OnClickListener _tactics_button_listener;
+	private DialogInterface.OnClickListener _listener_with_back;
+	private DialogInterface.OnClickListener _listener_no_back;
 
 	public InGameMenuFragment() {
 		_menu_dialog = new InGameMenuPopup();
 		_hints_fragment = new HintsFragment();
+		_listener_with_back = new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+				case Constants.BACK_TO_PREVIOUS_PAGE:
+					Game currentGame = ((QuestPageActivity) getActivity()).getCurrentGame();
+					currentGame.goToPreviousPage();
+					break;
+				case Constants.EXIT_MENU_ITEM_INDEX:
+					((QuestPageActivity) getActivity()).returnToMainPage();
+					break;
+				case Constants.SHOW_FEEDBACK_ITEM_INDEX:
+					((QuestPageActivity) getActivity()).showFeedbackFragment();
+					break;
+				default:
+					dialog.dismiss();
+				}
+			}
+		};
+		
+		_listener_no_back = new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch(which){
+				case Constants.EXIT_MENU_ITEM_INDEX_NO_BACK:
+					((QuestPageActivity)getActivity()).returnToMainPage();
+					break;
+				case Constants.SHOW_FEEDBACK_ITEM_INDEX_NO_BACK:
+					((QuestPageActivity)getActivity()).showFeedbackFragment();
+					break;
+				default:
+					dialog.dismiss();
+				}	
+			}
+		};
 	}
 	
 	/**
@@ -60,6 +93,28 @@ public class InGameMenuFragment extends Fragment {
 		return as_array;
 	}
 	
+	public void setBackOption(boolean back) {
+		final int items;
+		_menu_dialog.setClickListener(_listener_no_back);
+		
+		if (back) {
+			items = R.array.game_menu_items;
+			_menu_dialog.setClickListener(_listener_with_back);
+			
+		}else {
+			 items = R.array.game_menu_items_no_back;
+		}
+		
+		_menu_dialog.setItemProvider(new ItemProvider() {
+			
+			@Override
+			public String[] getItems() {
+				// TODO Auto-generated method stub
+				return getResources().getStringArray(items);
+			}
+		});
+	}
+	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -68,7 +123,7 @@ public class InGameMenuFragment extends Fragment {
 			
 			@Override
 			public String[] getItems() {
-				return getResources().getStringArray(R.array.game_menu_items);
+				return getResources().getStringArray(R.array.game_menu_items_no_back);
 			}
 		});
 		_menu_dialog.setTitle(R.string.lbl_game_menu_title);
@@ -100,22 +155,7 @@ public class InGameMenuFragment extends Fragment {
 			}
 		});
 		
-		_menu_dialog.setClickListener(new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				switch(which){
-				case Constants.EXIT_MENU_ITEM_INDEX:
-					((QuestPageActivity)factivity).returnToMainPage();
-					break;
-				case Constants.SHOW_FEEDBACK_ITEM_INDEX:
-					((QuestPageActivity)factivity).showFeedbackFragment();
-					break;
-				default:
-					dialog.dismiss();
-				}	
-			}
-		});
+		_menu_dialog.setClickListener(_listener_no_back);
 	}
 	
 	private void startShowMapActivity() {

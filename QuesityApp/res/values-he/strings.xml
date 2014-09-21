@@ -123,7 +123,7 @@
 	
 	<string name="review_dialog_title">ביקורת</string>
 	<string name="review_dialog_message">ספר איך היה!</string>
-	
+	<string name="lbl_back_to_prev_page">חזרה לעמוד הקודם</string>
 	<string name="button_yes">כן</string>
 	<string name="button_no">לא</string>
 	<string name="button_ok">אישור</string>

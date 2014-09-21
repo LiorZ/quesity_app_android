@@ -47,18 +47,19 @@ public class QuestListTaskGet<Result> extends FetchJSONTaskGet<Result> {
 				images[i] = images_list.get(0);
 			}
 		}
-		ImagesLoaded listener = new ImagesLoaded() {
-			
-			@Override
-			public void done() {
-				if ( _progress != null )
-					_progress.dismiss();
-				_post_execute.apply(quests);
-			}
-		};
+		_post_execute.apply(quests);
+//		ImagesLoaded listener = new ImagesLoaded() {
+//			
+//			@Override
+//			public void done() {
+//				if ( _progress != null )
+//					_progress.dismiss();
+//				
+//			}
+//		};
 		
-		MultipleImagesLoader loader = new MultipleImagesLoader(images,listener);
-		loader.load();
+//		MultipleImagesLoader loader = new MultipleImagesLoader(images,listener);
+//		loader.load();
 	}
 	
 

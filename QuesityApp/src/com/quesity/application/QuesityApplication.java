@@ -19,6 +19,7 @@ import com.quesity.app.R;
 public class QuesityApplication extends Application implements IQuesityApplication {
 
 	private Tracker _tracker;
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -35,8 +36,8 @@ public class QuesityApplication extends Application implements IQuesityApplicati
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
         										.discCacheSize(200 * 1024 * 1024)
         										.discCacheFileCount(1000)
-        										.memoryCache(new LruMemoryCache(2 * 1024 * 1024))
-        										.memoryCacheSize(2 * 1024 * 1024)
+        										.memoryCache(new LruMemoryCache(5 * 1024 * 1024))
+        										.memoryCacheSize(5 * 1024 * 1024)
 												.discCache(new UnlimitedDiscCache(cacheDir))
 												.defaultDisplayImageOptions(defaultOptions)
 												.build();

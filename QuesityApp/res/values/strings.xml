@@ -128,6 +128,7 @@
 	<string name="how_was_it">How was the quest?</string>
 	<string name="how_was_it_edittext">How was it?</string>
 	<string name="end_quest_finish_button">Finish</string>
+	<string name="lbl_back_to_prev_page">Back to previous page</string>
 	<string name="review_dialog_title">Review</string>
 	<string name="review_dialog_message">How was it?</string>
 	<string name="lbl_verifying_answer">Verifying your answer ...</string>

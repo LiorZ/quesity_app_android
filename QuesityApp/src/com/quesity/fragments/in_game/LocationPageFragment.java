@@ -18,7 +18,7 @@ import com.quesity.controllers.LocationUser;
 import com.quesity.controllers.ProgressableProcess;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.models.QuestPage;
+import com.quesity.models.Game;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageLocationLink;
 import com.quesity.services.location.LocationService;
@@ -118,34 +118,17 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 			}
 			
 			NextPageTransition activity = (NextPageTransition) getActivity();
-			QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
-			
-			double lng = location.getLongitude();
-			double lat = location.getLatitude();
-			
-			QuestPageLink[] links = page.getLinks();
-			if (links.length > 0) {
-				for (int i = 0; i < links.length; i++) {
-					QuestPageLocationLink link = (QuestPageLocationLink) links[i];
-					double link_lat = link.getLat();
-					double link_lng = link.getLng();
-					int radius = link.getRadius();
-					float result[] = new float[3];
-					Location.distanceBetween(link_lat, link_lng, lat, lng, result);
-					Log.d("LocationPageFragment","Distance between points is " + result[0] + " while radius is " + radius);
-					if ( radius > result[0] ){
-						stopProgressBar();
-						activity.loadNextPage(link);
-						return;
-					}
-					
-				}
+//			QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
+			Game game = ((QuestPageActivity)getActivity()).getCurrentGame();
+			QuestPageLink next_page_link = game.getNextPage(location);
+			stopProgressBar();
+			if ( next_page_link == null ) {
+				Dialog wrong_location_dialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_cant_find_location_title), getString(R.string.lbl_wrong_location), getActivity());
+				wrong_location_dialog.show();
+			}else{
+				game.moveToPage(next_page_link);
 			}
 			Log.d("LocationFragment", location.toString());
-			Dialog wrong_location_dialog = SimpleDialogs.getOKOnlyDialog(getString(R.string.lbl_cant_find_location_title), getString(R.string.lbl_wrong_location), getActivity());
-			
-			stopProgressBar();
-			wrong_location_dialog.show();
 		}
 		
 		@Override

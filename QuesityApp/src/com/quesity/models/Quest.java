@@ -1,5 +1,6 @@
 package com.quesity.models;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 public class Quest extends JSONModel{
@@ -25,6 +26,10 @@ public class Quest extends JSONModel{
 		return tags;
 	}
 
+	public void setQuestPages(QuestPage[] ps) {
+		pages = Arrays.asList(ps);
+	}
+	
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}

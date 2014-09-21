@@ -16,6 +16,7 @@ import com.quesity.dialogs.OpenQuestionDialog;
 import com.quesity.dialogs.QuesityDialog;
 import com.quesity.fragments.OnDemandFragment;
 import com.quesity.fragments.SimpleDialogs;
+import com.quesity.models.Game;
 import com.quesity.models.QuestPage;
 import com.quesity.models.QuestPageLink;
 import com.quesity.models.QuestPageQuestionLink;
@@ -27,13 +28,14 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		
-		final QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
 		final OpenQuestionDialog alert = new OpenQuestionDialog(getActivity());
-		
 		alert.setTitle(getString(R.string.lbl_open_question_title));
 		alert.setMessage(getString(R.string.lbl_open_question_message));
     	final String wrong_answer_title = getString(R.string.lbl_err_wrong_answer_title);
 		final String wrong_answer_text = getString(R.string.lbl_err_wrong_answer);
+		
+		final Game game = ((QuestPageActivity)getActivity()).getCurrentGame();
+		
 	    alert.setButtonDontDismiss(Dialog.BUTTON_POSITIVE,getString(R.string.button_ok), new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton) {
 	        	alert.setProgressVisibility(View.VISIBLE);
@@ -46,13 +48,12 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 							return;
 						}
 						String value = alert.getAnswer().trim();
-			            QuestPageLink nextPage = getNextPageByAnswer(value, page);
+			            QuestPageLink nextPage = game.getNextPage(value);
 			            if ( nextPage == null ) {
 							Dialog okOnlyDialog = SimpleDialogs.getOKOnlyDialog(wrong_answer_title, wrong_answer_text, getActivity());
 			            	okOnlyDialog.show();
 			            }else {
-							NextPageTransition activity = (NextPageTransition) getActivity();
-							activity.loadNextPage(nextPage);
+							game.moveToPage(nextPage);
 			            }
 			            alert.dismiss();
 					}
@@ -72,18 +73,6 @@ public class OpenQuestionFragment extends DialogFragment implements OnDemandFrag
 	    return alert;
 	}
 	
-	
-	private QuestPageLink getNextPageByAnswer(String answer, QuestPage page) {
-		QuestPageLink[] links = page.getLinks();
-		for (int i = 0; i < links.length; i++) {
-			QuestPageQuestionLink link =(QuestPageQuestionLink) links[i];
-			if ( answer.equals(link.getAnswerTxt()) ) {
-				return link;
-			}
-		}
-		
-		return null;
-	}
 	@Override
 	public void invokeFragment(FragmentManager manager) {
 		this.show(manager,"MultipleChoiceFragment");

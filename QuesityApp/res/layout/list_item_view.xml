@@ -15,7 +15,7 @@
 	    quesity:border="false"
 	    android:layout_alignParentLeft="true"
 	    android:layout_marginRight="5dip"
-	    android:src="@drawable/logo_temp"/>
+	    android:src="@drawable/no_image"/>
 
 	<com.quesity.fragments.StyledTextView
 	    android:id="@+id/quest_list_title"

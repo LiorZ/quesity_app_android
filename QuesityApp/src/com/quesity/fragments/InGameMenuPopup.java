@@ -30,7 +30,8 @@ public class InGameMenuPopup extends DialogFragment{
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		String[] items = _provider.getItems();
 		builder.setTitle(_title_id).setItems(items, _listener);
-		return builder.create();
+		AlertDialog dialog = builder.create();
+		return dialog;
 	}
 	
 }

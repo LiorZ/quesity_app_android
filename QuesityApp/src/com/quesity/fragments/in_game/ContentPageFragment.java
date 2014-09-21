@@ -7,16 +7,16 @@ import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.app.R;
 import com.quesity.fragments.OnDemandFragment;
-import com.quesity.models.ModelsFactory;
-import com.quesity.models.QuestPage;
+import com.quesity.models.Game;
+import com.quesity.models.QuestPageLink;
 
 public class ContentPageFragment extends Fragment implements OnDemandFragment {
 
 	@Override
 	public void invokeFragment(FragmentManager manager) {
-		NextPageTransition activity = (NextPageTransition) getActivity();
-		QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
-	    activity.loadNextPage(page.getLinks()[0]);
+		Game game = ((QuestPageActivity)getActivity()).getCurrentGame();
+		QuestPageLink next_page_link = game.getNextPage();
+		game.moveToPage(next_page_link);
 	}
 
 	@Override

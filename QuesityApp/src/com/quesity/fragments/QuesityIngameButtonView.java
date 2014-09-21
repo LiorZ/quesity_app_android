@@ -17,7 +17,6 @@ public class QuesityIngameButtonView extends FrameLayout {
 	private int _touchDownImage;
 	private int _disabled_image;
 	private int _enabled_image;
-	private int _enabled_ontouch_image;
 	private ImageView _image;
 	private StyledTextView _text;
 	private OnClickListener _listener;
@@ -70,6 +69,7 @@ public class QuesityIngameButtonView extends FrameLayout {
 					return true;
 				}
 			});
+			_text.setTextColor(getResources().getColor(R.color.QuesityGray));
 		}else{ 
 			_touchUpImage = _enabled_image;
 			_image.setImageResource(_touchUpImage);
@@ -77,6 +77,7 @@ public class QuesityIngameButtonView extends FrameLayout {
 			_actual_btn.setOnTouchListener(_enabled_touch_listener);
 			int color = getResources().getColor(R.color.blue_btn_color);
 			setBackgroundColor(color);
+			_text.setTextColor(getResources().getColor(R.color.quesity_title_color));
 		}
 	}
 
@@ -92,7 +93,6 @@ public class QuesityIngameButtonView extends FrameLayout {
 	
 	public void setOnTouchButtonImage(int res) {
 		_touchDownImage = res;
-		_enabled_ontouch_image = res;
 	}
 	
 	@Override

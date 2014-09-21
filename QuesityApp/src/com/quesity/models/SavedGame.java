@@ -38,6 +38,9 @@ public class SavedGame extends JSONModel {
 		if ( saved_games == null ) 
 			return false;
 		for(int i = 0; i<saved_games.length; ++i ) {
+			if ( saved_games[i].getQuest() == null ) {
+				continue;
+			}
 			if (saved_games[i].getQuest().getId().equals(q.getId())){
 				return true;
 			}

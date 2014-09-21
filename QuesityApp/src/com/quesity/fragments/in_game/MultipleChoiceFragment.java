@@ -4,6 +4,7 @@ import com.quesity.app.R;
 import com.quesity.activities.NextPageTransition;
 import com.quesity.activities.QuestPageActivity;
 import com.quesity.fragments.OnDemandFragment;
+import com.quesity.models.Game;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
 import com.quesity.models.QuestPage;
@@ -39,15 +40,14 @@ public class MultipleChoiceFragment extends DialogFragment implements OnDemandFr
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 	    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-	    final QuestPage quest_page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
+	    final Game game = ((QuestPageActivity)getActivity()).getCurrentGame();
+	    final QuestPage quest_page = game.getCurrentPage();
 	    builder.setTitle(R.string.lbl_choose_answer)
 	    		.setAdapter(new AnswersListAdapter(quest_page), new OnClickListener() {
 					
 					public void onClick(DialogInterface dialog, int which) {
-						Log.d("MultipleChoiceFragment", "Item " + which + "Clicked");
-						NextPageTransition activity = (NextPageTransition) getActivity();
-						QuestPageLink questPageLink = quest_page.getLinks()[which];
-						activity.loadNextPage(questPageLink);
+						QuestPageLink page_link = game.getNextPage(which);
+						game.moveToPage(page_link);
 					}
 				});
 	    return builder.create();

@@ -17,6 +17,7 @@ public class Quest extends JSONModel{
 	private String description;
 	private List<String> images;
 	private StartingLocation starting_location;
+	private String access_restriction;
 	
 	public StartingLocation getStartingLocation() {
 		return starting_location;
@@ -26,6 +27,10 @@ public class Quest extends JSONModel{
 		return tags;
 	}
 
+	public String getAccessRestriction() {
+		return access_restriction;
+	}
+	
 	public void setQuestPages(QuestPage[] ps) {
 		pages = Arrays.asList(ps);
 	}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:quesity="http://schemas.android.com/apk/res/com.quesity.app"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/WhiteSmoke"
+    android:padding="20dp"
+ >
+    
+<com.quesity.fragments.StyledTextView 
+ 	android:id="@+id/lbl_title_code_required"
+ 	android:layout_width="wrap_content"
+ 	android:layout_height="wrap_content"
+ 	android:textSize="28sp"
+ 	android:gravity="center_horizontal"
+ 	quesity:font_path="@string/quesity_title_font"
+ 	android:layout_centerHorizontal="true"
+ 	android:layout_alignParentTop="true"
+ 	android:text="@string/lbl_title_code_required"
+ 	android:textColor="@color/Black"
+ />    
+ 
+<com.quesity.fragments.StyledTextView 
+ 	android:id="@+id/lbl_subtitle_code_required"
+ 	android:layout_width="wrap_content"
+ 	android:layout_height="wrap_content"
+ 	android:textSize="15sp"
+ 	android:gravity="center_horizontal"
+ 	quesity:font_path="@string/quesity_title_font"
+ 	android:layout_centerHorizontal="true"
+ 	android:layout_below="@id/lbl_title_code_required"
+ 	android:layout_marginTop="10dp"
+ 	android:text="@string/lbl_subtitle_code_required"
+ 	android:textColor="@color/Black"
+ />
+ 
+<FrameLayout 
+	android:id="@+id/security_guards_img"
+	android:layout_width="200dp"
+	android:layout_height="200dp"
+	android:layout_below="@id/lbl_subtitle_code_required"
+	android:layout_marginTop="15dp"    
+	android:layout_marginBottom="15dp"    
+	android:layout_centerHorizontal="true"
+	android:background="@drawable/security_guards"
+>
+</FrameLayout>
+
+<LinearLayout
+	android:id="@+id/access_code_container"
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"    
+	android:layout_centerHorizontal="true"
+	android:layout_marginLeft="5dp"
+	android:layout_marginRight="5dp"
+	android:layout_below="@id/security_guards_img"
+>
+
+<com.quesity.fragments.custom_views.EditTextWithErrorDisplay 
+	android:maxLines="1"
+	android:id="@+id/txt_access_code"
+	android:layout_height="wrap_content"
+	android:layout_width="200dp"
+	android:layout_marginRight="5dp"
+	android:hint="@string/hint_access_code"
+/>
+
+ <com.quesity.fragments.QuesityButtonView 
+     android:id="@+id/btn_validate_code"
+     android:layout_height="wrap_content"
+     quesity:button_padding="5dp"
+     android:layout_width="wrap_content"
+     quesity:button_icon="@drawable/yes_icon"
+  />
+    
+</LinearLayout>
+    
+</RelativeLayout>

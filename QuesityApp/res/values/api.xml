@@ -13,4 +13,5 @@
 		<string name="report_login">/report/login</string>
 		<string name="submit_review">/quest/%1$s/review</string>
 		<string name="game_over">/game/%1$s/finish</string>
+		<string name="validate_code">/app/validate_code</string>
 </resources>

@@ -133,4 +133,12 @@
 	<string name="review_dialog_message">How was it?</string>
 	<string name="lbl_verifying_answer">Verifying your answer ...</string>
 	
+	<string name="lbl_title_code_required">Access code is required!</string>
+	<string name="lbl_subtitle_code_required">Purchase an access code from the cashier</string>
+	<string name="hint_access_code">Access Code</string>
+	
+	<string name="err_usage_code_exists">The code you entered is either invalid or has already been used.</string>
+	<string name="err_usage_server_error">An unknown server error occurred. Try again in a few minutes.</string>
+	
+	
 </resources>

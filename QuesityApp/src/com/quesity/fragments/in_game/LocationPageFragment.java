@@ -117,7 +117,6 @@ public class LocationPageFragment extends Fragment implements OnDemandFragment, 
 				return;
 			}
 			
-			NextPageTransition activity = (NextPageTransition) getActivity();
 //			QuestPage page = ((QuestPageActivity)getActivity()).getCurrentQuestPage();
 			Game game = ((QuestPageActivity)getActivity()).getCurrentGame();
 			QuestPageLink next_page_link = game.getNextPage(location);

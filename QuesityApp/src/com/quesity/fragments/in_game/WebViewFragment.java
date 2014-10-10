@@ -22,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebStorage.QuotaUpdater;
@@ -77,8 +78,9 @@ public class WebViewFragment extends Fragment {
 	
 	public void loadHTMLData(final String raw_data, boolean with_animation) {
 
-		String data  = "<html><body style='padding:0; margin:0'>"+raw_data+"</body></html>";
+		String data  = "<html><body style='padding:0; margin:0;'>"+raw_data+"</body></html>";
 		if ( with_animation ){
+//			data  = "<html><head><script type='text/javascript'> function finishLoad(){ Quesity.pageFinishedLoading(); } </script><body style='padding:0; margin:0;' onload=\"finishLoad()\">"+raw_data+"</body></html>";
 			loadHTMLDataRawWithAnimation(data);
 			return;
 		}
@@ -142,6 +144,7 @@ public class WebViewFragment extends Fragment {
 		 WebSettings settings = _w.getSettings();
 		 
 		 settings.setJavaScriptEnabled(false);
+//		_w.addJavascriptInterface(new PageTransitionJavascriptInterface(), "Quesity");
 		 settings.setDomStorageEnabled(true);
 		 settings.setAppCacheMaxSize(CACHE_INITIAL_SIZE);
 		 settings.setSupportZoom(true);
@@ -207,7 +210,6 @@ public class WebViewFragment extends Fragment {
 	}
 	
 	private class PageChangeWebClient extends WebViewClient {
-		
 		private boolean _is_first_page = true;
 		
 		@Override
@@ -262,8 +264,56 @@ public class WebViewFragment extends Fragment {
 					_page_change_listener.pageFinishedLoading();
 				_is_first_page = false;
 			}
+			
+			if ( _is_first_page && _page_change_listener != null ) 
+				_page_change_listener.pageFinishedLoading();
+			_is_first_page = false;
 		}
 	}
 	
+	public class PageTransitionJavascriptInterface {
+		private boolean _is_first_page = true;
+		
+		
+		@JavascriptInterface
+		public void pageFinishedLoading() { 
+			Log.d("QuesityJavascript","Entered Javascript function!");
+			getActivity().runOnUiThread(new Runnable() {
+				
+				@Override
+				public void run() {
+					if ( !_is_first_page ) {
+						_slide_left_begin.setStartOffset(100);
+						
+						_slide_left_begin.setAnimationListener(new AnimationListener() {
+							
+							@Override
+							public void onAnimationStart(Animation animation) {
+								
+							}
+							
+							@Override
+							public void onAnimationRepeat(Animation animation) {
+								
+							}
+							
+							@Override
+							public void onAnimationEnd(Animation animation) {
+								if ( _page_change_listener != null )
+									_page_change_listener.pageFinishedLoading();
+							}
+						});
+						
+						_w.startAnimation(_slide_left_begin);
+					}else {
+						if ( _page_change_listener != null )
+							_page_change_listener.pageFinishedLoading();
+						_is_first_page = false;
+					}					
+				}
+			});
+			
+		}
+	}
 	
 }

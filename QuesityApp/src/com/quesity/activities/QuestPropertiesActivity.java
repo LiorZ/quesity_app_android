@@ -10,12 +10,12 @@ import android.view.View;
 
 import com.quesity.app.R;
 import com.quesity.controllers.QuestProvider;
+import com.quesity.dialogs.AccessCodeDialog;
 import com.quesity.fragments.QuesityButtonView;
 import com.quesity.fragments.QuesityPageTitleView;
 import com.quesity.fragments.QuestPropertiesFragment;
 import com.quesity.fragments.QuestPropertiesItemsFragment;
 import com.quesity.fragments.SimpleDialogs;
-import com.quesity.fragments.StartingLocationVerifier;
 import com.quesity.general.Constants;
 import com.quesity.models.ModelsFactory;
 import com.quesity.models.Quest;
@@ -88,13 +88,34 @@ public class QuestPropertiesActivity extends BaseActivity implements QuestProvid
 
 		@Override
 		public void onClick(View v) {
-			Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
+			final Intent intent = new Intent(QuestPropertiesActivity.this, QuestPageActivity.class);
 	    	intent.putExtra(Constants.QUEST_OBJ, ModelsFactory.getInstance().getJSONFromModel(_quest));
 	    	boolean existsInCache = existsInCache(_quest);
 			if ( existsInCache ) {
 	    		askStartOrResume(intent);
 	    	}else {
-				startQuestActivity(intent);
+	    		String accessRestriction = _quest.getAccessRestriction();
+	    		if ( accessRestriction.equals(Constants.QUEST_ACCESS_RESTRICTION_CODE) ) {
+	    			AccessCodeDialog accessCodeDialog = new AccessCodeDialog(QuestPropertiesActivity.this);
+					accessCodeDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+						
+						@Override
+						public void onDismiss(DialogInterface dialog) {
+							boolean verified = ((AccessCodeDialog) dialog).isVerified();
+							String currentCode = ((AccessCodeDialog) dialog).getCurrentCode();
+							if ( verified ){
+								Log.d("QuestPropertiesActivity", currentCode);
+								intent.putExtra(Constants.QUEST_ACCESS_RESTRICTION_KEY, currentCode);
+								
+								startQuestActivity(intent);
+							}
+						}
+					});
+					accessCodeDialog.show();
+	    		}else {
+	    			startQuestActivity(intent);
+	    		}
+	    		
 	    	}
 		}
 

@@ -24,7 +24,20 @@ public class Game extends JSONModel {
 	private Quest quest;
 	private List<GamePageChangeListener> _page_change_listeners;
 	private List<GameStartedListener> _game_started_listeners;
+	private String access_code;
 	
+	public String getAccessCode() {
+		return access_code;
+	}
+
+
+
+	public void setAccessCode(String access_code) {
+		this.access_code = access_code;
+	}
+
+
+
 	public Game() {
 		_page_change_listeners = new ArrayList<GamePageChangeListener>();
 		_game_started_listeners = new ArrayList<GameStartedListener>();
@@ -32,6 +45,8 @@ public class Game extends JSONModel {
 			page_history = new ArrayList<QuestPage>();
 		}
 	}
+	
+	
 	
 	public void addPageChangeListener(GamePageChangeListener l) {
 		_page_change_listeners.add(l);

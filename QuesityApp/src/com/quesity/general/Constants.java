@@ -37,6 +37,9 @@ public final class Constants {
 	public static final long GPS_UPDATE_INTERVAL = 10*1000; //milliseconds
 	public static final float GPS_MIN_ACCURACY = 20; // meters
 	public static final String QUEST_IS_IN_STARTING_LOC = "com.quesity.in_location";
+	public static final String QUEST_ACCESS_RESTRICTION_CODE = "code";
+	public static final String QUEST_ACCESS_RESTRICTION_KEY = "com.quesity.access_restriction.code";
+	public static final String QUEST_ACCESS_RESTRICTION_MAGIC = "tomzion";
 	
 	public static final int ANALYTICS_QUEST_PAGE_USER = 1;
 	public static final int ANALYTICS_QUEST_PAGES_PASSED = 2;

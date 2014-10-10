@@ -1,12 +1,14 @@
 package com.quesity.fragments.custom_views;
 
-import com.throrinstudio.android.common.libs.validator.R;
-
 import android.content.Context;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.widget.EditText;
+
+import com.facebook.internal.Validate;
+import com.throrinstudio.android.common.libs.validator.R;
 
 public class EditTextWithErrorDisplay extends EditText{
 

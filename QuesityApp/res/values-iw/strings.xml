@@ -131,5 +131,10 @@
     <string name="button_cancel">ביטול</string>
     <string name="lbl_verifying_answer">בודק את תשובתך ...</string>
     
+    <string name="lbl_title_code_required">לקווסט זה דרוש קוד כניסה!</string>
+	<string name="lbl_subtitle_code_required">באפשרותך לקנות קוד בקופת הכניסה.</string>
+	<string name="hint_access_code">קוד כניסה</string>
+	<string name="err_usage_code_exists">הקוד שהכנסת אינו תקין או שכבר נמצא בשימוש</string>
+	<string name="err_usage_server_error">תקלה בלתי צפויה באישור הקוד. נסה שנית בעוד מספר דקות</string>
     
 </resources>

@@ -23,7 +23,7 @@ import com.quesity.models.QuestPageQuestionLink;
 
 public class OpenQuestionFragment extends DialogFragment implements OnDemandFragment{
 
-	private static final long VERIFYING_ANSWER_DELAY = 2500;
+	private static final long VERIFYING_ANSWER_DELAY = 1900;
 	
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {

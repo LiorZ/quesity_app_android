@@ -67,8 +67,6 @@ public class QuestPageActivity extends BaseActivity implements
 		INetworkInteraction, QuestProvider, TransitionFragmentInvokation,
 		ProgressableProcess {
 
-	public static final String QUEST_PAGE_KEY = "com.quesity.QUEST_PAGE_KEY";
-	public static final String ALL_QUEST_PAGES_KEY = "com.quesity.ALL_PAGES_KEY";
 	public static final String CURRENT_GAME_KEY = "com.quesity.CURRENT_GAME_KEY";
 	public static final String ACCOUNT_ID = "com.quesity.ACCOUNT_ID";
 
@@ -84,9 +82,7 @@ public class QuestPageActivity extends BaseActivity implements
 	private LocationPageFragment _location_page_fragment;
 	private StallFragment _stall_fragment;
 	private HashMap<String, Fragment> _fragmentMapper;
-	private QuestPage _currentPage;
 	private IPostExecuteCallback _post_callback;
-	private QuestPage[] _all_pages;
 	private Game _current_game;
 	private InGameMenuFragment _in_game_panel;
 	private String _images_to_cache;
@@ -100,17 +96,11 @@ public class QuestPageActivity extends BaseActivity implements
 			b = new Bundle();
 		}
 
-		String page_json = ModelsFactory.getInstance().getJSONFromModel(
-				_currentPage);
-		String all_pages_json = ModelsFactory.getInstance().getJSONFromModel(
-				_all_pages);
 		String game_json = ModelsFactory.getInstance().getJSONFromModel(
 				_current_game);
 
 		Log.d("QuestPageActivity", "Saving instance state with json");
-		b.putString(QUEST_PAGE_KEY, page_json);
 		b.putString(CURRENT_GAME_KEY, game_json);
-		b.putString(ALL_QUEST_PAGES_KEY, all_pages_json);
 		b.putString(ACCOUNT_ID, _account_id);
 
 		return b;
@@ -144,9 +134,6 @@ public class QuestPageActivity extends BaseActivity implements
 		for (int i = 0; i < saved_games.length; ++i) {
 			if (saved_games[i].getQuest().getId().equals(_quest_id)) {
 				_current_game = saved_games[i].getGame();
-				_currentPage = saved_games[i].getCurrentPage();
-				_all_pages = saved_games[i].getPages();
-				
 				initGameListeners();
 				return true;
 			}
@@ -157,14 +144,20 @@ public class QuestPageActivity extends BaseActivity implements
 	private void createViews() {
 		_progress = new LoadingProgressFragment();
 		_progress.setCancelable(false);
-		_in_game_panel = (InGameMenuFragment) getSupportFragmentManager()
-				.findFragmentById(R.id.ingame_menu_fragment);
+//		_in_game_panel = (InGameMenuFragment) getSupportFragmentManager()
+//				.findFragmentById(R.id.ingame_menu_fragment);
 
 		_webViewFragment = (WebViewFragment) getSupportFragmentManager()
 				.findFragmentById(R.id.webview_fragment);
-
-		// Disabling the play button while loading so that players won't press
-		// play by mistake and miss the page
+	}
+	
+	private void addInGamePanel() {
+		_in_game_panel = new InGameMenuFragment();
+		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+		ft.add( R.id.ingame_menu_fragment_container,_in_game_panel);
+		ft.commit();
+		getSupportFragmentManager().executePendingTransactions();
+		
 	}
 	
 	public String getAccountId() {
@@ -181,25 +174,21 @@ public class QuestPageActivity extends BaseActivity implements
 			restoreFromPreferences();
 			startLocationService();
 			setupWebviewForResume();
-			refreshQuestPage(_currentPage);
+			refreshQuestPage(_current_game.getCurrentPage());
 		} else {
 			restoreSavedPage(savedInstanceState);
 		}
 	}
 
 	private void restoreFromInstanceState(Bundle savedInstanceState) {
-		String current_page = savedInstanceState.getString(QUEST_PAGE_KEY);
-		String all_pages = savedInstanceState.getString(ALL_QUEST_PAGES_KEY);
 		String game_json = savedInstanceState.getString(CURRENT_GAME_KEY);
 		_account_id = savedInstanceState.getString(ACCOUNT_ID);
 
 		ModelsFactory instance = ModelsFactory.getInstance();
 		_current_game = instance.getModelFromJSON(game_json, Game.class);
-		_currentPage = instance.getModelFromJSON(current_page, QuestPage.class);
-		_all_pages = instance.getModelFromJSON(all_pages, QuestPage[].class);
 		initGameListeners();
 
-		refreshQuestPage(_currentPage);
+		refreshQuestPage(_current_game.getCurrentPage());
 	}
 
 	private void analyticsReport(QuestPage p) {
@@ -294,14 +283,14 @@ public class QuestPageActivity extends BaseActivity implements
 	}
 
 	private void restoreSavedPage(Bundle savedInstanceState) {
-		String page = null;
+		String game_json = null;
 		if (savedInstanceState != null) {
-			page = savedInstanceState.getString(QUEST_PAGE_KEY);
+			game_json = savedInstanceState.getString(CURRENT_GAME_KEY);
 		}
-		if (page != null) {
-			_currentPage = ModelsFactory.getInstance().getModelFromJSON(page,
-					QuestPage.class);
-			refreshQuestPage(_currentPage);
+		if (game_json != null) {
+			_current_game = ModelsFactory.getInstance().getModelFromJSON(game_json, Game.class);
+			initGameListeners();
+			refreshQuestPage(_current_game.getCurrentPage());
 		} else {
 			String game_url = Config.SERVER_URL
 					+ String.format(getString(R.string.new_game), _quest_id);
@@ -318,9 +307,10 @@ public class QuestPageActivity extends BaseActivity implements
 
 	@Override
 	public void transitToNextPage() {
-		if (_currentPage == null)
+		if (_current_game == null || _current_game.getCurrentPage() == null) 
 			return;
-		QuestPageLink[] links = _currentPage.getLinks();
+		QuestPage current_page = _current_game.getCurrentPage();
+		QuestPageLink[] links = current_page.getLinks();
 		if (links.length == 0) {
 			finishQuest();
 			return;
@@ -435,18 +425,9 @@ public class QuestPageActivity extends BaseActivity implements
 	}
 
 	public QuestPage getCurrentQuestPage() {
-		return _currentPage;
+		return _current_game.getCurrentPage();
 	}
 
-	public void loadPreviousPage(QuestPage page) {
-		if ( !page.getPageType().equals(Constants.STATIC_PAGE_TYPE)) {
-			return;
-		}
-		for (int i=0; i<_all_pages.length; ++i ){
-		}
-		
-	}
-	
 	private void savePage(QuestPage page) {
 		final Activity a = this;
 		AsyncTask<QuestPage, Void, Integer> task = new AsyncTask<QuestPage, Void, Integer>() {
@@ -512,7 +493,6 @@ public class QuestPageActivity extends BaseActivity implements
 	private void putProgressInSavedGame(SavedGame game, QuestPage page) {
 		game.setCurrentPage(page);
 		game.setGame(_current_game);
-		game.setPages(_all_pages);
 		game.setQuest(_quest_obj);
 	}
 
@@ -571,7 +551,6 @@ public class QuestPageActivity extends BaseActivity implements
 
 	public void refreshQuestPage(QuestPage page) {
 		setTitle(page.getPageName());
-		_currentPage = page;
 		
 //		_reporter.notifyGameEvent(_current_game, _quest_obj);
 		
@@ -595,7 +574,7 @@ public class QuestPageActivity extends BaseActivity implements
 		_in_game_panel.setPlayButtonDrawable(buttonDrawable,
 				pressedButtonDrawable);
 		_in_game_panel.setPlayButtonText(getString(button_text_id));
-		QuestPageHint[] hints = _currentPage.getHints();
+		QuestPageHint[] hints = _current_game.getCurrentPage().getHints();
 		if (_current_game.getRemainingHints() > 0 && hints != null
 				&& hints.length > 0) {
 			_in_game_panel.setHintButtonEnabled(true);
@@ -613,6 +592,8 @@ public class QuestPageActivity extends BaseActivity implements
 			}else {
 				_in_game_panel.setBackOption(false);
 			}
+		}else {
+			_in_game_panel.setBackOption(false);
 		}
 	}
 	
@@ -621,24 +602,30 @@ public class QuestPageActivity extends BaseActivity implements
 
 					@Override
 					public void pageStartedLoading() {
-						_in_game_panel.setGameButtonsEnabledState(false);
+//						_in_game_panel.setGameButtonsEnabledState(false);
 					}
 
 					@Override
 					public void pageFinishedLoading() {
 //						refreshQuestPage(_currentPage);
-						_in_game_panel.setGameButtonsEnabledState(true);
+//						addInGamePanel();
+//						_in_game_panel.setGameButtonsEnabledState(true);
 					}
 				},
 
 				new WebViewFragment.PageLoadingListener() { 
 					@Override
 					public void pageStartedLoading() {
-						_in_game_panel.setGameButtonsEnabledState(false);
+						if (_in_game_panel != null )
+							_in_game_panel.setGameButtonsEnabledState(false);
+						
 					}
 
 					@Override
 					public void pageFinishedLoading() {
+						if ( _in_game_panel == null ) {
+							addInGamePanel();
+						}
 						_in_game_panel.setGameButtonsEnabledState(true);
 						if (_transitionFragment != null) {
 							refreshInGameButtons();
@@ -654,11 +641,11 @@ public class QuestPageActivity extends BaseActivity implements
 
 		@Override
 		public void apply(Object result) {
-			_all_pages = (QuestPage[]) result;
-			if (_all_pages == null) {
+			QuestPage[] all_pages = (QuestPage[]) result;
+			if (all_pages == null) {
 				return;
 			}
-			_quest_obj.setQuestPages(_all_pages);
+			_quest_obj.setQuestPages(all_pages);
 			extractCacheData();
 			_webViewFragment.setup(_images_to_cache, new PageLoadingListener() { // a
 				// listener
@@ -672,11 +659,12 @@ public class QuestPageActivity extends BaseActivity implements
 
 				@Override
 				public void pageStartedLoading() {
-					_in_game_panel.setGameButtonsEnabledState(false);
+//					_in_game_panel.setGameButtonsEnabledState(false);
 				}
 
 				@Override
 				public void pageFinishedLoading() {
+					addInGamePanel();
 					_current_game.startGame();
 				}
 			},
@@ -715,7 +703,7 @@ public class QuestPageActivity extends BaseActivity implements
 	}
 	private void extractCacheData() {
 		_images_to_cache = "<div style='display:none;'>";
-		for (QuestPage page : _all_pages) {
+		for (QuestPage page : _quest_obj.getPages()) {
 			_images_to_cache += page.getPageContent();
 		}
 		_images_to_cache += "</div>";
@@ -755,8 +743,15 @@ public class QuestPageActivity extends BaseActivity implements
 			}
 
 			Game game = new Game();
+			
 			game.setDateStarted(new Date());
 			game.setAccount_id(_account_id);
+			
+			String access_code = getIntent().getStringExtra(Constants.QUEST_ACCESS_RESTRICTION_KEY);
+			if (access_code != null && !access_code.isEmpty()){
+				game.setAccessCode(access_code);
+			}
+			
 			String game_json_input = ModelsFactory.getInstance()
 					.getJSONFromModel(game);
 			String game_json = _network_interface.getStringContent(uri,
@@ -861,6 +856,7 @@ public class QuestPageActivity extends BaseActivity implements
 		@Override
 		public void gameStarted(QuestPage first_page) {
 			_in_game_panel.setGameButtonsEnabledState(true);
+			savePage(first_page);
 			refreshQuestPage(first_page);
 		}
 		

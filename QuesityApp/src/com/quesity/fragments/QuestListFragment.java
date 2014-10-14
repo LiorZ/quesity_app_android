@@ -1,12 +1,18 @@
+
 package com.quesity.fragments;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +49,10 @@ public class QuestListFragment extends Fragment {
 		super.onCreate(savedInstanceState);
 		if (savedInstanceState != null) {
 			String string = savedInstanceState.getString(QUESTS_KEY);
-			
-			if (string != null )
+			if (string != null ){
 				_quests = ModelsFactory.getInstance().getModelFromJSON(string, Quest[].class);
+			}
 		}
-		
 		
 		_display_options = new DisplayImageOptions.Builder().displayer(new FadeInBitmapDisplayer(DISPLAY_FADE_IN_DURATION, true, true, false)).
 															 showImageOnLoading(R.drawable.no_image).
@@ -57,6 +62,8 @@ public class QuestListFragment extends Fragment {
 		_listener = new ShowQuestPropertiesClickListener();
 	}
 
+
+	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);

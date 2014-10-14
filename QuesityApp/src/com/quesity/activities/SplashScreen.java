@@ -6,12 +6,16 @@ import java.security.SecureRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 
 import com.quesity.app.R;
@@ -92,10 +96,37 @@ public class SplashScreen extends BaseActivity {
 		t.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				startMainActivity();
-				finish();
+				LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+				lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER,new LocationListener() {
+					
+					@Override
+					public void onStatusChanged(String provider, int status, Bundle extras) {
+						if ( status != LocationProvider.AVAILABLE ){
+							startMainActivity(null);
+							finish();
+						}
+					}
+					
+					@Override
+					public void onProviderEnabled(String provider) {
+						
+					}
+					
+					@Override
+					public void onProviderDisabled(String provider) {
+						startMainActivity(null);
+						finish();
+					}
+					
+					@Override
+					public void onLocationChanged(Location location) {
+						startMainActivity(location);
+						finish();
+					}
+				}, getMainLooper());
 			}
 		}, delay);
+		
 	}
 	
 	private String getAccountId() {
@@ -112,8 +143,16 @@ public class SplashScreen extends BaseActivity {
 		setContentView(R.layout.activity_splash_screen);	
 	}
 	
-	private void startMainActivity() {
+	private void startMainActivity(Location l) {
+		
 		Intent i = new Intent(this,QuestsListViewActivity.class);
+
+		if ( l != null ){
+			com.quesity.models.Location loc = new com.quesity.models.Location();
+			loc.setLat(l.getLatitude());
+			loc.setLng(l.getLongitude());
+			i.putExtra(Constants.CURRENT_LOCATION_QUEST_LIST, ModelsFactory.getInstance().getJSONFromModel(loc));
+		}
 		startActivity(i);
 	}
 	

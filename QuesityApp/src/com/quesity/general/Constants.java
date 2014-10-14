@@ -41,6 +41,8 @@ public final class Constants {
 	public static final String QUEST_ACCESS_RESTRICTION_KEY = "com.quesity.access_restriction.code";
 	public static final String QUEST_ACCESS_RESTRICTION_MAGIC = "tomzion";
 	
+	public static final String CURRENT_LOCATION_QUEST_LIST = "com.quesity.current_location_quest_list";
+	
 	public static final int ANALYTICS_QUEST_PAGE_USER = 1;
 	public static final int ANALYTICS_QUEST_PAGES_PASSED = 2;
 	public static final int ANALYTICS_QUEST_PAGES_HIT = 3;

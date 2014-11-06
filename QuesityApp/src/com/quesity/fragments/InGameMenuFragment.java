@@ -220,7 +220,7 @@ public class InGameMenuFragment extends Fragment {
 	}
 		
 	public void setHintButtonEnabled(boolean enabled) {
-		_btn_tactics_view.setEnabled(enabled);
+//		_btn_tactics_view.setEnabled(enabled);
 	}
 	
 	@Override

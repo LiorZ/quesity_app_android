@@ -21,6 +21,7 @@ import android.view.Menu;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.quesity.analytics.AnalyticsFragment;
 import com.quesity.app.R;
 import com.quesity.application.QuesityApplication;
 import com.quesity.controllers.ProgressableProcess;
@@ -121,6 +122,12 @@ public class QuestPageActivity extends BaseActivity implements
 	private void initGameListeners(){
 		_current_game.addPageChangeListener(new PageChangeEventListener());
 		_current_game.addGameStartedListener(new GameStartedEventListener ());
+		Fragment frag = getSupportFragmentManager().findFragmentByTag(Constants.ANALYTICS_FRAGMENT_TAG);
+		
+		//Adding the analytics fragment only if not exists
+		if ( frag == null ) {
+			getSupportFragmentManager().beginTransaction().add(new AnalyticsFragment(), Constants.ANALYTICS_FRAGMENT_TAG).commit();
+		}
 	}
 	
 	private boolean restoreFromPreferences() {
@@ -189,21 +196,6 @@ public class QuestPageActivity extends BaseActivity implements
 		initGameListeners();
 
 		refreshQuestPage(_current_game.getCurrentPage());
-	}
-
-	private void analyticsReport(QuestPage p) {
-		Tracker t = ((QuesityApplication) getActivity().getApplication())
-				.getTracker();
-		t.setScreenName("Quest_" + _quest_obj.getTitle());
-		t.set("&uid", _account_id);
-		String pageName = p.getPageName();
-		t.send(new HitBuilders.AppViewBuilder()
-				.setCustomDimension(Constants.ANALYTICS_QUEST_PAGE_USER,
-						pageName)
-				.setCustomDimension(Constants.ANALYTICS_QUEST_PAGES_PASSED,
-						Integer.toString(_current_game.getPagesPassed()))
-				.setCustomDimension(Constants.ANALYTICS_QUEST_PAGES_HIT,
-						pageName).build());
 	}
 
 	public void showFeedbackFragment() {

@@ -96,9 +96,9 @@ public class HintsFragment extends DialogFragment {
 		Tracker tracker = application.getTracker();
 		
 		Map<String, String> event = new HitBuilders.EventBuilder()
-	    .setCategory(getString(R.string.analytics_quest_event))
+	    .setCategory(getString(R.string.analytics_category_quest_event))
 	    .setAction(getString(action))
-	    .setCustomDimension(Constants.ANALYTICS_QUEST_PAGES_HIT, currentQuestPage.getPageName())
+	    .setCustomDimension(Constants.ANALYTICS_QUEST_PAGE_NAME_HIT, currentQuestPage.getPageName())
 	    .setLabel(quest.getTitle())
 	    .build();
 		

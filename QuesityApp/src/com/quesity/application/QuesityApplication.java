@@ -24,7 +24,7 @@ public class QuesityApplication extends Application implements IQuesityApplicati
 	public void onCreate() {
 		super.onCreate();
 		GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-		analytics.setDryRun(true);
+//		analytics.setDryRun(false);
 		analytics.getLogger().setLogLevel(LogLevel.VERBOSE);
 		
 		_tracker = analytics.newTracker(R.xml.global_tracker);
